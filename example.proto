@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example;
+
+message Person {
+    string name = 1;
+    int32 age = 2;
+}
+
+message PersonResponse {
+    string message = 1;
+}
+
+service PersonService {
+    rpc CreatePerson (Person) returns (PersonResponse);
+}
+
