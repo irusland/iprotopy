@@ -1,14 +1,14 @@
-syntax = "proto3";
+syntax = "proto2";
 
 package example;
 
 message Person {
-    string name = 1;
-    int32 age = 2;
+    required string name = 1;
+    required int32 age = 2;
 }
 
 message PersonResponse {
-    string message = 1;
+    required string message = 1;
 }
 
 service PersonService {
