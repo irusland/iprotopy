@@ -79,9 +79,9 @@ message OrderTrade {
 
 //Запрос выставления торгового поручения.
 message PostOrderRequest {
-  optional string figi = 1 [ deprecated = true ]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  string figi = 1 [ deprecated = true ]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
   int64 quantity = 2 [(google.api.field_behavior) = REQUIRED]; //Количество лотов.
-  optional Quotation price = 3; //Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. Игнорируется для рыночных поручений.
+  Quotation price = 3; //Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. Игнорируется для рыночных поручений.
   OrderDirection direction = 4 [(google.api.field_behavior) = REQUIRED]; //Направление операции.
   string account_id = 5 [(google.api.field_behavior) = REQUIRED]; //Номер счёта.
   OrderType order_type = 6 [(google.api.field_behavior) = REQUIRED]; //Тип заявки.
@@ -185,15 +185,15 @@ message ReplaceOrderRequest {
   string order_id = 6 [(google.api.field_behavior) = REQUIRED]; //Идентификатор заявки на бирже.
   string idempotency_key = 7 [(google.api.field_behavior) = REQUIRED]; //Новый идентификатор запроса выставления поручения для целей идемпотентности. Максимальная длина 36 символов. Перезатирает старый ключ.
   int64 quantity = 11 [(google.api.field_behavior) = REQUIRED]; //Количество лотов.
-  optional Quotation price = 12; //Цена за 1 инструмент.
-  optional PriceType price_type = 13; //Тип цены.
+  Quotation price = 12; //Цена за 1 инструмент.
+  PriceType price_type = 13; //Тип цены.
 }
 
 //Запрос на расчет количества доступных для покупки/продажи лотов. Если не указывать цену инструмента, то расчет произведется по текущум ценам в стакане: по лучшему предложению для покупки и по лучшему спросу для продажи.
 message GetMaxLotsRequest {
   string account_id = 1 [(google.api.field_behavior) = REQUIRED]; //Номер счета
   string instrument_id = 2 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента, принимает значения Figi или instrument_uid
-  optional Quotation price = 3; //Цена инструмента
+  Quotation price = 3; //Цена инструмента
 }
 
 //Результат количество доступных для покупки/продажи лотов
@@ -252,7 +252,7 @@ message GetOrderPriceResponse {
 //Запрос установки стрим-соединения торговых поручений
 message OrderStateStreamRequest {
   repeated string accounts = 1; //Идентификаторы счетов.
-  optional int32 ping_delay_millis = 15; //Задержка пинг сообщений milliseconds 1000-120000, default 120000
+  int32 ping_delay_millis = 15; //Задержка пинг сообщений milliseconds 1000-120000, default 120000
 }
 
 //Информация по заявкам
@@ -268,18 +268,18 @@ message OrderStateStreamResponse {
     ResultSubscriptionStatus status = 2; //Статус подписки.
     string stream_id = 4; //Идентификатор открытого соединения
     repeated string accounts = 5; //Идентификаторы счетов.
-    optional ErrorDetail error = 7;
+    ErrorDetail error = 7;
 
   }
 
   //Заявка
   message OrderState {
     string order_id = 1; //Биржевой идентификатор заявки
-    optional string order_request_id = 2; //Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов.
+    string order_request_id = 2; //Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов.
     string client_code = 3; //Код клиента на бирже
     google.protobuf.Timestamp created_at = 4; //Дата создания заявки
     OrderExecutionReportStatus execution_report_status = 5; //Статус заявки
-    optional StatusCauseInfo status_info = 6; //Дополнительная информация по статусу
+    StatusCauseInfo status_info = 6; //Дополнительная информация по статусу
     string ticker = 7; //Тикер инструмента
     string class_code = 8; //Класс-код (секция торгов)
     int32 lot_size = 9; //Лотность инструмента заявки
@@ -289,14 +289,14 @@ message OrderStateStreamResponse {
     string account_id = 13; //Номер счета
     MoneyValue initial_order_price = 22; //Начальная цена заявки
     MoneyValue order_price = 23; //Цена выставления заявки
-    optional MoneyValue amount = 24; //Предрассчитанная стоимость полной заявки
+    MoneyValue amount = 24; //Предрассчитанная стоимость полной заявки
     MoneyValue executed_order_price = 25; //Исполненная средняя цена одного инструмента в заявке
     string currency = 26; //Валюта исполнения
     int64 lots_requested = 27; //Запрошено лотов
     int64 lots_executed = 28; //Исполнено лотов
     int64 lots_left = 29; //Число неисполненных лотов по заявке
     int64 lots_cancelled = 30; //Отмененные лоты
-    optional MarkerType marker = 31; //Спецсимвол
+    MarkerType marker = 31; //Спецсимвол
     repeated OrderTrade trades = 33; //	Список сделок
     google.protobuf.Timestamp completion_time = 35; //Время исполнения заявки
     string exchange = 36; //Код биржи
