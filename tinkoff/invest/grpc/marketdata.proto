@@ -42,7 +42,7 @@ service MarketDataService {//Сервис получения биржевой и
 
 service MarketDataStreamService {
   //Bi-directional стрим предоставления биржевой информации.
-//  rpc MarketDataStream(stream MarketDataRequest) returns (stream MarketDataResponse);
+  rpc MarketDataStream(stream MarketDataRequest) returns (stream MarketDataResponse);
 
   //Server-side стрим предоставления биржевой информации.
   rpc MarketDataServerSideStream(MarketDataServerSideStreamRequest) returns (stream MarketDataResponse);
@@ -341,12 +341,12 @@ message TradingStatus {
 
 //Запрос исторических свечей.
 message GetCandlesRequest {
-  string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  optional string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
   google.protobuf.Timestamp from = 2 [(google.api.field_behavior) = REQUIRED]; //Начало запрашиваемого периода в часовом поясе UTC.
   google.protobuf.Timestamp to = 3 [(google.api.field_behavior) = REQUIRED]; //Окончание запрашиваемого периода в часовом поясе UTC.
   CandleInterval interval = 4 [(google.api.field_behavior) = REQUIRED]; //Интервал запрошенных свечей.
-  string instrument_id = 5; //Идентификатор инструмента, принимает значение figi или instrument_uid.
-  CandleSource candle_source_type = 7; //Тип источника свечи.
+  optional string instrument_id = 5; //Идентификатор инструмента, принимает значение figi или instrument_uid.
+  optional CandleSource candle_source_type = 7; //Тип источника свечи.
 
   enum CandleSource {
     CANDLE_SOURCE_UNSPECIFIED = 0; //Все свечи.
@@ -417,9 +417,9 @@ message LastPrice {
 
 //Запрос стакана.
 message GetOrderBookRequest {
-  string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  optional string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
   int32 depth = 2 [(google.api.field_behavior) = REQUIRED]; //Глубина стакана.
-  string instrument_id = 3; //Идентификатор инструмента, принимает значение figi или instrument_uid.
+  optional string instrument_id = 3; //Идентификатор инструмента, принимает значение figi или instrument_uid.
 }
 
 //Информация о стакане.
@@ -440,8 +440,8 @@ message GetOrderBookResponse {
 
 //Запрос получения торгового статуса.
 message GetTradingStatusRequest {
-  string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
-  string instrument_id = 2; //Идентификатор инструмента, принимает значение figi или instrument_uid.
+  optional string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  optional string instrument_id = 2; //Идентификатор инструмента, принимает значение figi или instrument_uid.
 }
 
 //Запрос получения торгового статуса.
@@ -469,10 +469,10 @@ message GetTradingStatusResponse {
 
 //Запрос обезличенных сделок за последний час.
 message GetLastTradesRequest {
-  string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  optional string figi = 1 [deprecated = true]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
   google.protobuf.Timestamp from = 2 [(google.api.field_behavior) = REQUIRED]; //Начало запрашиваемого периода в часовом поясе UTC.
   google.protobuf.Timestamp to = 3 [(google.api.field_behavior) = REQUIRED]; //Окончание запрашиваемого периода в часовом поясе UTC.
-  string instrument_id = 4; //Идентификатор инструмента, принимает значение figi или instrument_uid.
+  optional string instrument_id = 4; //Идентификатор инструмента, принимает значение figi или instrument_uid.
 }
 
 //Обезличенных сделок за последний час.
@@ -570,11 +570,11 @@ message GetTechAnalysisResponse {
 
   message TechAnalysisItem {
     google.protobuf.Timestamp timestamp = 1; //Временная метка по UTC, для которой были рассчитаны значения индикатора.
-    Quotation middle_band = 2; //Значение простого скользящего среднего (средней линии).
-    Quotation upper_band = 3; //Значение верхней линии Боллинджера.
-    Quotation lower_band = 4; //Значение нижней линии Боллинджера.
-    Quotation signal = 5; //Значение сигнальной линии.
-    Quotation macd = 6; //Значение линии MACD.
+    optional Quotation middle_band = 2; //Значение простого скользящего среднего (средней линии).
+    optional Quotation upper_band = 3; //Значение верхней линии Боллинджера.
+    optional Quotation lower_band = 4; //Значение нижней линии Боллинджера.
+    optional Quotation signal = 5; //Значение сигнальной линии.
+    optional Quotation macd = 6; //Значение линии MACD.
   }
 }
 

@@ -65,7 +65,7 @@ service SandboxService { // Методы для работы с песочниц
 
 //Запрос открытия счёта в песочнице.
 message OpenSandboxAccountRequest {
-  string name = 1; // Название счёта
+  optional string name = 1; // Название счёта
 }
 
 //Номер открытого счёта в песочнице.

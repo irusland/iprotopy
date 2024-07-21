@@ -28,15 +28,15 @@ service StopOrdersService { /* Сервис предназначен для ра
 
 //Запрос выставления стоп-заявки.
 message PostStopOrderRequest {
-  string figi = 1 [ deprecated = true ]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+  optional string figi = 1 [ deprecated = true ]; //Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
   int64 quantity = 2 [(google.api.field_behavior) = REQUIRED]; //Количество лотов
-  Quotation price = 3; //Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
-  Quotation stop_price = 4; //Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
+  optional Quotation price = 3; //Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
+  optional Quotation stop_price = 4; //Стоп-цена заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.
   StopOrderDirection direction = 5 [(google.api.field_behavior) = REQUIRED]; //Направление операции
   string account_id = 6 [(google.api.field_behavior) = REQUIRED]; //Номер счёта
   StopOrderExpirationType expiration_type = 7 [(google.api.field_behavior) = REQUIRED]; //Тип экспирации заявки
   StopOrderType stop_order_type = 8 [(google.api.field_behavior) = REQUIRED]; //Тип заявки
-  google.protobuf.Timestamp expire_date = 9; //Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно, для GoodTillCancel игнорируется**.
+  optional google.protobuf.Timestamp expire_date = 9; //Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно, для GoodTillCancel игнорируется**.
   string instrument_id = 10 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента, принимает значения Figi или instrument_uid.
   ExchangeOrderType exchange_order_type = 11; //Тип дочерней биржевой заявки для тейкпрофита
   TakeProfitType take_profit_type = 12; //Подтип стоп-заявки TakeProfit
