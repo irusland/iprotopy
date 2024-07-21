@@ -121,9 +121,9 @@ service InstrumentsService {/*Методы сервиса предназначе
 
 //Запрос расписания торгов.
 message TradingSchedulesRequest {
-  optional string exchange = 1; //Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам.
-  optional google.protobuf.Timestamp from = 2; //Начало периода по UTC.
-  optional google.protobuf.Timestamp to = 3; //Окончание периода по UTC.
+  string exchange = 1; //Наименование биржи или расчетного календаря. </br>Если не передаётся, возвращается информация по всем доступным торговым площадкам.
+  google.protobuf.Timestamp from = 2; //Начало периода по UTC.
+  google.protobuf.Timestamp to = 3; //Окончание периода по UTC.
 }
 
 //Список торговых площадок.
@@ -161,19 +161,19 @@ message TradingDay {
 //Запрос получения инструмента по идентификатору.
 message InstrumentRequest {
   InstrumentIdType id_type = 1 [(google.api.field_behavior) = REQUIRED]; // Тип идентификатора инструмента. Возможные значения — `figi`, `ticker`. [Подробнее об идентификации инструментов](https://russianinvestments.github.io/investAPI/faq_identification/).
-  optional string class_code = 2; // Идентификатор `class_code`. Обязательный, если `id_type = ticker`.
+  string class_code = 2; // Идентификатор `class_code`. Обязательный, если `id_type = ticker`.
   string id = 3 [(google.api.field_behavior) = REQUIRED]; // Идентификатор запрашиваемого инструмента.
 }
 
 //Запрос получения инструментов.
 message InstrumentsRequest {
-  optional InstrumentStatus instrument_status = 1; //Статус запрашиваемых инструментов. [Возможные значения](#instrumentstatus).
-  optional InstrumentExchangeType instrument_exchange = 2; // Тип площадки торговли. [Возможные значения](#instrumentexchangetype).
+  InstrumentStatus instrument_status = 1; //Статус запрашиваемых инструментов. [Возможные значения](#instrumentstatus).
+  InstrumentExchangeType instrument_exchange = 2; // Тип площадки торговли. [Возможные значения](#instrumentexchangetype).
 }
 //Параметры фильтрации опционов.
 message FilterOptionsRequest {
-  optional string basic_asset_uid = 1; //Идентификатор базового актива опциона.  Обязательный параметр.
-  optional string basic_asset_position_uid = 2; //Идентификатор позиции базового актива опциона.
+  string basic_asset_uid = 1; //Идентификатор базового актива опциона.  Обязательный параметр.
+  string basic_asset_position_uid = 2; //Идентификатор позиции базового актива опциона.
 }
 
 //Информация об облигации.
@@ -189,8 +189,8 @@ message BondsResponse {
 //Запрос купонов по облигации.
 message GetBondCouponsRequest {
   string figi = 1 [deprecated = true]; //FIGI-идентификатор инструмента.
-  optional google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC. Фильтрация по `coupon_date` — дата выплаты купона.
-  optional google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC. Фильтрация по `coupon_date` — дата выплаты купона.
+  google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC. Фильтрация по `coupon_date` — дата выплаты купона.
+  google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC. Фильтрация по `coupon_date` — дата выплаты купона.
   string instrument_id = 4 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента — `figi` или `instrument_uid`.
 }
 
@@ -201,8 +201,8 @@ message GetBondCouponsResponse {
 
 //События по облигации.
 message GetBondEventsRequest {
-  optional google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC.
-  optional google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC.
+  google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC.
+  google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC.
   string instrument_id = 4 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента — `figi` или `instrument_uid`.
   EventType type = 5; //Тип события
 
@@ -775,8 +775,8 @@ message Instrument {
 //Запрос дивидендов.
 message GetDividendsRequest {
   string figi = 1 [deprecated = true]; //FIGI-идентификатор инструмента.
-  optional google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC. Фильтрация происходит по параметру `record_date` — дата фиксации реестра.
-  optional google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC. Фильтрация происходит по параметру `record_date` — дата фиксации реестра.
+  google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC. Фильтрация происходит по параметру `record_date` — дата фиксации реестра.
+  google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC. Фильтрация происходит по параметру `record_date` — дата фиксации реестра.
   string instrument_id = 4 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента — `figi` или `instrument_uid`.
 }
 
@@ -824,7 +824,7 @@ message AssetResponse {
 
 //Запрос списка активов.
 message AssetsRequest {
-  optional InstrumentType instrument_type = 1;
+  InstrumentType instrument_type = 1;
 }
 
 //Список активов.
@@ -1061,7 +1061,7 @@ message EditFavoritesRequest {
 
 //Массив инструментов для редактирования списка избранных инструментов.
 message EditFavoritesRequestInstrument {
-  optional string figi = 1  [deprecated = true]; //FIGI-идентификатор инструмента.
+  string figi = 1  [deprecated = true]; //FIGI-идентификатор инструмента.
   string instrument_id = 2  [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента — `figi` или `instrument_uid`.
 }
 
@@ -1127,8 +1127,8 @@ message CountryResponse {
 //Запрос на поиск инструментов.
 message FindInstrumentRequest {
   string query = 1 [(google.api.field_behavior) = REQUIRED]; //Строка поиска.
-  optional InstrumentType instrument_kind = 2; //Фильтр по типу инструмента.
-  optional bool api_trade_available_flag = 3; //Фильтр для отображения только торговых инструментов.
+  InstrumentType instrument_kind = 2; //Фильтр по типу инструмента.
+  bool api_trade_available_flag = 3; //Фильтр для отображения только торговых инструментов.
 }
 
 //Результат поиска инструментов.
@@ -1246,8 +1246,8 @@ message GetAssetFundamentalsResponse {
 //Запрос отчетов эмитентов
 message GetAssetReportsRequest {
   string instrument_id = 1 [(google.api.field_behavior) = REQUIRED]; //Идентификатор инструмента в формате UID.
-  optional google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC.
-  optional google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC.
+  google.protobuf.Timestamp from = 2; //Начало запрашиваемого периода по UTC.
+  google.protobuf.Timestamp to = 3; //Окончание запрашиваемого периода по UTC.
 }
 
 //Отчеты эмитентов
@@ -1274,7 +1274,7 @@ message GetAssetReportsResponse {
 
 //Запрос консенсус-прогнозов
 message GetConsensusForecastsRequest {
-  optional Page paging = 1; //Настройки пагинации.
+  Page paging = 1; //Настройки пагинации.
 }
 
 //Консенсус-прогнозы
