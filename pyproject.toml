@@ -6,7 +6,7 @@ authors = ["Ruslan Sirazhetdinov <ruslansir@icloud.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">3"
 grpcio-tools = "^1.64.1"
 grpcio = "^1.64.1"
 pydantic = "^2.8.0"
