@@ -6,12 +6,13 @@ authors = ["Ruslan Sirazhetdinov <ruslansir@icloud.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">3"
+python = ">=3.8,<4.0.0"
 grpcio-tools = "^1.64.1"
 grpcio = "^1.64.1"
 pydantic = "^2.8.0"
 betterproto = {extras = ["compiler"], version = "^1.2.5"}
 pure-protobuf = "^3.1.0"
+mypy-protobuf = "^3.6.0"
 
 
 [build-system]
