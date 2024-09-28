@@ -5,13 +5,11 @@ import ast
 from ast import *
 
 src = """
-from typing import Optional
+class A:
+    class Enum():
+        "comme"
+        A = 1
 
-
-class ClassName:
-    field1: int
-    field2: Optional[bool] = False
-    
 """
 
 ast_src = ast.parse(src)
