@@ -1,9 +1,5 @@
-from enum import Enum
-from enum import Enum
-from enum import Enum
-from enum import Enum
-from enum import Enum
 import datetime
+from enum import Enum
 
 
 class OperationsRequest:

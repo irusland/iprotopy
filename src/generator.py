@@ -1,7 +1,7 @@
 import ast
 import keyword
 import logging
-from ast import Store, Load, ClassDef, ImportFrom, alias, AnnAssign, Name, Subscript, Constant, Module, Import, Assign, Pass
+from ast import Store, Load, ClassDef, alias, AnnAssign, Name, Subscript, Constant, Module, Assign, Pass
 from pathlib import Path
 from types import NoneType
 from typing import Union, Tuple, List, Set
@@ -15,6 +15,7 @@ from proto_schema_parser.ast import Import as ProtoImport
 from proto_schema_parser.parser import Parser
 
 from paths import ROOT_DIR
+from src.imports import Import, ImportFrom
 
 logger = logging.getLogger(__name__)
 
@@ -104,7 +105,7 @@ class Generator:
             f.write(result_src)
 
     def _process_proto_message(self, body: List[ast.stmt], message, imports: Set[ast.stmt]):
-        print(message)
+        # print(message)
         class_body = []
         for element in message.elements:
             if isinstance(element, Field):
