@@ -1,7 +1,11 @@
+from enum import Enum
+from enum import Enum
+from enum import Enum
 import datetime
 
 
 class GetAccountsRequest:
+    pass
 
 
 class GetAccountsResponse:
@@ -18,15 +22,19 @@ class Account:
     access_level: 'AccessLevel'
 
 
-ACCOUNT_TYPE_UNSPECIFIED = 0
-ACCOUNT_TYPE_TINKOFF = 1
-ACCOUNT_TYPE_TINKOFF_IIS = 2
-ACCOUNT_TYPE_INVEST_BOX = 3
-ACCOUNT_TYPE_INVEST_FUND = 4
-ACCOUNT_STATUS_UNSPECIFIED = 0
-ACCOUNT_STATUS_NEW = 1
-ACCOUNT_STATUS_OPEN = 2
-ACCOUNT_STATUS_CLOSED = 3
+class AccountType(Enum):
+    ACCOUNT_TYPE_UNSPECIFIED = 0
+    ACCOUNT_TYPE_TINKOFF = 1
+    ACCOUNT_TYPE_TINKOFF_IIS = 2
+    ACCOUNT_TYPE_INVEST_BOX = 3
+    ACCOUNT_TYPE_INVEST_FUND = 4
+
+
+class AccountStatus(Enum):
+    ACCOUNT_STATUS_UNSPECIFIED = 0
+    ACCOUNT_STATUS_NEW = 1
+    ACCOUNT_STATUS_OPEN = 2
+    ACCOUNT_STATUS_CLOSED = 3
 
 
 class GetMarginAttributesRequest:
@@ -43,6 +51,7 @@ class GetMarginAttributesResponse:
 
 
 class GetUserTariffRequest:
+    pass
 
 
 class GetUserTariffResponse:
@@ -62,6 +71,7 @@ class StreamLimit:
 
 
 class GetInfoRequest:
+    pass
 
 
 class GetInfoResponse:
@@ -71,7 +81,8 @@ class GetInfoResponse:
     tariff: str
 
 
-ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0
-ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1
-ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2
-ACCOUNT_ACCESS_LEVEL_NO_ACCESS = 3
+class AccessLevel(Enum):
+    ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0
+    ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1
+    ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2
+    ACCOUNT_ACCESS_LEVEL_NO_ACCESS = 3

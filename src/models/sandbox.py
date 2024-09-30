@@ -11,6 +11,7 @@ class CloseSandboxAccountRequest:
 
 
 class CloseSandboxAccountResponse:
+    pass
 
 
 class SandboxPayInRequest:

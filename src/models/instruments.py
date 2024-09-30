@@ -1,3 +1,21 @@
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
+from enum import Enum
 import datetime
 
 
@@ -75,11 +93,14 @@ class GetBondEventsRequest:
     to: datetime
     instrument_id: str
     type: 'EventType'
-    EVENT_TYPE_UNSPECIFIED = 0
-    EVENT_TYPE_CPN = 1
-    EVENT_TYPE_CALL = 2
-    EVENT_TYPE_MTY = 3
-    EVENT_TYPE_CONV = 4
+
+
+    class EventType(Enum):
+        EVENT_TYPE_UNSPECIFIED = 0
+        EVENT_TYPE_CPN = 1
+        EVENT_TYPE_CALL = 2
+        EVENT_TYPE_MTY = 3
+        EVENT_TYPE_CONV = 4
 
 
 class GetBondEventsResponse:
@@ -122,14 +143,15 @@ class Coupon:
     coupon_period: int
 
 
-COUPON_TYPE_UNSPECIFIED = 0
-COUPON_TYPE_CONSTANT = 1
-COUPON_TYPE_FLOATING = 2
-COUPON_TYPE_DISCOUNT = 3
-COUPON_TYPE_MORTGAGE = 4
-COUPON_TYPE_FIX = 5
-COUPON_TYPE_VARIABLE = 6
-COUPON_TYPE_OTHER = 7
+class CouponType(Enum):
+    COUPON_TYPE_UNSPECIFIED = 0
+    COUPON_TYPE_CONSTANT = 1
+    COUPON_TYPE_FLOATING = 2
+    COUPON_TYPE_DISCOUNT = 3
+    COUPON_TYPE_MORTGAGE = 4
+    COUPON_TYPE_FIX = 5
+    COUPON_TYPE_VARIABLE = 6
+    COUPON_TYPE_OTHER = 7
 
 
 class CurrencyResponse:
@@ -212,18 +234,28 @@ class Option:
     api_trade_available_flag: 'bool'
 
 
-OPTION_DIRECTION_UNSPECIFIED = 0
-OPTION_DIRECTION_PUT = 1
-OPTION_DIRECTION_CALL = 2
-OPTION_PAYMENT_TYPE_UNSPECIFIED = 0
-OPTION_PAYMENT_TYPE_PREMIUM = 1
-OPTION_PAYMENT_TYPE_MARGINAL = 2
-OPTION_STYLE_UNSPECIFIED = 0
-OPTION_STYLE_AMERICAN = 1
-OPTION_STYLE_EUROPEAN = 2
-OPTION_EXECUTION_TYPE_UNSPECIFIED = 0
-OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY = 1
-OPTION_EXECUTION_TYPE_CASH_SETTLEMENT = 2
+class OptionDirection(Enum):
+    OPTION_DIRECTION_UNSPECIFIED = 0
+    OPTION_DIRECTION_PUT = 1
+    OPTION_DIRECTION_CALL = 2
+
+
+class OptionPaymentType(Enum):
+    OPTION_PAYMENT_TYPE_UNSPECIFIED = 0
+    OPTION_PAYMENT_TYPE_PREMIUM = 1
+    OPTION_PAYMENT_TYPE_MARGINAL = 2
+
+
+class OptionStyle(Enum):
+    OPTION_STYLE_UNSPECIFIED = 0
+    OPTION_STYLE_AMERICAN = 1
+    OPTION_STYLE_EUROPEAN = 2
+
+
+class OptionSettlementType(Enum):
+    OPTION_EXECUTION_TYPE_UNSPECIFIED = 0
+    OPTION_EXECUTION_TYPE_PHYSICAL_DELIVERY = 1
+    OPTION_EXECUTION_TYPE_CASH_SETTLEMENT = 2
 
 
 class ShareResponse:
@@ -496,14 +528,18 @@ class GetFuturesMarginResponse:
     min_price_increment_amount: 'Quotation'
 
 
-INSTRUMENT_ID_UNSPECIFIED = 0
-INSTRUMENT_ID_TYPE_FIGI = 1
-INSTRUMENT_ID_TYPE_TICKER = 2
-INSTRUMENT_ID_TYPE_UID = 3
-INSTRUMENT_ID_TYPE_POSITION_UID = 4
-INSTRUMENT_STATUS_UNSPECIFIED = 0
-INSTRUMENT_STATUS_BASE = 1
-INSTRUMENT_STATUS_ALL = 2
+class InstrumentIdType(Enum):
+    INSTRUMENT_ID_UNSPECIFIED = 0
+    INSTRUMENT_ID_TYPE_FIGI = 1
+    INSTRUMENT_ID_TYPE_TICKER = 2
+    INSTRUMENT_ID_TYPE_UID = 3
+    INSTRUMENT_ID_TYPE_POSITION_UID = 4
+
+
+class InstrumentStatus(Enum):
+    INSTRUMENT_STATUS_UNSPECIFIED = 0
+    INSTRUMENT_STATUS_BASE = 1
+    INSTRUMENT_STATUS_ALL = 2
 
 
 class InstrumentResponse:
@@ -573,15 +609,16 @@ class Dividend:
     created_at: datetime
 
 
-SHARE_TYPE_UNSPECIFIED = 0
-SHARE_TYPE_COMMON = 1
-SHARE_TYPE_PREFERRED = 2
-SHARE_TYPE_ADR = 3
-SHARE_TYPE_GDR = 4
-SHARE_TYPE_MLP = 5
-SHARE_TYPE_NY_REG_SHRS = 6
-SHARE_TYPE_CLOSED_END_FUND = 7
-SHARE_TYPE_REIT = 8
+class ShareType(Enum):
+    SHARE_TYPE_UNSPECIFIED = 0
+    SHARE_TYPE_COMMON = 1
+    SHARE_TYPE_PREFERRED = 2
+    SHARE_TYPE_ADR = 3
+    SHARE_TYPE_GDR = 4
+    SHARE_TYPE_MLP = 5
+    SHARE_TYPE_NY_REG_SHRS = 6
+    SHARE_TYPE_CLOSED_END_FUND = 7
+    SHARE_TYPE_REIT = 8
 
 
 class AssetRequest:
@@ -626,11 +663,12 @@ class Asset:
     instruments: 'AssetInstrument'
 
 
-ASSET_TYPE_UNSPECIFIED = 0
-ASSET_TYPE_CURRENCY = 1
-ASSET_TYPE_COMMODITY = 2
-ASSET_TYPE_INDEX = 3
-ASSET_TYPE_SECURITY = 4
+class AssetType(Enum):
+    ASSET_TYPE_UNSPECIFIED = 0
+    ASSET_TYPE_CURRENCY = 1
+    ASSET_TYPE_COMMODITY = 2
+    ASSET_TYPE_INDEX = 3
+    ASSET_TYPE_SECURITY = 4
 
 
 class AssetCurrency:
@@ -701,9 +739,10 @@ class AssetStructuredProduct:
     issue_kind: str
 
 
-SP_TYPE_UNSPECIFIED = 0
-SP_TYPE_DELIVERABLE = 1
-SP_TYPE_NON_DELIVERABLE = 2
+class StructuredProductType(Enum):
+    SP_TYPE_UNSPECIFIED = 0
+    SP_TYPE_DELIVERABLE = 1
+    SP_TYPE_NON_DELIVERABLE = 2
 
 
 class AssetEtf:
@@ -773,6 +812,7 @@ class InstrumentLink:
 
 
 class GetFavoritesRequest:
+    pass
 
 
 class GetFavoritesResponse:
@@ -802,23 +842,26 @@ class EditFavoritesRequestInstrument:
     instrument_id: str
 
 
-EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED = 0
-EDIT_FAVORITES_ACTION_TYPE_ADD = 1
-EDIT_FAVORITES_ACTION_TYPE_DEL = 2
+class EditFavoritesActionType(Enum):
+    EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED = 0
+    EDIT_FAVORITES_ACTION_TYPE_ADD = 1
+    EDIT_FAVORITES_ACTION_TYPE_DEL = 2
 
 
 class EditFavoritesResponse:
     favorite_instruments: 'FavoriteInstrument'
 
 
-REAL_EXCHANGE_UNSPECIFIED = 0
-REAL_EXCHANGE_MOEX = 1
-REAL_EXCHANGE_RTS = 2
-REAL_EXCHANGE_OTC = 3
-REAL_EXCHANGE_DEALER = 4
+class RealExchange(Enum):
+    REAL_EXCHANGE_UNSPECIFIED = 0
+    REAL_EXCHANGE_MOEX = 1
+    REAL_EXCHANGE_RTS = 2
+    REAL_EXCHANGE_OTC = 3
+    REAL_EXCHANGE_DEALER = 4
 
 
 class GetCountriesRequest:
+    pass
 
 
 class GetCountriesResponse:
@@ -826,6 +869,7 @@ class GetCountriesResponse:
 
 
 class IndicativesRequest:
+    pass
 
 
 class IndicativesResponse:
@@ -978,10 +1022,13 @@ class GetAssetReportsResponse:
         period_num: int
         period_type: 'AssetReportPeriodType'
         created_at: datetime
-    PERIOD_TYPE_UNSPECIFIED = 0
-    PERIOD_TYPE_QUARTER = 1
-    PERIOD_TYPE_SEMIANNUAL = 2
-    PERIOD_TYPE_ANNUAL = 3
+
+
+    class AssetReportPeriodType(Enum):
+        PERIOD_TYPE_UNSPECIFIED = 0
+        PERIOD_TYPE_QUARTER = 1
+        PERIOD_TYPE_SEMIANNUAL = 2
+        PERIOD_TYPE_ANNUAL = 3
 
 
 class GetConsensusForecastsRequest:
@@ -1008,10 +1055,11 @@ class GetConsensusForecastsResponse:
         prognosis_date: datetime
 
 
-RECOMMENDATION_UNSPECIFIED = 0
-RECOMMENDATION_BUY = 1
-RECOMMENDATION_HOLD = 2
-RECOMMENDATION_SELL = 3
+class Recommendation(Enum):
+    RECOMMENDATION_UNSPECIFIED = 0
+    RECOMMENDATION_BUY = 1
+    RECOMMENDATION_HOLD = 2
+    RECOMMENDATION_SELL = 3
 
 
 class GetForecastRequest:
@@ -1060,11 +1108,18 @@ class TradingInterval:
         end_ts: datetime
 
 
-RISK_LEVEL_UNSPECIFIED = 0
-RISK_LEVEL_LOW = 1
-RISK_LEVEL_MODERATE = 2
-RISK_LEVEL_HIGH = 3
-BOND_TYPE_UNSPECIFIED = 0
-BOND_TYPE_REPLACED = 1
-INSTRUMENT_EXCHANGE_UNSPECIFIED = 0
-INSTRUMENT_EXCHANGE_DEALER = 1
+class RiskLevel(Enum):
+    RISK_LEVEL_UNSPECIFIED = 0
+    RISK_LEVEL_LOW = 1
+    RISK_LEVEL_MODERATE = 2
+    RISK_LEVEL_HIGH = 3
+
+
+class BondType(Enum):
+    BOND_TYPE_UNSPECIFIED = 0
+    BOND_TYPE_REPLACED = 1
+
+
+class InstrumentExchangeType(Enum):
+    INSTRUMENT_EXCHANGE_UNSPECIFIED = 0
+    INSTRUMENT_EXCHANGE_DEALER = 1

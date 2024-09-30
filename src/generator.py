@@ -1,7 +1,7 @@
 import ast
 import keyword
 import logging
-from ast import Store, Load, ClassDef, ImportFrom, alias, AnnAssign, Name, Subscript, Constant, Module, Import, Assign
+from ast import Store, Load, ClassDef, ImportFrom, alias, AnnAssign, Name, Subscript, Constant, Module, Import, Assign, Pass
 from pathlib import Path
 from types import NoneType
 from typing import Union, Tuple, List, Set
@@ -86,7 +86,7 @@ class Generator:
             elif isinstance(element, Comment):
                 continue
             elif isinstance(element, Enum):
-                self._process_enum(body, element)
+                self._process_enum(body, element, imports)
             elif isinstance(element, NoneType):
                 continue
             elif isinstance(element, Extension):
@@ -113,7 +113,7 @@ class Generator:
                 # todo process comments
                 continue
             elif isinstance(element, Enum):
-                self._process_enum(class_body, element)
+                self._process_enum(class_body, element, imports)
             elif isinstance(element, OneOf):
                 # todo process oneof
                 continue
@@ -123,6 +123,8 @@ class Generator:
                 continue
             else:
                 raise NotImplementedError(f'Unknown element {element}')
+        if not class_body:
+            class_body.append(Pass())
         body.append(
             ClassDef(
                 name=message.name,
@@ -133,20 +135,29 @@ class Generator:
             )
         )
 
-    def _process_enum(self, body, element):
+    def _process_enum(self, body, element, imports):
+        enum_body = []
         for enum_element in element.elements:
             if isinstance(enum_element, EnumValue):
-                body.append(
+                enum_body.append(
                     Assign(
                         targets=[Name(id=enum_element.name, ctx=Store())],
                         value=Constant(value=enum_element.number)
-                    )
+                    ),
                 )
             elif isinstance(enum_element, Comment):
                 # todo process comments
                 continue
             else:
                 raise NotImplementedError(f'Unknown enum_element {enum_element}')
+
+        imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
+        enum_class = ClassDef(
+            name=element.name, bases=[Name(id='Enum', ctx=Load())],
+            keywords=[], body=enum_body,
+            decorator_list=[]
+        )
+        body.append(enum_class)
 
     def _process_field(self, field, fields, imports):
         field_name = self._safe_field_name(field.name)

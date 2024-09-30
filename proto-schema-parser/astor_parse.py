@@ -4,11 +4,10 @@ import astor
 import ast
 from ast import *
 
+
 src = """
-class A:
-    class Enum():
-        "comme"
-        A = 1
+class IndicatorInterval:
+    pass
 
 """
 
