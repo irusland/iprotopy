@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 import datetime
 
@@ -16,12 +17,14 @@ class InstrumentType(Enum):
     INSTRUMENT_TYPE_COMMODITY = 10
 
 
+@dataclass
 class MoneyValue:
     currency: str
     units: int
     nano: int
 
 
+@dataclass
 class Quotation:
     units: int
     nano: int
@@ -47,6 +50,7 @@ class SecurityTradingStatus(Enum):
     SECURITY_TRADING_STATUS_DEALER_NOT_AVAILABLE_FOR_TRADING = 16
 
 
+@dataclass
 class Ping:
     time: datetime
     stream_id: str
@@ -58,22 +62,26 @@ class PriceType(Enum):
     PRICE_TYPE_CURRENCY = 2
 
 
+@dataclass
 class Page:
     limit: int
     page_number: int
 
 
+@dataclass
 class PageResponse:
     limit: int
     page_number: int
     total_count: int
 
 
+@dataclass
 class ResponseMetadata:
     tracking_id: str
     server_time: datetime
 
 
+@dataclass
 class BrandData:
     logo_name: str
     logo_base_color: str
@@ -86,6 +94,7 @@ class ResultSubscriptionStatus(Enum):
     RESULT_SUBSCRIPTION_STATUS_ERROR = 13
 
 
+@dataclass
 class ErrorDetail:
     code: str
     message: str

@@ -1,7 +1,9 @@
-import datetime
 from enum import Enum
+from dataclasses import dataclass
+import datetime
 
 
+@dataclass
 class OperationsRequest:
     account_id: str
     from_: datetime
@@ -10,10 +12,12 @@ class OperationsRequest:
     figi: str
 
 
+@dataclass
 class OperationsResponse:
     operations: 'Operation'
 
 
+@dataclass
 class Operation:
     id: str
     parent_operation_id: str
@@ -34,6 +38,7 @@ class Operation:
     instrument_uid: str
 
 
+@dataclass
 class OperationTrade:
     trade_id: str
     date_time: datetime
@@ -41,6 +46,7 @@ class OperationTrade:
     price: 'MoneyValue'
 
 
+@dataclass
 class PortfolioRequest:
     account_id: str
     currency: 'CurrencyRequest'
@@ -52,6 +58,7 @@ class PortfolioRequest:
         EUR = 2
 
 
+@dataclass
 class PortfolioResponse:
     total_amount_shares: 'MoneyValue'
     total_amount_bonds: 'MoneyValue'
@@ -67,10 +74,12 @@ class PortfolioResponse:
     virtual_positions: 'VirtualPortfolioPosition'
 
 
+@dataclass
 class PositionsRequest:
     account_id: str
 
 
+@dataclass
 class PositionsResponse:
     money: 'MoneyValue'
     blocked: 'MoneyValue'
@@ -80,16 +89,19 @@ class PositionsResponse:
     options: 'PositionsOptions'
 
 
+@dataclass
 class WithdrawLimitsRequest:
     account_id: str
 
 
+@dataclass
 class WithdrawLimitsResponse:
     money: 'MoneyValue'
     blocked: 'MoneyValue'
     blocked_guarantee: 'MoneyValue'
 
 
+@dataclass
 class PortfolioPosition:
     figi: str
     instrument_type: str
@@ -109,6 +121,7 @@ class PortfolioPosition:
     expected_yield_fifo: 'Quotation'
 
 
+@dataclass
 class VirtualPortfolioPosition:
     position_uid: str
     instrument_uid: str
@@ -123,6 +136,7 @@ class VirtualPortfolioPosition:
     average_position_price_fifo: 'MoneyValue'
 
 
+@dataclass
 class PositionsSecurities:
     figi: str
     blocked: int
@@ -133,6 +147,7 @@ class PositionsSecurities:
     instrument_type: str
 
 
+@dataclass
 class PositionsFutures:
     figi: str
     blocked: int
@@ -141,6 +156,7 @@ class PositionsFutures:
     instrument_uid: str
 
 
+@dataclass
 class PositionsOptions:
     position_uid: str
     instrument_uid: str
@@ -148,29 +164,35 @@ class PositionsOptions:
     balance: int
 
 
+@dataclass
 class BrokerReportRequest:
     pass
 
 
+@dataclass
 class BrokerReportResponse:
     pass
 
 
+@dataclass
 class GenerateBrokerReportRequest:
     account_id: str
     from_: datetime
     to: datetime
 
 
+@dataclass
 class GenerateBrokerReportResponse:
     task_id: str
 
 
+@dataclass
 class GetBrokerReportRequest:
     task_id: str
     page: int
 
 
+@dataclass
 class GetBrokerReportResponse:
     broker_report: 'BrokerReport'
     itemsCount: int
@@ -178,6 +200,7 @@ class GetBrokerReportResponse:
     page: int
 
 
+@dataclass
 class BrokerReport:
     trade_id: str
     order_id: str
@@ -281,29 +304,35 @@ class OperationType(Enum):
     OPERATION_TYPE_FUTURE_EXPIRATION = 65
 
 
+@dataclass
 class GetDividendsForeignIssuerRequest:
     pass
 
 
+@dataclass
 class GetDividendsForeignIssuerResponse:
     pass
 
 
+@dataclass
 class GenerateDividendsForeignIssuerReportRequest:
     account_id: str
     from_: datetime
     to: datetime
 
 
+@dataclass
 class GetDividendsForeignIssuerReportRequest:
     task_id: str
     page: int
 
 
+@dataclass
 class GenerateDividendsForeignIssuerReportResponse:
     task_id: str
 
 
+@dataclass
 class GetDividendsForeignIssuerReportResponse:
     dividends_foreign_issuer_report: 'DividendsForeignIssuerReport'
     itemsCount: int
@@ -311,6 +340,7 @@ class GetDividendsForeignIssuerReportResponse:
     page: int
 
 
+@dataclass
 class DividendsForeignIssuerReport:
     record_date: datetime
     payment_date: datetime
@@ -326,18 +356,22 @@ class DividendsForeignIssuerReport:
     currency: str
 
 
+@dataclass
 class PortfolioStreamRequest:
     accounts: str
 
 
+@dataclass
 class PortfolioStreamResponse:
     pass
 
 
+@dataclass
 class PortfolioSubscriptionResult:
     accounts: 'AccountSubscriptionStatus'
 
 
+@dataclass
 class AccountSubscriptionStatus:
     account_id: str
     subscription_status: 'PortfolioSubscriptionStatus'
@@ -350,6 +384,7 @@ class PortfolioSubscriptionStatus(Enum):
     PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3
 
 
+@dataclass
 class GetOperationsByCursorRequest:
     account_id: str
     instrument_id: str
@@ -364,12 +399,14 @@ class GetOperationsByCursorRequest:
     without_overnights: 'bool'
 
 
+@dataclass
 class GetOperationsByCursorResponse:
     has_next: 'bool'
     next_cursor: str
     items: 'OperationItem'
 
 
+@dataclass
 class OperationItem:
     cursor: str
     broker_account_id: str
@@ -400,10 +437,12 @@ class OperationItem:
     asset_uid: str
 
 
+@dataclass
 class OperationItemTrades:
     trades: 'OperationItemTrade'
 
 
+@dataclass
 class OperationItemTrade:
     num: str
     date: datetime
@@ -413,18 +452,22 @@ class OperationItemTrade:
     yield_relative: 'Quotation'
 
 
+@dataclass
 class PositionsStreamRequest:
     accounts: str
 
 
+@dataclass
 class PositionsStreamResponse:
     pass
 
 
+@dataclass
 class PositionsSubscriptionResult:
     accounts: 'PositionsSubscriptionStatus'
 
 
+@dataclass
 class PositionsSubscriptionStatus:
     account_id: str
     subscription_status: 'PositionsAccountSubscriptionStatus'
@@ -437,6 +480,7 @@ class PositionsAccountSubscriptionStatus(Enum):
     POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR = 3
 
 
+@dataclass
 class PositionData:
     account_id: str
     money: 'PositionsMoney'
@@ -446,6 +490,7 @@ class PositionData:
     date: datetime
 
 
+@dataclass
 class PositionsMoney:
     available_value: 'MoneyValue'
     blocked_value: 'MoneyValue'

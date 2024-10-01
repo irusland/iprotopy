@@ -1,22 +1,27 @@
 from enum import Enum
+from dataclasses import dataclass
 import datetime
 
 
+@dataclass
 class TradingSchedulesRequest:
     exchange: str
     from_: datetime
     to: datetime
 
 
+@dataclass
 class TradingSchedulesResponse:
     exchanges: 'TradingSchedule'
 
 
+@dataclass
 class TradingSchedule:
     exchange: str
     days: 'TradingDay'
 
 
+@dataclass
 class TradingDay:
     date: datetime
     is_trading_day: 'bool'
@@ -36,30 +41,36 @@ class TradingDay:
     intervals: 'TradingInterval'
 
 
+@dataclass
 class InstrumentRequest:
     id_type: 'InstrumentIdType'
     class_code: str
     id: str
 
 
+@dataclass
 class InstrumentsRequest:
     instrument_status: 'InstrumentStatus'
     instrument_exchange: 'InstrumentExchangeType'
 
 
+@dataclass
 class FilterOptionsRequest:
     basic_asset_uid: str
     basic_asset_position_uid: str
 
 
+@dataclass
 class BondResponse:
     instrument: 'Bond'
 
 
+@dataclass
 class BondsResponse:
     instruments: 'Bond'
 
 
+@dataclass
 class GetBondCouponsRequest:
     figi: str
     from_: datetime
@@ -67,10 +78,12 @@ class GetBondCouponsRequest:
     instrument_id: str
 
 
+@dataclass
 class GetBondCouponsResponse:
     events: 'Coupon'
 
 
+@dataclass
 class GetBondEventsRequest:
     from_: datetime
     to: datetime
@@ -86,10 +99,12 @@ class GetBondEventsRequest:
         EVENT_TYPE_CONV = 4
 
 
+@dataclass
 class GetBondEventsResponse:
     events: 'BondEvent'
 
 
+    @dataclass
     class BondEvent:
         instrument_id: str
         event_number: int
@@ -114,6 +129,7 @@ class GetBondEventsResponse:
         coupon_interest_rate: 'Quotation'
 
 
+@dataclass
 class Coupon:
     figi: str
     coupon_date: datetime
@@ -137,38 +153,47 @@ class CouponType(Enum):
     COUPON_TYPE_OTHER = 7
 
 
+@dataclass
 class CurrencyResponse:
     instrument: 'Currency'
 
 
+@dataclass
 class CurrenciesResponse:
     instruments: 'Currency'
 
 
+@dataclass
 class EtfResponse:
     instrument: 'Etf'
 
 
+@dataclass
 class EtfsResponse:
     instruments: 'Etf'
 
 
+@dataclass
 class FutureResponse:
     instrument: 'Future'
 
 
+@dataclass
 class FuturesResponse:
     instruments: 'Future'
 
 
+@dataclass
 class OptionResponse:
     instrument: 'Option'
 
 
+@dataclass
 class OptionsResponse:
     instruments: 'Option'
 
 
+@dataclass
 class Option:
     uid: str
     position_uid: str
@@ -241,14 +266,17 @@ class OptionSettlementType(Enum):
     OPTION_EXECUTION_TYPE_CASH_SETTLEMENT = 2
 
 
+@dataclass
 class ShareResponse:
     instrument: 'Share'
 
 
+@dataclass
 class SharesResponse:
     instruments: 'Share'
 
 
+@dataclass
 class Bond:
     figi: str
     ticker: str
@@ -305,6 +333,7 @@ class Bond:
     bond_type: 'BondType'
 
 
+@dataclass
 class Currency:
     figi: str
     ticker: str
@@ -343,6 +372,7 @@ class Currency:
     brand: 'BrandData'
 
 
+@dataclass
 class Etf:
     figi: str
     ticker: str
@@ -388,6 +418,7 @@ class Etf:
     brand: 'BrandData'
 
 
+@dataclass
 class Future:
     figi: str
     ticker: str
@@ -435,6 +466,7 @@ class Future:
     brand: 'BrandData'
 
 
+@dataclass
 class Share:
     figi: str
     ticker: str
@@ -481,6 +513,7 @@ class Share:
     brand: 'BrandData'
 
 
+@dataclass
 class GetAccruedInterestsRequest:
     figi: str
     from_: datetime
@@ -488,10 +521,12 @@ class GetAccruedInterestsRequest:
     instrument_id: str
 
 
+@dataclass
 class GetAccruedInterestsResponse:
     accrued_interests: 'AccruedInterest'
 
 
+@dataclass
 class AccruedInterest:
     date: datetime
     value: 'Quotation'
@@ -499,11 +534,13 @@ class AccruedInterest:
     nominal: 'Quotation'
 
 
+@dataclass
 class GetFuturesMarginRequest:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class GetFuturesMarginResponse:
     initial_margin_on_buy: 'MoneyValue'
     initial_margin_on_sell: 'MoneyValue'
@@ -525,10 +562,12 @@ class InstrumentStatus(Enum):
     INSTRUMENT_STATUS_ALL = 2
 
 
+@dataclass
 class InstrumentResponse:
     instrument: 'Instrument'
 
 
+@dataclass
 class Instrument:
     figi: str
     ticker: str
@@ -568,6 +607,7 @@ class Instrument:
     brand: 'BrandData'
 
 
+@dataclass
 class GetDividendsRequest:
     figi: str
     from_: datetime
@@ -575,10 +615,12 @@ class GetDividendsRequest:
     instrument_id: str
 
 
+@dataclass
 class GetDividendsResponse:
     dividends: 'Dividend'
 
 
+@dataclass
 class Dividend:
     dividend_net: 'MoneyValue'
     payment_date: datetime
@@ -604,22 +646,27 @@ class ShareType(Enum):
     SHARE_TYPE_REIT = 8
 
 
+@dataclass
 class AssetRequest:
     id: str
 
 
+@dataclass
 class AssetResponse:
     asset: 'AssetFull'
 
 
+@dataclass
 class AssetsRequest:
     instrument_type: 'InstrumentType'
 
 
+@dataclass
 class AssetsResponse:
     assets: 'Asset'
 
 
+@dataclass
 class AssetFull:
     uid: str
     type: 'AssetType'
@@ -639,6 +686,7 @@ class AssetFull:
     instruments: 'AssetInstrument'
 
 
+@dataclass
 class Asset:
     uid: str
     type: 'AssetType'
@@ -654,16 +702,19 @@ class AssetType(Enum):
     ASSET_TYPE_SECURITY = 4
 
 
+@dataclass
 class AssetCurrency:
     base_currency: str
 
 
+@dataclass
 class AssetSecurity:
     isin: str
     type: str
     instrument_kind: 'InstrumentType'
 
 
+@dataclass
 class AssetShare:
     type: 'ShareType'
     issue_size: 'Quotation'
@@ -682,6 +733,7 @@ class AssetShare:
     total_float: 'Quotation'
 
 
+@dataclass
 class AssetBond:
     current_nominal: 'Quotation'
     borrow_name: str
@@ -706,6 +758,7 @@ class AssetBond:
     issue_size_plan: 'Quotation'
 
 
+@dataclass
 class AssetStructuredProduct:
     borrow_name: str
     nominal: 'Quotation'
@@ -728,6 +781,7 @@ class StructuredProductType(Enum):
     SP_TYPE_NON_DELIVERABLE = 2
 
 
+@dataclass
 class AssetEtf:
     total_expense: 'Quotation'
     hurdle_rate: 'Quotation'
@@ -762,11 +816,13 @@ class AssetEtf:
     nominal_currency: str
 
 
+@dataclass
 class AssetClearingCertificate:
     nominal: 'Quotation'
     nominal_currency: str
 
 
+@dataclass
 class Brand:
     uid: str
     name: str
@@ -778,6 +834,7 @@ class Brand:
     country_of_risk_name: str
 
 
+@dataclass
 class AssetInstrument:
     uid: str
     figi: str
@@ -789,19 +846,23 @@ class AssetInstrument:
     position_uid: str
 
 
+@dataclass
 class InstrumentLink:
     type: str
     instrument_uid: str
 
 
+@dataclass
 class GetFavoritesRequest:
     pass
 
 
+@dataclass
 class GetFavoritesResponse:
     favorite_instruments: 'FavoriteInstrument'
 
 
+@dataclass
 class FavoriteInstrument:
     figi: str
     ticker: str
@@ -815,11 +876,13 @@ class FavoriteInstrument:
     instrument_kind: 'InstrumentType'
 
 
+@dataclass
 class EditFavoritesRequest:
     instruments: 'EditFavoritesRequestInstrument'
     action_type: 'EditFavoritesActionType'
 
 
+@dataclass
 class EditFavoritesRequestInstrument:
     figi: str
     instrument_id: str
@@ -831,6 +894,7 @@ class EditFavoritesActionType(Enum):
     EDIT_FAVORITES_ACTION_TYPE_DEL = 2
 
 
+@dataclass
 class EditFavoritesResponse:
     favorite_instruments: 'FavoriteInstrument'
 
@@ -843,22 +907,27 @@ class RealExchange(Enum):
     REAL_EXCHANGE_DEALER = 4
 
 
+@dataclass
 class GetCountriesRequest:
     pass
 
 
+@dataclass
 class GetCountriesResponse:
     countries: 'CountryResponse'
 
 
+@dataclass
 class IndicativesRequest:
     pass
 
 
+@dataclass
 class IndicativesResponse:
     instruments: 'IndicativeResponse'
 
 
+@dataclass
 class IndicativeResponse:
     figi: str
     ticker: str
@@ -872,6 +941,7 @@ class IndicativeResponse:
     sell_available_flag: 'bool'
 
 
+@dataclass
 class CountryResponse:
     alfa_two: str
     alfa_three: str
@@ -879,16 +949,19 @@ class CountryResponse:
     name_brief: str
 
 
+@dataclass
 class FindInstrumentRequest:
     query: str
     instrument_kind: 'InstrumentType'
     api_trade_available_flag: 'bool'
 
 
+@dataclass
 class FindInstrumentResponse:
     instruments: 'InstrumentShort'
 
 
+@dataclass
 class InstrumentShort:
     isin: str
     figi: str
@@ -908,27 +981,33 @@ class InstrumentShort:
     blocked_tca_flag: 'bool'
 
 
+@dataclass
 class GetBrandsRequest:
     paging: 'Page'
 
 
+@dataclass
 class GetBrandRequest:
     id: str
 
 
+@dataclass
 class GetBrandsResponse:
     brands: 'Brand'
     paging: 'PageResponse'
 
 
+@dataclass
 class GetAssetFundamentalsRequest:
     assets: str
 
 
+@dataclass
 class GetAssetFundamentalsResponse:
     fundamentals: 'StatisticResponse'
 
 
+    @dataclass
     class StatisticResponse:
         asset_uid: str
         currency: str
@@ -988,16 +1067,19 @@ class GetAssetFundamentalsResponse:
         ev_to_sales: 'double'
 
 
+@dataclass
 class GetAssetReportsRequest:
     instrument_id: str
     from_: datetime
     to: datetime
 
 
+@dataclass
 class GetAssetReportsResponse:
     events: 'GetAssetReportsEvent'
 
 
+    @dataclass
     class GetAssetReportsEvent:
         instrument_id: str
         report_date: datetime
@@ -1014,15 +1096,18 @@ class GetAssetReportsResponse:
         PERIOD_TYPE_ANNUAL = 3
 
 
+@dataclass
 class GetConsensusForecastsRequest:
     paging: 'Page'
 
 
+@dataclass
 class GetConsensusForecastsResponse:
     items: 'ConsensusForecastsItem'
     page: 'PageResponse'
 
 
+    @dataclass
     class ConsensusForecastsItem:
         uid: str
         asset_uid: str
@@ -1045,15 +1130,18 @@ class Recommendation(Enum):
     RECOMMENDATION_SELL = 3
 
 
+@dataclass
 class GetForecastRequest:
     instrument_id: str
 
 
+@dataclass
 class GetForecastResponse:
     targets: 'TargetItem'
     consensus: 'ConsensusItem'
 
 
+    @dataclass
     class TargetItem:
         uid: str
         ticker: str
@@ -1068,6 +1156,7 @@ class GetForecastResponse:
         show_name: str
 
 
+    @dataclass
     class ConsensusItem:
         uid: str
         ticker: str
@@ -1081,11 +1170,13 @@ class GetForecastResponse:
         price_change_rel: 'Quotation'
 
 
+@dataclass
 class TradingInterval:
     type: str
     interval: 'TimeInterval'
 
 
+    @dataclass
     class TimeInterval:
         start_ts: datetime
         end_ts: datetime

@@ -1,11 +1,14 @@
 from enum import Enum
+from dataclasses import dataclass
 import datetime
 
 
+@dataclass
 class MarketDataRequest:
     pass
 
 
+@dataclass
 class MarketDataServerSideStreamRequest:
     subscribe_candles_request: 'SubscribeCandlesRequest'
     subscribe_order_book_request: 'SubscribeOrderBookRequest'
@@ -14,10 +17,12 @@ class MarketDataServerSideStreamRequest:
     subscribe_last_price_request: 'SubscribeLastPriceRequest'
 
 
+@dataclass
 class MarketDataResponse:
     pass
 
 
+@dataclass
 class SubscribeCandlesRequest:
     subscription_action: 'SubscriptionAction'
     instruments: 'CandleInstrument'
@@ -47,17 +52,20 @@ class SubscriptionInterval(Enum):
     SUBSCRIPTION_INTERVAL_MONTH = 13
 
 
+@dataclass
 class CandleInstrument:
     figi: str
     interval: 'SubscriptionInterval'
     instrument_id: str
 
 
+@dataclass
 class SubscribeCandlesResponse:
     tracking_id: str
     candles_subscriptions: 'CandleSubscription'
 
 
+@dataclass
 class CandleSubscription:
     figi: str
     interval: 'SubscriptionInterval'
@@ -81,11 +89,13 @@ class SubscriptionStatus(Enum):
     SUBSCRIPTION_STATUS_SUBSCRIPTION_NOT_FOUND = 9
 
 
+@dataclass
 class SubscribeOrderBookRequest:
     subscription_action: 'SubscriptionAction'
     instruments: 'OrderBookInstrument'
 
 
+@dataclass
 class OrderBookInstrument:
     figi: str
     depth: int
@@ -93,11 +103,13 @@ class OrderBookInstrument:
     order_book_type: 'OrderBookType'
 
 
+@dataclass
 class SubscribeOrderBookResponse:
     tracking_id: str
     order_book_subscriptions: 'OrderBookSubscription'
 
 
+@dataclass
 class OrderBookSubscription:
     figi: str
     depth: int
@@ -115,23 +127,27 @@ class TradeSourceType(Enum):
     TRADE_SOURCE_ALL = 3
 
 
+@dataclass
 class SubscribeTradesRequest:
     subscription_action: 'SubscriptionAction'
     instruments: 'TradeInstrument'
     trade_type: 'TradeSourceType'
 
 
+@dataclass
 class TradeInstrument:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class SubscribeTradesResponse:
     tracking_id: str
     trade_subscriptions: 'TradeSubscription'
     trade_type: 'TradeSourceType'
 
 
+@dataclass
 class TradeSubscription:
     figi: str
     subscription_status: 'SubscriptionStatus'
@@ -140,21 +156,25 @@ class TradeSubscription:
     subscription_id: str
 
 
+@dataclass
 class SubscribeInfoRequest:
     subscription_action: 'SubscriptionAction'
     instruments: 'InfoInstrument'
 
 
+@dataclass
 class InfoInstrument:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class SubscribeInfoResponse:
     tracking_id: str
     info_subscriptions: 'InfoSubscription'
 
 
+@dataclass
 class InfoSubscription:
     figi: str
     subscription_status: 'SubscriptionStatus'
@@ -163,21 +183,25 @@ class InfoSubscription:
     subscription_id: str
 
 
+@dataclass
 class SubscribeLastPriceRequest:
     subscription_action: 'SubscriptionAction'
     instruments: 'LastPriceInstrument'
 
 
+@dataclass
 class LastPriceInstrument:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class SubscribeLastPriceResponse:
     tracking_id: str
     last_price_subscriptions: 'LastPriceSubscription'
 
 
+@dataclass
 class LastPriceSubscription:
     figi: str
     subscription_status: 'SubscriptionStatus'
@@ -186,6 +210,7 @@ class LastPriceSubscription:
     subscription_id: str
 
 
+@dataclass
 class Candle:
     figi: str
     interval: 'SubscriptionInterval'
@@ -199,6 +224,7 @@ class Candle:
     instrument_uid: str
 
 
+@dataclass
 class OrderBook:
     figi: str
     depth: int
@@ -212,11 +238,13 @@ class OrderBook:
     order_book_type: 'OrderBookType'
 
 
+@dataclass
 class Order:
     price: 'Quotation'
     quantity: int
 
 
+@dataclass
 class Trade:
     figi: str
     direction: 'TradeDirection'
@@ -233,6 +261,7 @@ class TradeDirection(Enum):
     TRADE_DIRECTION_SELL = 2
 
 
+@dataclass
 class TradingStatus:
     figi: str
     trading_status: 'SecurityTradingStatus'
@@ -242,6 +271,7 @@ class TradingStatus:
     instrument_uid: str
 
 
+@dataclass
 class GetCandlesRequest:
     figi: str
     from_: datetime
@@ -280,10 +310,12 @@ class CandleSource(Enum):
     CANDLE_SOURCE_DEALER_WEEKEND = 2
 
 
+@dataclass
 class GetCandlesResponse:
     candles: 'HistoricCandle'
 
 
+@dataclass
 class HistoricCandle:
     open: 'Quotation'
     high: 'Quotation'
@@ -295,15 +327,18 @@ class HistoricCandle:
     candle_source: 'CandleSource'
 
 
+@dataclass
 class GetLastPricesRequest:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class GetLastPricesResponse:
     last_prices: 'LastPrice'
 
 
+@dataclass
 class LastPrice:
     figi: str
     price: 'Quotation'
@@ -311,12 +346,14 @@ class LastPrice:
     instrument_uid: str
 
 
+@dataclass
 class GetOrderBookRequest:
     figi: str
     depth: int
     instrument_id: str
 
 
+@dataclass
 class GetOrderBookResponse:
     figi: str
     depth: int
@@ -332,19 +369,23 @@ class GetOrderBookResponse:
     instrument_uid: str
 
 
+@dataclass
 class GetTradingStatusRequest:
     figi: str
     instrument_id: str
 
 
+@dataclass
 class GetTradingStatusesRequest:
     instrument_id: str
 
 
+@dataclass
 class GetTradingStatusesResponse:
     trading_statuses: 'GetTradingStatusResponse'
 
 
+@dataclass
 class GetTradingStatusResponse:
     figi: str
     trading_status: 'SecurityTradingStatus'
@@ -356,6 +397,7 @@ class GetTradingStatusResponse:
     only_best_price: 'bool'
 
 
+@dataclass
 class GetLastTradesRequest:
     figi: str
     from_: datetime
@@ -363,26 +405,32 @@ class GetLastTradesRequest:
     instrument_id: str
 
 
+@dataclass
 class GetLastTradesResponse:
     trades: 'Trade'
 
 
+@dataclass
 class GetMySubscriptions:
     pass
 
 
+@dataclass
 class GetClosePricesRequest:
     instruments: 'InstrumentClosePriceRequest'
 
 
+@dataclass
 class InstrumentClosePriceRequest:
     instrument_id: str
 
 
+@dataclass
 class GetClosePricesResponse:
     close_prices: 'InstrumentClosePriceResponse'
 
 
+@dataclass
 class InstrumentClosePriceResponse:
     figi: str
     instrument_uid: str
@@ -391,6 +439,7 @@ class InstrumentClosePriceResponse:
     time: datetime
 
 
+@dataclass
 class GetTechAnalysisRequest:
     indicator_type: 'IndicatorType'
     instrument_uid: str
@@ -403,12 +452,14 @@ class GetTechAnalysisRequest:
     smoothing: 'Smoothing'
 
 
+    @dataclass
     class Smoothing:
         fast_length: int
         slow_length: int
         signal_smoothing: int
 
 
+    @dataclass
     class Deviation:
         deviation_multiplier: 'Quotation'
 
@@ -448,10 +499,12 @@ class GetTechAnalysisRequest:
         INDICATOR_TYPE_SMA = 5
 
 
+@dataclass
 class GetTechAnalysisResponse:
     technical_indicators: 'TechAnalysisItem'
 
 
+    @dataclass
     class TechAnalysisItem:
         timestamp: datetime
         middle_band: 'Quotation'

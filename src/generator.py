@@ -126,13 +126,14 @@ class Generator:
                 raise NotImplementedError(f'Unknown element {element}')
         if not class_body:
             class_body.append(Pass())
+        imports.add(ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0))
         body.append(
             ClassDef(
                 name=message.name,
                 bases=[],
                 keywords=[],
                 body=class_body,
-                decorator_list=[]
+                decorator_list=[Name(id='dataclass', ctx=Load())]
             )
         )
 
@@ -154,8 +155,10 @@ class Generator:
 
         imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
         enum_class = ClassDef(
-            name=element.name, bases=[Name(id='Enum', ctx=Load())],
-            keywords=[], body=enum_body,
+            name=element.name,
+            bases=[Name(id='Enum', ctx=Load())],
+            keywords=[],
+            body=enum_body,
             decorator_list=[]
         )
         body.append(enum_class)

@@ -1,7 +1,9 @@
 from enum import Enum
+from dataclasses import dataclass
 import datetime
 
 
+@dataclass
 class PostStopOrderRequest:
     figi: str
     quantity: int
@@ -20,6 +22,7 @@ class PostStopOrderRequest:
     order_id: str
 
 
+    @dataclass
     class TrailingData:
         indent: 'Quotation'
         indent_type: 'TrailingValueType'
@@ -27,12 +30,14 @@ class PostStopOrderRequest:
         spread_type: 'TrailingValueType'
 
 
+@dataclass
 class PostStopOrderResponse:
     stop_order_id: str
     order_request_id: str
     response_metadata: 'ResponseMetadata'
 
 
+@dataclass
 class GetStopOrdersRequest:
     account_id: str
     status: 'StopOrderStatusOption'
@@ -40,19 +45,23 @@ class GetStopOrdersRequest:
     to: datetime
 
 
+@dataclass
 class GetStopOrdersResponse:
     stop_orders: 'StopOrder'
 
 
+@dataclass
 class CancelStopOrderRequest:
     account_id: str
     stop_order_id: str
 
 
+@dataclass
 class CancelStopOrderResponse:
     time: datetime
 
 
+@dataclass
 class StopOrder:
     stop_order_id: str
     lots_requested: int
@@ -72,6 +81,7 @@ class StopOrder:
     exchange_order_type: 'ExchangeOrderType'
 
 
+    @dataclass
     class TrailingData:
         indent: 'Quotation'
         indent_type: 'TrailingValueType'

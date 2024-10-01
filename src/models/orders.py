@@ -1,15 +1,19 @@
 from enum import Enum
+from dataclasses import dataclass
 import datetime
 
 
+@dataclass
 class TradesStreamRequest:
     accounts: str
 
 
+@dataclass
 class TradesStreamResponse:
     pass
 
 
+@dataclass
 class OrderTrades:
     order_id: str
     created_at: datetime
@@ -20,6 +24,7 @@ class OrderTrades:
     instrument_uid: str
 
 
+@dataclass
 class OrderTrade:
     date_time: datetime
     price: 'Quotation'
@@ -27,6 +32,7 @@ class OrderTrade:
     trade_id: str
 
 
+@dataclass
 class PostOrderRequest:
     figi: str
     quantity: int
@@ -40,6 +46,7 @@ class PostOrderRequest:
     price_type: 'PriceType'
 
 
+@dataclass
 class PostOrderResponse:
     order_id: str
     execution_report_status: 'OrderExecutionReportStatus'
@@ -62,30 +69,36 @@ class PostOrderResponse:
     response_metadata: 'ResponseMetadata'
 
 
+@dataclass
 class CancelOrderRequest:
     account_id: str
     order_id: str
 
 
+@dataclass
 class CancelOrderResponse:
     time: datetime
     response_metadata: 'ResponseMetadata'
 
 
+@dataclass
 class GetOrderStateRequest:
     account_id: str
     order_id: str
     price_type: 'PriceType'
 
 
+@dataclass
 class GetOrdersRequest:
     account_id: str
 
 
+@dataclass
 class GetOrdersResponse:
     orders: 'OrderState'
 
 
+@dataclass
 class OrderState:
     order_id: str
     execution_report_status: 'OrderExecutionReportStatus'
@@ -109,6 +122,7 @@ class OrderState:
     order_request_id: str
 
 
+@dataclass
 class OrderStage:
     price: 'MoneyValue'
     quantity: int
@@ -116,6 +130,7 @@ class OrderStage:
     execution_time: datetime
 
 
+@dataclass
 class ReplaceOrderRequest:
     account_id: str
     order_id: str
@@ -125,12 +140,14 @@ class ReplaceOrderRequest:
     price_type: 'PriceType'
 
 
+@dataclass
 class GetMaxLotsRequest:
     account_id: str
     instrument_id: str
     price: 'Quotation'
 
 
+@dataclass
 class GetMaxLotsResponse:
     currency: str
     buy_limits: 'BuyLimitsView'
@@ -139,16 +156,19 @@ class GetMaxLotsResponse:
     sell_margin_limits: 'SellLimitsView'
 
 
+    @dataclass
     class BuyLimitsView:
         buy_money_amount: 'Quotation'
         buy_max_lots: int
         buy_max_market_lots: int
 
 
+    @dataclass
     class SellLimitsView:
         sell_max_lots: int
 
 
+@dataclass
 class GetOrderPriceRequest:
     account_id: str
     instrument_id: str
@@ -157,6 +177,7 @@ class GetOrderPriceRequest:
     quantity: int
 
 
+@dataclass
 class GetOrderPriceResponse:
     total_order_amount: 'MoneyValue'
     initial_order_amount: 'MoneyValue'
@@ -167,23 +188,28 @@ class GetOrderPriceResponse:
     deal_commission: 'MoneyValue'
 
 
+    @dataclass
     class ExtraBond:
         aci_value: 'MoneyValue'
         nominal_conversion_rate: 'Quotation'
 
 
+    @dataclass
     class ExtraFuture:
         initial_margin: 'MoneyValue'
 
 
+@dataclass
 class OrderStateStreamRequest:
     accounts: str
     ping_delay_millis: int
 
 
+@dataclass
 class OrderStateStreamResponse:
 
 
+    @dataclass
     class SubscriptionResponse:
         tracking_id: str
         status: 'ResultSubscriptionStatus'
@@ -192,6 +218,7 @@ class OrderStateStreamResponse:
         error: 'ErrorDetail'
 
 
+    @dataclass
     class OrderState:
         order_id: str
         order_request_id: str

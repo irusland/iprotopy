@@ -6,6 +6,9 @@ from ast import *
 
 
 src = """
+from dataclasses import dataclass
+
+@dataclass
 class IndicatorInterval:
     pass
 

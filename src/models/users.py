@@ -1,15 +1,19 @@
 from enum import Enum
+from dataclasses import dataclass
 import datetime
 
 
+@dataclass
 class GetAccountsRequest:
     pass
 
 
+@dataclass
 class GetAccountsResponse:
     accounts: 'Account'
 
 
+@dataclass
 class Account:
     id: str
     type: 'AccountType'
@@ -35,10 +39,12 @@ class AccountStatus(Enum):
     ACCOUNT_STATUS_CLOSED = 3
 
 
+@dataclass
 class GetMarginAttributesRequest:
     account_id: str
 
 
+@dataclass
 class GetMarginAttributesResponse:
     liquid_portfolio: 'MoneyValue'
     starting_margin: 'MoneyValue'
@@ -48,30 +54,36 @@ class GetMarginAttributesResponse:
     corrected_margin: 'MoneyValue'
 
 
+@dataclass
 class GetUserTariffRequest:
     pass
 
 
+@dataclass
 class GetUserTariffResponse:
     unary_limits: 'UnaryLimit'
     stream_limits: 'StreamLimit'
 
 
+@dataclass
 class UnaryLimit:
     limit_per_minute: int
     methods: str
 
 
+@dataclass
 class StreamLimit:
     limit: int
     streams: str
     open: int
 
 
+@dataclass
 class GetInfoRequest:
     pass
 
 
+@dataclass
 class GetInfoResponse:
     prem_status: 'bool'
     qual_status: 'bool'
