@@ -1,6 +1,7 @@
-from enum import Enum
-from dataclasses import dataclass
 import datetime
+from typing import List
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
@@ -10,7 +11,7 @@ class GetAccountsRequest:
 
 @dataclass
 class GetAccountsResponse:
-    accounts: 'Account'
+    accounts: List['Account']
 
 
 @dataclass
@@ -61,20 +62,20 @@ class GetUserTariffRequest:
 
 @dataclass
 class GetUserTariffResponse:
-    unary_limits: 'UnaryLimit'
-    stream_limits: 'StreamLimit'
+    unary_limits: List['UnaryLimit']
+    stream_limits: List['StreamLimit']
 
 
 @dataclass
 class UnaryLimit:
     limit_per_minute: int
-    methods: str
+    methods: List[str]
 
 
 @dataclass
 class StreamLimit:
     limit: int
-    streams: str
+    streams: List[str]
     open: int
 
 
@@ -87,7 +88,7 @@ class GetInfoRequest:
 class GetInfoResponse:
     prem_status: 'bool'
     qual_status: 'bool'
-    qualified_for_work_with: str
+    qualified_for_work_with: List[str]
     tariff: str
 
 

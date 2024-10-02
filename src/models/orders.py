@@ -1,11 +1,13 @@
-from enum import Enum
-from dataclasses import dataclass
+from typing import Optional
+from typing import List
 import datetime
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
 class TradesStreamRequest:
-    accounts: str
+    accounts: List[str]
 
 
 @dataclass
@@ -19,7 +21,7 @@ class OrderTrades:
     created_at: datetime
     direction: 'OrderDirection'
     figi: str
-    trades: 'OrderTrade'
+    trades: List['OrderTrade']
     account_id: str
     instrument_uid: str
 
@@ -34,9 +36,9 @@ class OrderTrade:
 
 @dataclass
 class PostOrderRequest:
-    figi: str
+    figi: Optional[str] = None
     quantity: int
-    price: 'Quotation'
+    price: Optional['Quotation'] = None
     direction: 'OrderDirection'
     account_id: str
     order_type: 'OrderType'
@@ -95,7 +97,7 @@ class GetOrdersRequest:
 
 @dataclass
 class GetOrdersResponse:
-    orders: 'OrderState'
+    orders: List['OrderState']
 
 
 @dataclass
@@ -113,7 +115,7 @@ class OrderState:
     figi: str
     direction: 'OrderDirection'
     initial_security_price: 'MoneyValue'
-    stages: 'OrderStage'
+    stages: List['OrderStage']
     service_commission: 'MoneyValue'
     currency: str
     order_type: 'OrderType'
@@ -136,15 +138,15 @@ class ReplaceOrderRequest:
     order_id: str
     idempotency_key: str
     quantity: int
-    price: 'Quotation'
-    price_type: 'PriceType'
+    price: Optional['Quotation'] = None
+    price_type: Optional['PriceType'] = None
 
 
 @dataclass
 class GetMaxLotsRequest:
     account_id: str
     instrument_id: str
-    price: 'Quotation'
+    price: Optional['Quotation'] = None
 
 
 @dataclass
@@ -201,8 +203,8 @@ class GetOrderPriceResponse:
 
 @dataclass
 class OrderStateStreamRequest:
-    accounts: str
-    ping_delay_millis: int
+    accounts: List[str]
+    ping_delay_millis: Optional[int] = None
 
 
 @dataclass
@@ -214,18 +216,18 @@ class OrderStateStreamResponse:
         tracking_id: str
         status: 'ResultSubscriptionStatus'
         stream_id: str
-        accounts: str
-        error: 'ErrorDetail'
+        accounts: List[str]
+        error: Optional['ErrorDetail'] = None
 
 
     @dataclass
     class OrderState:
         order_id: str
-        order_request_id: str
+        order_request_id: Optional[str] = None
         client_code: str
         created_at: datetime
         execution_report_status: 'OrderExecutionReportStatus'
-        status_info: 'StatusCauseInfo'
+        status_info: Optional['StatusCauseInfo'] = None
         ticker: str
         class_code: str
         lot_size: int
@@ -235,15 +237,15 @@ class OrderStateStreamResponse:
         account_id: str
         initial_order_price: 'MoneyValue'
         order_price: 'MoneyValue'
-        amount: 'MoneyValue'
+        amount: Optional['MoneyValue'] = None
         executed_order_price: 'MoneyValue'
         currency: str
         lots_requested: int
         lots_executed: int
         lots_left: int
         lots_cancelled: int
-        marker: 'MarkerType'
-        trades: 'OrderTrade'
+        marker: Optional['MarkerType'] = None
+        trades: List['OrderTrade']
         completion_time: datetime
         exchange: str
         instrument_uid: str

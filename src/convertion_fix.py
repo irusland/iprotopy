@@ -234,16 +234,20 @@ PYTHON_KEYWORDS = (
     "yield",
 )
 
-from src.models.common import MoneyValue
-mv = MoneyValue(currency="USD",units=100,nano=1000)
-print(mv)
 
-from mypy_models.tinkoff.invest.grpc.common_pb2 import MoneyValue as ProtoMoneyValue
-pmv = ProtoMoneyValue()
-print(pmv)
+if __name__ == '__main__':
 
-pmv = dataclass_to_protobuff(mv, pmv)
 
-print(pmv)
+    from src.models.common import MoneyValue
+    mv = MoneyValue(currency="USD",units=100,nano=1000)
+    print(mv)
 
-print(protobuf_to_dataclass(pmv, MoneyValue))
+    from mypy_models.tinkoff.invest.grpc.common_pb2 import MoneyValue as ProtoMoneyValue
+    pmv = ProtoMoneyValue()
+    print(pmv)
+
+    pmv = dataclass_to_protobuff(mv, pmv)
+
+    print(pmv)
+
+    print(protobuf_to_dataclass(pmv, MoneyValue))

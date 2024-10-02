@@ -7,10 +7,11 @@ from ast import *
 
 src = """
 from dataclasses import dataclass
+from typing import Optional
 
 @dataclass
 class IndicatorInterval:
-    pass
+    a: Optional[int] = None 
 
 """
 

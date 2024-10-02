@@ -9,7 +9,7 @@ from typing import Union, Tuple, List, Set
 import astor
 from proto_schema_parser.ast import (
     File, Message, Field, MessageElement, Comment, Enum,
-    EnumValue, Package, Option, Service, OneOf, Reserved, Extension,
+    EnumValue, Package, Option, Service, OneOf, Reserved, Extension, FieldCardinality,
 )
 from proto_schema_parser.ast import Import as ProtoImport
 from proto_schema_parser.parser import Parser
@@ -105,9 +105,12 @@ class Generator:
             f.write(result_src)
 
     def _process_proto_message(self, body: List[ast.stmt], message, imports: Set[ast.stmt]):
-        # print(message)
+        if message.name == 'GetBondEventsResponse':
+            print(message)
         class_body = []
         for element in message.elements:
+            if message.name == 'GetBondEventsResponse':
+                print(element)
             if isinstance(element, Field):
                 self._process_field(element, class_body, imports)
             elif isinstance(element, Comment):
@@ -163,7 +166,47 @@ class Generator:
         )
         body.append(enum_class)
 
-    def _process_field(self, field, fields, imports):
+    def _process_field(self, field: Field, fields, imports: Set[AstImport]):
+        if field.cardinality == FieldCardinality.REPEATED:
+            self._process_repeated_field(field, fields, imports)
+        elif field.cardinality == FieldCardinality.OPTIONAL:
+            self._process_optional_field(field, fields, imports)
+        else:
+            self._process_single_field(field, fields, imports)
+
+    def _process_optional_field(self, field: Field, fields, imports: Set[AstImport]):
+        field_name = self._safe_field_name(field.name)
+        field_type, field_import = self._type_mapper.map(field.type)
+        fields.append(
+            AnnAssign(
+                target=Name(id=field_name, ctx=Store()),
+                annotation=Subscript(
+                    value=Name(id='Optional', ctx=Load()),
+                    slice=Name(id=field_type, ctx=Load()), ctx=Load()
+                ), value=Constant(value=None), simple=1
+            )
+        )
+        if field_import is not None:
+            imports.add(field_import)
+        imports.add(ImportFrom(module='typing', names=[alias(name='Optional')], level=0))
+
+    def _process_repeated_field(self, field: Field, fields, imports: Set[AstImport]):
+        field_name = self._safe_field_name(field.name)
+        field_type, field_import = self._type_mapper.map(field.type)
+        fields.append(
+            AnnAssign(
+                target=Name(id=field_name, ctx=Store()),
+                annotation=Subscript(
+                    value=Name(id='List', ctx=Load()),
+                    slice=Name(id=field_type, ctx=Load()), ctx=Load()
+                ), simple=1
+            )
+        )
+        if field_import is not None:
+            imports.add(field_import)
+        imports.add(ImportFrom(module='typing', names=[alias(name='List')], level=0))
+
+    def _process_single_field(self, field: Field, fields, imports: Set[AstImport]):
         field_name = self._safe_field_name(field.name)
         field_type, field_import = self._type_mapper.map(field.type)
         fields.append(

@@ -1,20 +1,22 @@
-from enum import Enum
-from dataclasses import dataclass
 import datetime
+from typing import Optional
+from typing import List
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
 class OperationsRequest:
     account_id: str
-    from_: datetime
-    to: datetime
-    state: 'OperationState'
-    figi: str
+    from_: Optional[datetime] = None
+    to: Optional[datetime] = None
+    state: Optional['OperationState'] = None
+    figi: Optional[str] = None
 
 
 @dataclass
 class OperationsResponse:
-    operations: 'Operation'
+    operations: List['Operation']
 
 
 @dataclass
@@ -32,7 +34,7 @@ class Operation:
     date: datetime
     type: str
     operation_type: 'OperationType'
-    trades: 'OperationTrade'
+    trades: List['OperationTrade']
     asset_uid: str
     position_uid: str
     instrument_uid: str
@@ -49,7 +51,7 @@ class OperationTrade:
 @dataclass
 class PortfolioRequest:
     account_id: str
-    currency: 'CurrencyRequest'
+    currency: Optional['CurrencyRequest'] = None
 
 
     class CurrencyRequest(Enum):
@@ -66,12 +68,12 @@ class PortfolioResponse:
     total_amount_currencies: 'MoneyValue'
     total_amount_futures: 'MoneyValue'
     expected_yield: 'Quotation'
-    positions: 'PortfolioPosition'
+    positions: List['PortfolioPosition']
     account_id: str
     total_amount_options: 'MoneyValue'
     total_amount_sp: 'MoneyValue'
     total_amount_portfolio: 'MoneyValue'
-    virtual_positions: 'VirtualPortfolioPosition'
+    virtual_positions: List['VirtualPortfolioPosition']
 
 
 @dataclass
@@ -81,12 +83,12 @@ class PositionsRequest:
 
 @dataclass
 class PositionsResponse:
-    money: 'MoneyValue'
-    blocked: 'MoneyValue'
-    securities: 'PositionsSecurities'
+    money: List['MoneyValue']
+    blocked: List['MoneyValue']
+    securities: List['PositionsSecurities']
     limits_loading_in_progress: 'bool'
-    futures: 'PositionsFutures'
-    options: 'PositionsOptions'
+    futures: List['PositionsFutures']
+    options: List['PositionsOptions']
 
 
 @dataclass
@@ -96,9 +98,9 @@ class WithdrawLimitsRequest:
 
 @dataclass
 class WithdrawLimitsResponse:
-    money: 'MoneyValue'
-    blocked: 'MoneyValue'
-    blocked_guarantee: 'MoneyValue'
+    money: List['MoneyValue']
+    blocked: List['MoneyValue']
+    blocked_guarantee: List['MoneyValue']
 
 
 @dataclass
@@ -189,12 +191,12 @@ class GenerateBrokerReportResponse:
 @dataclass
 class GetBrokerReportRequest:
     task_id: str
-    page: int
+    page: Optional[int] = None
 
 
 @dataclass
 class GetBrokerReportResponse:
-    broker_report: 'BrokerReport'
+    broker_report: List['BrokerReport']
     itemsCount: int
     pagesCount: int
     page: int
@@ -324,7 +326,7 @@ class GenerateDividendsForeignIssuerReportRequest:
 @dataclass
 class GetDividendsForeignIssuerReportRequest:
     task_id: str
-    page: int
+    page: Optional[int] = None
 
 
 @dataclass
@@ -334,7 +336,7 @@ class GenerateDividendsForeignIssuerReportResponse:
 
 @dataclass
 class GetDividendsForeignIssuerReportResponse:
-    dividends_foreign_issuer_report: 'DividendsForeignIssuerReport'
+    dividends_foreign_issuer_report: List['DividendsForeignIssuerReport']
     itemsCount: int
     pagesCount: int
     page: int
@@ -358,7 +360,7 @@ class DividendsForeignIssuerReport:
 
 @dataclass
 class PortfolioStreamRequest:
-    accounts: str
+    accounts: List[str]
 
 
 @dataclass
@@ -368,7 +370,7 @@ class PortfolioStreamResponse:
 
 @dataclass
 class PortfolioSubscriptionResult:
-    accounts: 'AccountSubscriptionStatus'
+    accounts: List['AccountSubscriptionStatus']
 
 
 @dataclass
@@ -387,23 +389,23 @@ class PortfolioSubscriptionStatus(Enum):
 @dataclass
 class GetOperationsByCursorRequest:
     account_id: str
-    instrument_id: str
-    from_: datetime
-    to: datetime
-    cursor: str
-    limit: int
-    operation_types: 'OperationType'
-    state: 'OperationState'
-    without_commissions: 'bool'
-    without_trades: 'bool'
-    without_overnights: 'bool'
+    instrument_id: Optional[str] = None
+    from_: Optional[datetime] = None
+    to: Optional[datetime] = None
+    cursor: Optional[str] = None
+    limit: Optional[int] = None
+    operation_types: List['OperationType']
+    state: Optional['OperationState'] = None
+    without_commissions: Optional['bool'] = None
+    without_trades: Optional['bool'] = None
+    without_overnights: Optional['bool'] = None
 
 
 @dataclass
 class GetOperationsByCursorResponse:
     has_next: 'bool'
     next_cursor: str
-    items: 'OperationItem'
+    items: List['OperationItem']
 
 
 @dataclass
@@ -439,7 +441,7 @@ class OperationItem:
 
 @dataclass
 class OperationItemTrades:
-    trades: 'OperationItemTrade'
+    trades: List['OperationItemTrade']
 
 
 @dataclass
@@ -454,7 +456,7 @@ class OperationItemTrade:
 
 @dataclass
 class PositionsStreamRequest:
-    accounts: str
+    accounts: List[str]
 
 
 @dataclass
@@ -464,7 +466,7 @@ class PositionsStreamResponse:
 
 @dataclass
 class PositionsSubscriptionResult:
-    accounts: 'PositionsSubscriptionStatus'
+    accounts: List['PositionsSubscriptionStatus']
 
 
 @dataclass
@@ -483,10 +485,10 @@ class PositionsAccountSubscriptionStatus(Enum):
 @dataclass
 class PositionData:
     account_id: str
-    money: 'PositionsMoney'
-    securities: 'PositionsSecurities'
-    futures: 'PositionsFutures'
-    options: 'PositionsOptions'
+    money: List['PositionsMoney']
+    securities: List['PositionsSecurities']
+    futures: List['PositionsFutures']
+    options: List['PositionsOptions']
     date: datetime
 
 

@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from typing import Optional
 
 
 @dataclass
 class OpenSandboxAccountRequest:
-    name: str
+    name: Optional[str] = None
 
 
 @dataclass

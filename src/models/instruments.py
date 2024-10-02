@@ -1,6 +1,7 @@
-from enum import Enum
-from dataclasses import dataclass
 import datetime
+from typing import List
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
@@ -12,13 +13,13 @@ class TradingSchedulesRequest:
 
 @dataclass
 class TradingSchedulesResponse:
-    exchanges: 'TradingSchedule'
+    exchanges: List['TradingSchedule']
 
 
 @dataclass
 class TradingSchedule:
     exchange: str
-    days: 'TradingDay'
+    days: List['TradingDay']
 
 
 @dataclass
@@ -38,7 +39,7 @@ class TradingDay:
     premarket_end_time: datetime
     closing_auction_start_time: datetime
     opening_auction_end_time: datetime
-    intervals: 'TradingInterval'
+    intervals: List['TradingInterval']
 
 
 @dataclass
@@ -67,7 +68,7 @@ class BondResponse:
 
 @dataclass
 class BondsResponse:
-    instruments: 'Bond'
+    instruments: List['Bond']
 
 
 @dataclass
@@ -80,7 +81,7 @@ class GetBondCouponsRequest:
 
 @dataclass
 class GetBondCouponsResponse:
-    events: 'Coupon'
+    events: List['Coupon']
 
 
 @dataclass
@@ -101,7 +102,7 @@ class GetBondEventsRequest:
 
 @dataclass
 class GetBondEventsResponse:
-    events: 'BondEvent'
+    events: List['BondEvent']
 
 
     @dataclass
@@ -160,7 +161,7 @@ class CurrencyResponse:
 
 @dataclass
 class CurrenciesResponse:
-    instruments: 'Currency'
+    instruments: List['Currency']
 
 
 @dataclass
@@ -170,7 +171,7 @@ class EtfResponse:
 
 @dataclass
 class EtfsResponse:
-    instruments: 'Etf'
+    instruments: List['Etf']
 
 
 @dataclass
@@ -180,7 +181,7 @@ class FutureResponse:
 
 @dataclass
 class FuturesResponse:
-    instruments: 'Future'
+    instruments: List['Future']
 
 
 @dataclass
@@ -190,7 +191,7 @@ class OptionResponse:
 
 @dataclass
 class OptionsResponse:
-    instruments: 'Option'
+    instruments: List['Option']
 
 
 @dataclass
@@ -273,7 +274,7 @@ class ShareResponse:
 
 @dataclass
 class SharesResponse:
-    instruments: 'Share'
+    instruments: List['Share']
 
 
 @dataclass
@@ -523,7 +524,7 @@ class GetAccruedInterestsRequest:
 
 @dataclass
 class GetAccruedInterestsResponse:
-    accrued_interests: 'AccruedInterest'
+    accrued_interests: List['AccruedInterest']
 
 
 @dataclass
@@ -617,7 +618,7 @@ class GetDividendsRequest:
 
 @dataclass
 class GetDividendsResponse:
-    dividends: 'Dividend'
+    dividends: List['Dividend']
 
 
 @dataclass
@@ -663,7 +664,7 @@ class AssetsRequest:
 
 @dataclass
 class AssetsResponse:
-    assets: 'Asset'
+    assets: List['Asset']
 
 
 @dataclass
@@ -674,7 +675,7 @@ class AssetFull:
     name_brief: str
     description: str
     deleted_at: datetime
-    required_tests: str
+    required_tests: List[str]
     gos_reg_code: str
     cfi: str
     code_nsd: str
@@ -683,7 +684,7 @@ class AssetFull:
     updated_at: datetime
     br_code: str
     br_code_name: str
-    instruments: 'AssetInstrument'
+    instruments: List['AssetInstrument']
 
 
 @dataclass
@@ -691,7 +692,7 @@ class Asset:
     uid: str
     type: 'AssetType'
     name: str
-    instruments: 'AssetInstrument'
+    instruments: List['AssetInstrument']
 
 
 class AssetType(Enum):
@@ -810,7 +811,7 @@ class AssetEtf:
     primary_index_tracking_error: 'Quotation'
     rebalancing_plan: str
     tax_rate: str
-    rebalancing_dates: datetime
+    rebalancing_dates: List[datetime]
     issue_kind: str
     nominal: 'Quotation'
     nominal_currency: str
@@ -841,7 +842,7 @@ class AssetInstrument:
     instrument_type: str
     ticker: str
     class_code: str
-    links: 'InstrumentLink'
+    links: List['InstrumentLink']
     instrument_kind: 'InstrumentType'
     position_uid: str
 
@@ -859,7 +860,7 @@ class GetFavoritesRequest:
 
 @dataclass
 class GetFavoritesResponse:
-    favorite_instruments: 'FavoriteInstrument'
+    favorite_instruments: List['FavoriteInstrument']
 
 
 @dataclass
@@ -878,7 +879,7 @@ class FavoriteInstrument:
 
 @dataclass
 class EditFavoritesRequest:
-    instruments: 'EditFavoritesRequestInstrument'
+    instruments: List['EditFavoritesRequestInstrument']
     action_type: 'EditFavoritesActionType'
 
 
@@ -896,7 +897,7 @@ class EditFavoritesActionType(Enum):
 
 @dataclass
 class EditFavoritesResponse:
-    favorite_instruments: 'FavoriteInstrument'
+    favorite_instruments: List['FavoriteInstrument']
 
 
 class RealExchange(Enum):
@@ -914,7 +915,7 @@ class GetCountriesRequest:
 
 @dataclass
 class GetCountriesResponse:
-    countries: 'CountryResponse'
+    countries: List['CountryResponse']
 
 
 @dataclass
@@ -924,7 +925,7 @@ class IndicativesRequest:
 
 @dataclass
 class IndicativesResponse:
-    instruments: 'IndicativeResponse'
+    instruments: List['IndicativeResponse']
 
 
 @dataclass
@@ -958,7 +959,7 @@ class FindInstrumentRequest:
 
 @dataclass
 class FindInstrumentResponse:
-    instruments: 'InstrumentShort'
+    instruments: List['InstrumentShort']
 
 
 @dataclass
@@ -993,18 +994,18 @@ class GetBrandRequest:
 
 @dataclass
 class GetBrandsResponse:
-    brands: 'Brand'
+    brands: List['Brand']
     paging: 'PageResponse'
 
 
 @dataclass
 class GetAssetFundamentalsRequest:
-    assets: str
+    assets: List[str]
 
 
 @dataclass
 class GetAssetFundamentalsResponse:
-    fundamentals: 'StatisticResponse'
+    fundamentals: List['StatisticResponse']
 
 
     @dataclass
@@ -1076,7 +1077,7 @@ class GetAssetReportsRequest:
 
 @dataclass
 class GetAssetReportsResponse:
-    events: 'GetAssetReportsEvent'
+    events: List['GetAssetReportsEvent']
 
 
     @dataclass
@@ -1103,7 +1104,7 @@ class GetConsensusForecastsRequest:
 
 @dataclass
 class GetConsensusForecastsResponse:
-    items: 'ConsensusForecastsItem'
+    items: List['ConsensusForecastsItem']
     page: 'PageResponse'
 
 
@@ -1137,7 +1138,7 @@ class GetForecastRequest:
 
 @dataclass
 class GetForecastResponse:
-    targets: 'TargetItem'
+    targets: List['TargetItem']
     consensus: 'ConsensusItem'
 
 

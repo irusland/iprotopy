@@ -1,6 +1,8 @@
-from enum import Enum
-from dataclasses import dataclass
+from typing import Optional
+from typing import List
 import datetime
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
@@ -25,7 +27,7 @@ class MarketDataResponse:
 @dataclass
 class SubscribeCandlesRequest:
     subscription_action: 'SubscriptionAction'
-    instruments: 'CandleInstrument'
+    instruments: List['CandleInstrument']
     waiting_close: 'bool'
 
 
@@ -62,7 +64,7 @@ class CandleInstrument:
 @dataclass
 class SubscribeCandlesResponse:
     tracking_id: str
-    candles_subscriptions: 'CandleSubscription'
+    candles_subscriptions: List['CandleSubscription']
 
 
 @dataclass
@@ -92,7 +94,7 @@ class SubscriptionStatus(Enum):
 @dataclass
 class SubscribeOrderBookRequest:
     subscription_action: 'SubscriptionAction'
-    instruments: 'OrderBookInstrument'
+    instruments: List['OrderBookInstrument']
 
 
 @dataclass
@@ -106,7 +108,7 @@ class OrderBookInstrument:
 @dataclass
 class SubscribeOrderBookResponse:
     tracking_id: str
-    order_book_subscriptions: 'OrderBookSubscription'
+    order_book_subscriptions: List['OrderBookSubscription']
 
 
 @dataclass
@@ -130,7 +132,7 @@ class TradeSourceType(Enum):
 @dataclass
 class SubscribeTradesRequest:
     subscription_action: 'SubscriptionAction'
-    instruments: 'TradeInstrument'
+    instruments: List['TradeInstrument']
     trade_type: 'TradeSourceType'
 
 
@@ -143,7 +145,7 @@ class TradeInstrument:
 @dataclass
 class SubscribeTradesResponse:
     tracking_id: str
-    trade_subscriptions: 'TradeSubscription'
+    trade_subscriptions: List['TradeSubscription']
     trade_type: 'TradeSourceType'
 
 
@@ -159,7 +161,7 @@ class TradeSubscription:
 @dataclass
 class SubscribeInfoRequest:
     subscription_action: 'SubscriptionAction'
-    instruments: 'InfoInstrument'
+    instruments: List['InfoInstrument']
 
 
 @dataclass
@@ -171,7 +173,7 @@ class InfoInstrument:
 @dataclass
 class SubscribeInfoResponse:
     tracking_id: str
-    info_subscriptions: 'InfoSubscription'
+    info_subscriptions: List['InfoSubscription']
 
 
 @dataclass
@@ -186,7 +188,7 @@ class InfoSubscription:
 @dataclass
 class SubscribeLastPriceRequest:
     subscription_action: 'SubscriptionAction'
-    instruments: 'LastPriceInstrument'
+    instruments: List['LastPriceInstrument']
 
 
 @dataclass
@@ -198,7 +200,7 @@ class LastPriceInstrument:
 @dataclass
 class SubscribeLastPriceResponse:
     tracking_id: str
-    last_price_subscriptions: 'LastPriceSubscription'
+    last_price_subscriptions: List['LastPriceSubscription']
 
 
 @dataclass
@@ -229,8 +231,8 @@ class OrderBook:
     figi: str
     depth: int
     is_consistent: 'bool'
-    bids: 'Order'
-    asks: 'Order'
+    bids: List['Order']
+    asks: List['Order']
     time: datetime
     limit_up: 'Quotation'
     limit_down: 'Quotation'
@@ -273,12 +275,12 @@ class TradingStatus:
 
 @dataclass
 class GetCandlesRequest:
-    figi: str
+    figi: Optional[str] = None
     from_: datetime
     to: datetime
     interval: 'CandleInterval'
-    instrument_id: str
-    candle_source_type: 'CandleSource'
+    instrument_id: Optional[str] = None
+    candle_source_type: Optional['CandleSource'] = None
 
 
     class CandleSource(Enum):
@@ -312,7 +314,7 @@ class CandleSource(Enum):
 
 @dataclass
 class GetCandlesResponse:
-    candles: 'HistoricCandle'
+    candles: List['HistoricCandle']
 
 
 @dataclass
@@ -329,13 +331,13 @@ class HistoricCandle:
 
 @dataclass
 class GetLastPricesRequest:
-    figi: str
-    instrument_id: str
+    figi: List[str]
+    instrument_id: List[str]
 
 
 @dataclass
 class GetLastPricesResponse:
-    last_prices: 'LastPrice'
+    last_prices: List['LastPrice']
 
 
 @dataclass
@@ -348,17 +350,17 @@ class LastPrice:
 
 @dataclass
 class GetOrderBookRequest:
-    figi: str
+    figi: Optional[str] = None
     depth: int
-    instrument_id: str
+    instrument_id: Optional[str] = None
 
 
 @dataclass
 class GetOrderBookResponse:
     figi: str
     depth: int
-    bids: 'Order'
-    asks: 'Order'
+    bids: List['Order']
+    asks: List['Order']
     last_price: 'Quotation'
     close_price: 'Quotation'
     limit_up: 'Quotation'
@@ -371,18 +373,18 @@ class GetOrderBookResponse:
 
 @dataclass
 class GetTradingStatusRequest:
-    figi: str
-    instrument_id: str
+    figi: Optional[str] = None
+    instrument_id: Optional[str] = None
 
 
 @dataclass
 class GetTradingStatusesRequest:
-    instrument_id: str
+    instrument_id: List[str]
 
 
 @dataclass
 class GetTradingStatusesResponse:
-    trading_statuses: 'GetTradingStatusResponse'
+    trading_statuses: List['GetTradingStatusResponse']
 
 
 @dataclass
@@ -399,15 +401,15 @@ class GetTradingStatusResponse:
 
 @dataclass
 class GetLastTradesRequest:
-    figi: str
+    figi: Optional[str] = None
     from_: datetime
     to: datetime
-    instrument_id: str
+    instrument_id: Optional[str] = None
 
 
 @dataclass
 class GetLastTradesResponse:
-    trades: 'Trade'
+    trades: List['Trade']
 
 
 @dataclass
@@ -417,7 +419,7 @@ class GetMySubscriptions:
 
 @dataclass
 class GetClosePricesRequest:
-    instruments: 'InstrumentClosePriceRequest'
+    instruments: List['InstrumentClosePriceRequest']
 
 
 @dataclass
@@ -427,7 +429,7 @@ class InstrumentClosePriceRequest:
 
 @dataclass
 class GetClosePricesResponse:
-    close_prices: 'InstrumentClosePriceResponse'
+    close_prices: List['InstrumentClosePriceResponse']
 
 
 @dataclass
@@ -501,17 +503,17 @@ class GetTechAnalysisRequest:
 
 @dataclass
 class GetTechAnalysisResponse:
-    technical_indicators: 'TechAnalysisItem'
+    technical_indicators: List['TechAnalysisItem']
 
 
     @dataclass
     class TechAnalysisItem:
         timestamp: datetime
-        middle_band: 'Quotation'
-        upper_band: 'Quotation'
-        lower_band: 'Quotation'
-        signal: 'Quotation'
-        macd: 'Quotation'
+        middle_band: Optional['Quotation'] = None
+        upper_band: Optional['Quotation'] = None
+        lower_band: Optional['Quotation'] = None
+        signal: Optional['Quotation'] = None
+        macd: Optional['Quotation'] = None
 
 
 class OrderBookType(Enum):

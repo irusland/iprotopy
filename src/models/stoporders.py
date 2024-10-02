@@ -1,19 +1,21 @@
-from enum import Enum
-from dataclasses import dataclass
+from typing import Optional
+from typing import List
 import datetime
+from dataclasses import dataclass
+from enum import Enum
 
 
 @dataclass
 class PostStopOrderRequest:
-    figi: str
+    figi: Optional[str] = None
     quantity: int
-    price: 'Quotation'
-    stop_price: 'Quotation'
+    price: Optional['Quotation'] = None
+    stop_price: Optional['Quotation'] = None
     direction: 'StopOrderDirection'
     account_id: str
     expiration_type: 'StopOrderExpirationType'
     stop_order_type: 'StopOrderType'
-    expire_date: datetime
+    expire_date: Optional[datetime] = None
     instrument_id: str
     exchange_order_type: 'ExchangeOrderType'
     take_profit_type: 'TakeProfitType'
@@ -47,7 +49,7 @@ class GetStopOrdersRequest:
 
 @dataclass
 class GetStopOrdersResponse:
-    stop_orders: 'StopOrder'
+    stop_orders: List['StopOrder']
 
 
 @dataclass
