@@ -1,5 +1,4 @@
 from common import MoneyValue
-from common import MoneyValue
 from dataclasses import dataclass
 
 

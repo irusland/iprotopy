@@ -1,13 +1,9 @@
-from common import MoneyValue
-from common import MoneyValue
-from common import MoneyValue
 from common import Quotation
 from common import MoneyValue
-from common import MoneyValue
-from dataclasses import dataclass
 from enum import Enum
 import datetime
 from typing import List
+from dataclasses import dataclass
 
 
 @dataclass

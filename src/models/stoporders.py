@@ -1,28 +1,11 @@
 from common import Quotation
-from common import Quotation
 from common import PriceType
-from common import Quotation
-from common import Quotation
-from stoporders import TrailingValueType
 from common import ResponseMetadata
-from stoporders import StopOrderDirection
-from stoporders import StopOrderType
 from common import MoneyValue
-from common import MoneyValue
-from stoporders import TakeProfitType
-from stoporders import TrailingData
-from stoporders import StopOrderStatusOption
-from stoporders import ExchangeOrderType
-from common import Quotation
-from stoporders import TrailingValueType
-from common import Quotation
-from stoporders import TrailingValueType
-from common import Quotation
-from common import Quotation
-import datetime
 from enum import Enum
-from dataclasses import dataclass
+import datetime
 from typing import List
+from dataclasses import dataclass
 
 
 @dataclass

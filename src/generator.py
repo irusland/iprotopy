@@ -51,45 +51,43 @@ class TypeMapper:
 
 class Importer:
     def __init__(self):
-        self._imports: Dict[str, Path] = {}
+        self._classes: Dict[str, Path] = {}
         self._dependencies: Dict[Path, Set[str]] = {}
         self._default_dependencies = set(i.__name__ for i in (int, str, bool))
 
     def register_class(self, class_name: str, pyfile: Path):
-        print('register_class', class_name, pyfile)
-        if class_name in self._imports:
+        if class_name in self._classes:
             logger.warning('Class %s already registered', class_name)
-        self._imports[class_name] = pyfile
+        self._classes[class_name] = pyfile
 
     def register_dependency(self, class_name: str, pyfile: Path):
-        print('register_dependency', class_name, pyfile)
         if class_name in self._default_dependencies:
             return
-        dependencies = self._dependencies.get(pyfile, [])
-        dependencies.append(class_name)
+        dependencies = self._dependencies.get(pyfile, set())
+        dependencies.add(class_name)
         self._dependencies[pyfile] = dependencies
 
-    def get_dependency_imports(self, pyfile: Path) -> List[AstImport]:
+    def get_dependency_imports(self, pyfile: Path) -> Set[AstImport]:
         if pyfile not in self._dependencies:
-            return []
-        return [
+            return set()
+        return {
             self._get_import_for(class_name, pyfile) for class_name in
                 self._dependencies[pyfile]
-        ]
+        }
 
     def _get_import_for(self, class_name: str, pyfile: Path) -> AstImport:
-        if class_name not in self._imports:
+        if class_name not in self._classes:
             raise ValueError(f'Class {class_name} not registered but requested in {pyfile}')
         return ImportFrom(
-            module=self._imports[class_name].stem, names=[alias(name=class_name)],
+            module=self._classes[class_name].stem, names=[alias(name=class_name)],
             level=0
         )
 
     def remove_circular_dependencies(self):
-        for class_name, pyfile in self._imports.items():
+        for class_name, pyfile in self._classes.items():
             dependencies = self._dependencies.get(pyfile, set())
+
             if class_name in dependencies:
-                print('removed', class_name, pyfile)
                 dependencies.remove(class_name)
 
 
@@ -116,7 +114,7 @@ class Generator:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             imports = self._importer.get_dependency_imports(pyfile)
             module = modules[proto_file]
-            module.body[:0] = imports  # Insert [...] at the start
+            module.body[:0] = list(imports)  # Insert [...] at the start
 
             result_src = astor.to_source(module)
 
