@@ -1,10 +1,10 @@
-from common import Quotation
+import datetime
 from common import InstrumentType
 from common import MoneyValue
-from enum import Enum
-import datetime
-from typing import List
+from common import Quotation
 from dataclasses import dataclass
+from enum import Enum
+from typing import List
 
 
 @dataclass

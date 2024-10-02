@@ -1,10 +1,12 @@
+import abc
+import ast
 import pickle
 from _ast import Import as AstImport
 from _ast import ImportFrom as AstImportFrom
 from _ast import alias
 
 
-class ComparableImportMixin:
+class ComparableAstImportMixin(metaclass=abc.ABCMeta):
     def __eq__(self, other):
         return pickle.dumps(self) == pickle.dumps(other)
 
@@ -12,12 +14,18 @@ class ComparableImportMixin:
         # Custom hash based on important attributes for uniqueness
         return hash(pickle.dumps(self))
 
+    def __le__(self, other):
+        return ast.dump(self) <= ast.dump(other)
 
-class Import(AstImport, ComparableImportMixin):
+    def __lt__(self, other):
+        return ast.dump(self) < ast.dump(other)
+
+
+class Import(AstImport, ComparableAstImportMixin):
     pass
 
 
-class ImportFrom(AstImportFrom, ComparableImportMixin):
+class ImportFrom(AstImportFrom, ComparableAstImportMixin):
     pass
 
 

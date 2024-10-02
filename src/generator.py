@@ -11,7 +11,7 @@ from typing import Union, Tuple, List, Set, Dict, Callable
 
 import astor
 from proto_schema_parser.ast import (
-    File, Message, Field, MessageElement, Comment, Enum,
+    File, Message, Field, Comment, Enum,
     EnumValue, Package, Option, Service, OneOf, Reserved, Extension, FieldCardinality,
 )
 from proto_schema_parser.ast import Import as ProtoImport
@@ -114,13 +114,25 @@ class Generator:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             imports = self._importer.get_dependency_imports(pyfile)
             module = modules[proto_file]
-            module.body[:0] = list(imports)  # Insert [...] at the start
+            self._insert_imports(module, imports)
 
             result_src = astor.to_source(module)
 
             (out_dir / pyfile).parent.mkdir(parents=True, exist_ok=True)
             with open(out_dir / pyfile, 'w') as f:
                 f.write(result_src)
+
+    def _insert_imports(self, module: Module, imports: Set[AstImport]):
+        body_imports = []
+        body = []
+        for element in module.body:
+            if isinstance(element, Import) or isinstance(element, ImportFrom):
+                body_imports.append(element)
+            else:
+                body.append(element)
+        body_imports.extend(imports)
+        body_imports.sort()
+        module.body = body_imports + body
 
     def _safe_field_name(self, unsafe_field_name: str) -> str:
         if keyword.iskeyword(unsafe_field_name):
@@ -240,6 +252,7 @@ class Generator:
     ):
         if field.cardinality == FieldCardinality.REPEATED:
             self._process_repeated_field(field, fields, imports, pyfile)
+        # todo
         # elif field.cardinality == FieldCardinality.OPTIONAL:
         #     self._process_optional_field(field, fields, imports, pyfile)
         else:

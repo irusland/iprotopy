@@ -1,14 +1,14 @@
-from common import PageResponse
-from common import SecurityTradingStatus
-from common import Quotation
-from common import InstrumentType
-from common import BrandData
-from common import Page
-from common import MoneyValue
-from enum import Enum
 import datetime
-from typing import List
+from common import BrandData
+from common import InstrumentType
+from common import MoneyValue
+from common import Page
+from common import PageResponse
+from common import Quotation
+from common import SecurityTradingStatus
 from dataclasses import dataclass
+from enum import Enum
+from typing import List
 
 
 @dataclass

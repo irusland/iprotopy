@@ -1,9 +1,9 @@
+import datetime
 from common import Quotation
 from common import SecurityTradingStatus
-from enum import Enum
-import datetime
-from typing import List
 from dataclasses import dataclass
+from enum import Enum
+from typing import List
 
 
 @dataclass
