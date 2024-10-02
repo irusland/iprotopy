@@ -1,8 +1,52 @@
-from typing import Optional
-from typing import List
-import datetime
+from marketdata import SubscriptionInterval
+from marketdata import SubscriptionAction
+from marketdata import SubscriptionStatus
+from marketdata import OrderBookType
+from marketdata import SubscriptionAction
+from marketdata import TradeSourceType
+from marketdata import SubscriptionStatus
+from marketdata import SubscriptionAction
+from marketdata import SubscriptionStatus
+from marketdata import SubscriptionAction
+from marketdata import SubscriptionStatus
+from marketdata import SubscriptionInterval
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from marketdata import Order
+from common import Quotation
+from common import Quotation
+from marketdata import OrderBookType
+from common import Quotation
+from common import Quotation
+from marketdata import TradeSourceType
+from common import SecurityTradingStatus
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from marketdata import CandleSource
+from common import Quotation
+from marketdata import Order
+from marketdata import Order
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import SecurityTradingStatus
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
 from dataclasses import dataclass
 from enum import Enum
+import datetime
+from typing import List
 
 
 @dataclass
@@ -28,7 +72,7 @@ class MarketDataResponse:
 class SubscribeCandlesRequest:
     subscription_action: 'SubscriptionAction'
     instruments: List['CandleInstrument']
-    waiting_close: 'bool'
+    waiting_close: bool
 
 
 class SubscriptionAction(Enum):
@@ -73,7 +117,7 @@ class CandleSubscription:
     interval: 'SubscriptionInterval'
     subscription_status: 'SubscriptionStatus'
     instrument_uid: str
-    waiting_close: 'bool'
+    waiting_close: bool
     stream_id: str
     subscription_id: str
 
@@ -230,7 +274,7 @@ class Candle:
 class OrderBook:
     figi: str
     depth: int
-    is_consistent: 'bool'
+    is_consistent: bool
     bids: List['Order']
     asks: List['Order']
     time: datetime
@@ -268,19 +312,19 @@ class TradingStatus:
     figi: str
     trading_status: 'SecurityTradingStatus'
     time: datetime
-    limit_order_available_flag: 'bool'
-    market_order_available_flag: 'bool'
+    limit_order_available_flag: bool
+    market_order_available_flag: bool
     instrument_uid: str
 
 
 @dataclass
 class GetCandlesRequest:
-    figi: Optional[str] = None
+    figi: str
     from_: datetime
     to: datetime
     interval: 'CandleInterval'
-    instrument_id: Optional[str] = None
-    candle_source_type: Optional['CandleSource'] = None
+    instrument_id: str
+    candle_source_type: 'CandleSource'
 
 
     class CandleSource(Enum):
@@ -325,7 +369,7 @@ class HistoricCandle:
     close: 'Quotation'
     volume: int
     time: datetime
-    is_complete: 'bool'
+    is_complete: bool
     candle_source: 'CandleSource'
 
 
@@ -350,9 +394,9 @@ class LastPrice:
 
 @dataclass
 class GetOrderBookRequest:
-    figi: Optional[str] = None
+    figi: str
     depth: int
-    instrument_id: Optional[str] = None
+    instrument_id: str
 
 
 @dataclass
@@ -373,8 +417,8 @@ class GetOrderBookResponse:
 
 @dataclass
 class GetTradingStatusRequest:
-    figi: Optional[str] = None
-    instrument_id: Optional[str] = None
+    figi: str
+    instrument_id: str
 
 
 @dataclass
@@ -391,20 +435,20 @@ class GetTradingStatusesResponse:
 class GetTradingStatusResponse:
     figi: str
     trading_status: 'SecurityTradingStatus'
-    limit_order_available_flag: 'bool'
-    market_order_available_flag: 'bool'
-    api_trade_available_flag: 'bool'
+    limit_order_available_flag: bool
+    market_order_available_flag: bool
+    api_trade_available_flag: bool
     instrument_uid: str
-    bestprice_order_available_flag: 'bool'
-    only_best_price: 'bool'
+    bestprice_order_available_flag: bool
+    only_best_price: bool
 
 
 @dataclass
 class GetLastTradesRequest:
-    figi: Optional[str] = None
+    figi: str
     from_: datetime
     to: datetime
-    instrument_id: Optional[str] = None
+    instrument_id: str
 
 
 @dataclass
@@ -509,11 +553,11 @@ class GetTechAnalysisResponse:
     @dataclass
     class TechAnalysisItem:
         timestamp: datetime
-        middle_band: Optional['Quotation'] = None
-        upper_band: Optional['Quotation'] = None
-        lower_band: Optional['Quotation'] = None
-        signal: Optional['Quotation'] = None
-        macd: Optional['Quotation'] = None
+        middle_band: 'Quotation'
+        upper_band: 'Quotation'
+        lower_band: 'Quotation'
+        signal: 'Quotation'
+        macd: 'Quotation'
 
 
 class OrderBookType(Enum):

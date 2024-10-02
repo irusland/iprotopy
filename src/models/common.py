@@ -1,6 +1,6 @@
-import datetime
 from dataclasses import dataclass
 from enum import Enum
+import datetime
 
 
 class InstrumentType(Enum):

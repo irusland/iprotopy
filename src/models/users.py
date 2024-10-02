@@ -1,7 +1,13 @@
-import datetime
-from typing import List
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
 from dataclasses import dataclass
 from enum import Enum
+import datetime
+from typing import List
 
 
 @dataclass
@@ -86,8 +92,8 @@ class GetInfoRequest:
 
 @dataclass
 class GetInfoResponse:
-    prem_status: 'bool'
-    qual_status: 'bool'
+    prem_status: bool
+    qual_status: bool
     qualified_for_work_with: List[str]
     tariff: str
 

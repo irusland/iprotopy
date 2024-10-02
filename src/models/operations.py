@@ -1,17 +1,83 @@
+from common import MoneyValue
+from common import MoneyValue
+from operations import OperationState
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from operations import OperationType
+from operations import OperationState
+from operations import OperationType
+from operations import OperationState
+from common import InstrumentType
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from operations import PositionsSecurities
+from operations import PositionsFutures
+from operations import PositionsOptions
+from common import MoneyValue
+from common import MoneyValue
 import datetime
-from typing import Optional
-from typing import List
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
 class OperationsRequest:
     account_id: str
-    from_: Optional[datetime] = None
-    to: Optional[datetime] = None
-    state: Optional['OperationState'] = None
-    figi: Optional[str] = None
+    from_: datetime
+    to: datetime
+    state: 'OperationState'
+    figi: str
 
 
 @dataclass
@@ -51,7 +117,7 @@ class OperationTrade:
 @dataclass
 class PortfolioRequest:
     account_id: str
-    currency: Optional['CurrencyRequest'] = None
+    currency: 'CurrencyRequest'
 
 
     class CurrencyRequest(Enum):
@@ -86,7 +152,7 @@ class PositionsResponse:
     money: List['MoneyValue']
     blocked: List['MoneyValue']
     securities: List['PositionsSecurities']
-    limits_loading_in_progress: 'bool'
+    limits_loading_in_progress: bool
     futures: List['PositionsFutures']
     options: List['PositionsOptions']
 
@@ -115,7 +181,7 @@ class PortfolioPosition:
     current_price: 'MoneyValue'
     average_position_price_fifo: 'MoneyValue'
     quantity_lots: 'Quotation'
-    blocked: 'bool'
+    blocked: bool
     blocked_lots: 'Quotation'
     position_uid: str
     instrument_uid: str
@@ -145,7 +211,7 @@ class PositionsSecurities:
     balance: int
     position_uid: str
     instrument_uid: str
-    exchange_blocked: 'bool'
+    exchange_blocked: bool
     instrument_type: str
 
 
@@ -191,7 +257,7 @@ class GenerateBrokerReportResponse:
 @dataclass
 class GetBrokerReportRequest:
     task_id: str
-    page: Optional[int] = None
+    page: int
 
 
 @dataclass
@@ -326,7 +392,7 @@ class GenerateDividendsForeignIssuerReportRequest:
 @dataclass
 class GetDividendsForeignIssuerReportRequest:
     task_id: str
-    page: Optional[int] = None
+    page: int
 
 
 @dataclass
@@ -389,21 +455,21 @@ class PortfolioSubscriptionStatus(Enum):
 @dataclass
 class GetOperationsByCursorRequest:
     account_id: str
-    instrument_id: Optional[str] = None
-    from_: Optional[datetime] = None
-    to: Optional[datetime] = None
-    cursor: Optional[str] = None
-    limit: Optional[int] = None
+    instrument_id: str
+    from_: datetime
+    to: datetime
+    cursor: str
+    limit: int
     operation_types: List['OperationType']
-    state: Optional['OperationState'] = None
-    without_commissions: Optional['bool'] = None
-    without_trades: Optional['bool'] = None
-    without_overnights: Optional['bool'] = None
+    state: 'OperationState'
+    without_commissions: bool
+    without_trades: bool
+    without_overnights: bool
 
 
 @dataclass
 class GetOperationsByCursorResponse:
-    has_next: 'bool'
+    has_next: bool
     next_cursor: str
     items: List['OperationItem']
 

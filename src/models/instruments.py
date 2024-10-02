@@ -1,7 +1,173 @@
+from instruments import Bond
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from instruments import Currency
+from instruments import Etf
+from instruments import Future
+from instruments import Option
+from common import SecurityTradingStatus
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from instruments import Share
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from instruments import InstrumentExchangeType
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from instruments import InstrumentExchangeType
+from common import BrandData
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import SecurityTradingStatus
+from common import Quotation
+from instruments import RealExchange
+from common import InstrumentType
+from common import BrandData
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import InstrumentType
+from instruments import AssetType
+from instruments import AssetInstrument
+from common import InstrumentType
+from instruments import ShareType
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from instruments import AssetType
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import InstrumentType
+from common import InstrumentType
+from instruments import FavoriteInstrument
+from common import InstrumentType
+from common import InstrumentType
+from common import InstrumentType
+from common import Page
+from instruments import Brand
+from common import PageResponse
+from common import Page
+from common import PageResponse
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from instruments import Recommendation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from instruments import Recommendation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
+from common import Quotation
 import datetime
-from typing import List
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
@@ -25,7 +191,7 @@ class TradingSchedule:
 @dataclass
 class TradingDay:
     date: datetime
-    is_trading_day: 'bool'
+    is_trading_day: bool
     start_time: datetime
     end_time: datetime
     opening_auction_start_time: datetime
@@ -232,15 +398,15 @@ class Option:
     last_trade_date: datetime
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
-    short_enabled_flag: 'bool'
-    for_iis_flag: 'bool'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
-    api_trade_available_flag: 'bool'
+    short_enabled_flag: bool
+    for_iis_flag: bool
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
+    api_trade_available_flag: bool
 
 
 class OptionDirection(Enum):
@@ -291,7 +457,7 @@ class Bond:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     coupon_quantity_per_year: int
@@ -309,24 +475,24 @@ class Bond:
     issue_size: int
     issue_size_plan: int
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
-    floating_coupon_flag: 'bool'
-    perpetual_flag: 'bool'
-    amortization_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
+    floating_coupon_flag: bool
+    perpetual_flag: bool
+    amortization_flag: bool
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
     asset_uid: str
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
-    subordinated_flag: 'bool'
-    liquidity_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
+    subordinated_flag: bool
+    liquidity_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
     risk_level: 'RiskLevel'
@@ -348,26 +514,26 @@ class Currency:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     nominal: 'MoneyValue'
     country_of_risk: str
     country_of_risk_name: str
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
     iso_currency_name: str
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
     brand: 'BrandData'
@@ -387,7 +553,7 @@ class Etf:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     fixed_commission: 'Quotation'
@@ -399,21 +565,21 @@ class Etf:
     sector: str
     rebalancing_freq: str
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
     asset_uid: str
     instrument_exchange: 'InstrumentExchangeType'
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
-    liquidity_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
+    liquidity_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
     brand: 'BrandData'
@@ -432,7 +598,7 @@ class Future:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     first_trade_date: datetime
@@ -446,19 +612,19 @@ class Future:
     sector: str
     expiration_date: datetime
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
     basic_asset_position_uid: str
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
     initial_margin_on_buy: 'MoneyValue'
@@ -481,7 +647,7 @@ class Share:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     ipo_date: datetime
@@ -492,23 +658,23 @@ class Share:
     issue_size_plan: int
     nominal: 'MoneyValue'
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
-    div_yield_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
+    div_yield_flag: bool
     share_type: 'ShareType'
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
     asset_uid: str
     instrument_exchange: 'InstrumentExchangeType'
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
-    liquidity_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
+    liquidity_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
     brand: 'BrandData'
@@ -582,26 +748,26 @@ class Instrument:
     dshort: 'Quotation'
     dlong_min: 'Quotation'
     dshort_min: 'Quotation'
-    short_enabled_flag: 'bool'
+    short_enabled_flag: bool
     name: str
     exchange: str
     country_of_risk: str
     country_of_risk_name: str
     instrument_type: str
     trading_status: 'SecurityTradingStatus'
-    otc_flag: 'bool'
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
+    otc_flag: bool
+    buy_available_flag: bool
+    sell_available_flag: bool
     min_price_increment: 'Quotation'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
     uid: str
     real_exchange: 'RealExchange'
     position_uid: str
     asset_uid: str
-    for_iis_flag: 'bool'
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
+    for_iis_flag: bool
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
     instrument_kind: 'InstrumentType'
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
@@ -726,7 +892,7 @@ class AssetShare:
     preferred_share_type: str
     ipo_date: datetime
     registry_date: datetime
-    div_yield_flag: 'bool'
+    div_yield_flag: bool
     issue_kind: str
     placement_date: datetime
     repres_isin: str
@@ -744,13 +910,13 @@ class AssetBond:
     issue_kind: str
     interest_kind: str
     coupon_quantity_per_year: int
-    indexed_nominal_flag: 'bool'
-    subordinated_flag: 'bool'
-    collateral_flag: 'bool'
-    tax_free_flag: 'bool'
-    amortization_flag: 'bool'
-    floating_coupon_flag: 'bool'
-    perpetual_flag: 'bool'
+    indexed_nominal_flag: bool
+    subordinated_flag: bool
+    collateral_flag: bool
+    tax_free_flag: bool
+    amortization_flag: bool
+    floating_coupon_flag: bool
+    perpetual_flag: bool
     maturity_date: datetime
     return_condition: str
     state_reg_date: datetime
@@ -789,24 +955,24 @@ class AssetEtf:
     performance_fee: 'Quotation'
     fixed_commission: 'Quotation'
     payment_type: str
-    watermark_flag: 'bool'
+    watermark_flag: bool
     buy_premium: 'Quotation'
     sell_discount: 'Quotation'
-    rebalancing_flag: 'bool'
+    rebalancing_flag: bool
     rebalancing_freq: str
     management_type: str
     primary_index: str
     focus_type: str
-    leveraged_flag: 'bool'
+    leveraged_flag: bool
     num_share: 'Quotation'
-    ucits_flag: 'bool'
+    ucits_flag: bool
     released_date: datetime
     description: str
     primary_index_description: str
     primary_index_company: str
     index_recovery_period: 'Quotation'
     inav_code: str
-    div_yield_flag: 'bool'
+    div_yield_flag: bool
     expense_commission: 'Quotation'
     primary_index_tracking_error: 'Quotation'
     rebalancing_plan: str
@@ -872,8 +1038,8 @@ class FavoriteInstrument:
     instrument_type: str
     name: str
     uid: str
-    otc_flag: 'bool'
-    api_trade_available_flag: 'bool'
+    otc_flag: bool
+    api_trade_available_flag: bool
     instrument_kind: 'InstrumentType'
 
 
@@ -938,8 +1104,8 @@ class IndicativeResponse:
     name: str
     exchange: str
     uid: str
-    buy_available_flag: 'bool'
-    sell_available_flag: 'bool'
+    buy_available_flag: bool
+    sell_available_flag: bool
 
 
 @dataclass
@@ -954,7 +1120,7 @@ class CountryResponse:
 class FindInstrumentRequest:
     query: str
     instrument_kind: 'InstrumentType'
-    api_trade_available_flag: 'bool'
+    api_trade_available_flag: bool
 
 
 @dataclass
@@ -973,13 +1139,13 @@ class InstrumentShort:
     uid: str
     position_uid: str
     instrument_kind: 'InstrumentType'
-    api_trade_available_flag: 'bool'
-    for_iis_flag: 'bool'
+    api_trade_available_flag: bool
+    for_iis_flag: bool
     first_1min_candle_date: datetime
     first_1day_candle_date: datetime
-    for_qual_investor_flag: 'bool'
-    weekend_flag: 'bool'
-    blocked_tca_flag: 'bool'
+    for_qual_investor_flag: bool
+    weekend_flag: bool
+    blocked_tca_flag: bool
 
 
 @dataclass
@@ -1012,60 +1178,60 @@ class GetAssetFundamentalsResponse:
     class StatisticResponse:
         asset_uid: str
         currency: str
-        market_capitalization: 'double'
-        high_price_last_52_weeks: 'double'
-        low_price_last_52_weeks: 'double'
-        average_daily_volume_last_10_days: 'double'
-        average_daily_volume_last_4_weeks: 'double'
-        beta: 'double'
-        free_float: 'double'
-        forward_annual_dividend_yield: 'double'
-        shares_outstanding: 'double'
-        revenue_ttm: 'double'
-        ebitda_ttm: 'double'
-        net_income_ttm: 'double'
-        eps_ttm: 'double'
-        diluted_eps_ttm: 'double'
-        free_cash_flow_ttm: 'double'
-        five_year_annual_revenue_growth_rate: 'double'
-        three_year_annual_revenue_growth_rate: 'double'
-        pe_ratio_ttm: 'double'
-        price_to_sales_ttm: 'double'
-        price_to_book_ttm: 'double'
-        price_to_free_cash_flow_ttm: 'double'
-        total_enterprise_value_mrq: 'double'
-        ev_to_ebitda_mrq: 'double'
-        net_margin_mrq: 'double'
-        net_interest_margin_mrq: 'double'
-        roe: 'double'
-        roa: 'double'
-        roic: 'double'
-        total_debt_mrq: 'double'
-        total_debt_to_equity_mrq: 'double'
-        total_debt_to_ebitda_mrq: 'double'
-        free_cash_flow_to_price: 'double'
-        net_debt_to_ebitda: 'double'
-        current_ratio_mrq: 'double'
-        fixed_charge_coverage_ratio_fy: 'double'
-        dividend_yield_daily_ttm: 'double'
-        dividend_rate_ttm: 'double'
-        dividends_per_share: 'double'
-        five_years_average_dividend_yield: 'double'
-        five_year_annual_dividend_growth_rate: 'double'
-        dividend_payout_ratio_fy: 'double'
-        buy_back_ttm: 'double'
-        one_year_annual_revenue_growth_rate: 'double'
+        market_capitalization: float
+        high_price_last_52_weeks: float
+        low_price_last_52_weeks: float
+        average_daily_volume_last_10_days: float
+        average_daily_volume_last_4_weeks: float
+        beta: float
+        free_float: float
+        forward_annual_dividend_yield: float
+        shares_outstanding: float
+        revenue_ttm: float
+        ebitda_ttm: float
+        net_income_ttm: float
+        eps_ttm: float
+        diluted_eps_ttm: float
+        free_cash_flow_ttm: float
+        five_year_annual_revenue_growth_rate: float
+        three_year_annual_revenue_growth_rate: float
+        pe_ratio_ttm: float
+        price_to_sales_ttm: float
+        price_to_book_ttm: float
+        price_to_free_cash_flow_ttm: float
+        total_enterprise_value_mrq: float
+        ev_to_ebitda_mrq: float
+        net_margin_mrq: float
+        net_interest_margin_mrq: float
+        roe: float
+        roa: float
+        roic: float
+        total_debt_mrq: float
+        total_debt_to_equity_mrq: float
+        total_debt_to_ebitda_mrq: float
+        free_cash_flow_to_price: float
+        net_debt_to_ebitda: float
+        current_ratio_mrq: float
+        fixed_charge_coverage_ratio_fy: float
+        dividend_yield_daily_ttm: float
+        dividend_rate_ttm: float
+        dividends_per_share: float
+        five_years_average_dividend_yield: float
+        five_year_annual_dividend_growth_rate: float
+        dividend_payout_ratio_fy: float
+        buy_back_ttm: float
+        one_year_annual_revenue_growth_rate: float
         domicile_indicator_code: str
-        adr_to_common_share_ratio: 'double'
-        number_of_employees: 'double'
+        adr_to_common_share_ratio: float
+        number_of_employees: float
         ex_dividend_date: datetime
         fiscal_period_start_date: datetime
         fiscal_period_end_date: datetime
-        revenue_change_five_years: 'double'
-        eps_change_five_years: 'double'
-        ebitda_change_five_years: 'double'
-        total_debt_change_five_years: 'double'
-        ev_to_sales: 'double'
+        revenue_change_five_years: float
+        eps_change_five_years: float
+        ebitda_change_five_years: float
+        total_debt_change_five_years: float
+        ev_to_sales: float
 
 
 @dataclass

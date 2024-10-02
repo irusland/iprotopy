@@ -1,8 +1,64 @@
-from typing import Optional
+from common import Quotation
+from common import Quotation
+from orders import OrderDirection
+from common import PriceType
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from orders import OrderDirection
+from common import MoneyValue
+from orders import OrderType
+from common import Quotation
+from common import ResponseMetadata
+from common import ResponseMetadata
+from common import PriceType
+from orders import OrderExecutionReportStatus
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from orders import OrderDirection
+from common import MoneyValue
+from common import MoneyValue
+from orders import OrderType
+from common import MoneyValue
+from common import Quotation
+from common import PriceType
+from common import Quotation
+from orders import BuyLimitsView
+from orders import SellLimitsView
+from common import Quotation
+from common import Quotation
+from orders import OrderDirection
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import Quotation
+from common import MoneyValue
+from common import ResultSubscriptionStatus
+from common import ErrorDetail
+from orders import OrderExecutionReportStatus
+from orders import OrderDirection
+from orders import TimeInForceType
+from orders import OrderType
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from common import MoneyValue
+from orders import OrderTrade
 from typing import List
-import datetime
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
+import datetime
 
 
 @dataclass
@@ -36,9 +92,9 @@ class OrderTrade:
 
 @dataclass
 class PostOrderRequest:
-    figi: Optional[str] = None
+    figi: str
     quantity: int
-    price: Optional['Quotation'] = None
+    price: 'Quotation'
     direction: 'OrderDirection'
     account_id: str
     order_type: 'OrderType'
@@ -138,15 +194,15 @@ class ReplaceOrderRequest:
     order_id: str
     idempotency_key: str
     quantity: int
-    price: Optional['Quotation'] = None
-    price_type: Optional['PriceType'] = None
+    price: 'Quotation'
+    price_type: 'PriceType'
 
 
 @dataclass
 class GetMaxLotsRequest:
     account_id: str
     instrument_id: str
-    price: Optional['Quotation'] = None
+    price: 'Quotation'
 
 
 @dataclass
@@ -204,7 +260,7 @@ class GetOrderPriceResponse:
 @dataclass
 class OrderStateStreamRequest:
     accounts: List[str]
-    ping_delay_millis: Optional[int] = None
+    ping_delay_millis: int
 
 
 @dataclass
@@ -217,17 +273,17 @@ class OrderStateStreamResponse:
         status: 'ResultSubscriptionStatus'
         stream_id: str
         accounts: List[str]
-        error: Optional['ErrorDetail'] = None
+        error: 'ErrorDetail'
 
 
     @dataclass
     class OrderState:
         order_id: str
-        order_request_id: Optional[str] = None
+        order_request_id: str
         client_code: str
         created_at: datetime
         execution_report_status: 'OrderExecutionReportStatus'
-        status_info: Optional['StatusCauseInfo'] = None
+        status_info: 'StatusCauseInfo'
         ticker: str
         class_code: str
         lot_size: int
@@ -237,14 +293,14 @@ class OrderStateStreamResponse:
         account_id: str
         initial_order_price: 'MoneyValue'
         order_price: 'MoneyValue'
-        amount: Optional['MoneyValue'] = None
+        amount: 'MoneyValue'
         executed_order_price: 'MoneyValue'
         currency: str
         lots_requested: int
         lots_executed: int
         lots_left: int
         lots_cancelled: int
-        marker: Optional['MarkerType'] = None
+        marker: 'MarkerType'
         trades: List['OrderTrade']
         completion_time: datetime
         exchange: str

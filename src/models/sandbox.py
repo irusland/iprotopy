@@ -1,10 +1,11 @@
+from common import MoneyValue
+from common import MoneyValue
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
 class OpenSandboxAccountRequest:
-    name: Optional[str] = None
+    name: str
 
 
 @dataclass

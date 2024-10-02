@@ -1,21 +1,41 @@
-from typing import Optional
-from typing import List
+from common import Quotation
+from common import Quotation
+from common import PriceType
+from common import Quotation
+from common import Quotation
+from stoporders import TrailingValueType
+from common import ResponseMetadata
+from stoporders import StopOrderDirection
+from stoporders import StopOrderType
+from common import MoneyValue
+from common import MoneyValue
+from stoporders import TakeProfitType
+from stoporders import TrailingData
+from stoporders import StopOrderStatusOption
+from stoporders import ExchangeOrderType
+from common import Quotation
+from stoporders import TrailingValueType
+from common import Quotation
+from stoporders import TrailingValueType
+from common import Quotation
+from common import Quotation
 import datetime
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
+from typing import List
 
 
 @dataclass
 class PostStopOrderRequest:
-    figi: Optional[str] = None
+    figi: str
     quantity: int
-    price: Optional['Quotation'] = None
-    stop_price: Optional['Quotation'] = None
+    price: 'Quotation'
+    stop_price: 'Quotation'
     direction: 'StopOrderDirection'
     account_id: str
     expiration_type: 'StopOrderExpirationType'
     stop_order_type: 'StopOrderType'
-    expire_date: Optional[datetime] = None
+    expire_date: datetime
     instrument_id: str
     exchange_order_type: 'ExchangeOrderType'
     take_profit_type: 'TakeProfitType'
