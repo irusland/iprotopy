@@ -6,25 +6,26 @@ from common import ResponseMetadata
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from typing import Optional
 
 
 @dataclass
 class PostStopOrderRequest:
-    figi: str
     quantity: int
-    price: 'Quotation'
-    stop_price: 'Quotation'
     direction: 'StopOrderDirection'
     account_id: str
     expiration_type: 'StopOrderExpirationType'
     stop_order_type: 'StopOrderType'
-    expire_date: datetime
     instrument_id: str
     exchange_order_type: 'ExchangeOrderType'
     take_profit_type: 'TakeProfitType'
     trailing_data: 'TrailingData'
     price_type: 'PriceType'
     order_id: str
+    figi: Optional[str] = None
+    price: Optional['Quotation'] = None
+    stop_price: Optional['Quotation'] = None
+    expire_date: Optional[datetime] = None
 
 
     @dataclass

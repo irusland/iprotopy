@@ -8,6 +8,7 @@ from common import ResultSubscriptionStatus
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from typing import Optional
 
 
 @dataclass
@@ -41,9 +42,7 @@ class OrderTrade:
 
 @dataclass
 class PostOrderRequest:
-    figi: str
     quantity: int
-    price: 'Quotation'
     direction: 'OrderDirection'
     account_id: str
     order_type: 'OrderType'
@@ -51,6 +50,8 @@ class PostOrderRequest:
     instrument_id: str
     time_in_force: 'TimeInForceType'
     price_type: 'PriceType'
+    figi: Optional[str] = None
+    price: Optional['Quotation'] = None
 
 
 @dataclass
@@ -143,15 +144,15 @@ class ReplaceOrderRequest:
     order_id: str
     idempotency_key: str
     quantity: int
-    price: 'Quotation'
-    price_type: 'PriceType'
+    price: Optional['Quotation'] = None
+    price_type: Optional['PriceType'] = None
 
 
 @dataclass
 class GetMaxLotsRequest:
     account_id: str
     instrument_id: str
-    price: 'Quotation'
+    price: Optional['Quotation'] = None
 
 
 @dataclass
@@ -209,7 +210,7 @@ class GetOrderPriceResponse:
 @dataclass
 class OrderStateStreamRequest:
     accounts: List[str]
-    ping_delay_millis: int
+    ping_delay_millis: Optional[int] = None
 
 
 @dataclass
@@ -222,17 +223,15 @@ class OrderStateStreamResponse:
         status: 'ResultSubscriptionStatus'
         stream_id: str
         accounts: List[str]
-        error: 'ErrorDetail'
+        error: Optional['ErrorDetail'] = None
 
 
     @dataclass
     class OrderState:
         order_id: str
-        order_request_id: str
         client_code: str
         created_at: datetime
         execution_report_status: 'OrderExecutionReportStatus'
-        status_info: 'StatusCauseInfo'
         ticker: str
         class_code: str
         lot_size: int
@@ -242,18 +241,20 @@ class OrderStateStreamResponse:
         account_id: str
         initial_order_price: 'MoneyValue'
         order_price: 'MoneyValue'
-        amount: 'MoneyValue'
         executed_order_price: 'MoneyValue'
         currency: str
         lots_requested: int
         lots_executed: int
         lots_left: int
         lots_cancelled: int
-        marker: 'MarkerType'
         trades: List['OrderTrade']
         completion_time: datetime
         exchange: str
         instrument_uid: str
+        order_request_id: Optional[str] = None
+        status_info: Optional['StatusCauseInfo'] = None
+        amount: Optional['MoneyValue'] = None
+        marker: Optional['MarkerType'] = None
 
 
     class MarkerType(Enum):

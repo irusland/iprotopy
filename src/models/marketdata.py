@@ -4,6 +4,7 @@ from common import SecurityTradingStatus
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from typing import Optional
 
 
 @dataclass
@@ -276,12 +277,12 @@ class TradingStatus:
 
 @dataclass
 class GetCandlesRequest:
-    figi: str
     from_: datetime
     to: datetime
     interval: 'CandleInterval'
-    instrument_id: str
-    candle_source_type: 'CandleSource'
+    figi: Optional[str] = None
+    instrument_id: Optional[str] = None
+    candle_source_type: Optional['CandleSource'] = None
 
 
     class CandleSource(Enum):
@@ -351,9 +352,9 @@ class LastPrice:
 
 @dataclass
 class GetOrderBookRequest:
-    figi: str
     depth: int
-    instrument_id: str
+    figi: Optional[str] = None
+    instrument_id: Optional[str] = None
 
 
 @dataclass
@@ -374,8 +375,8 @@ class GetOrderBookResponse:
 
 @dataclass
 class GetTradingStatusRequest:
-    figi: str
-    instrument_id: str
+    figi: Optional[str] = None
+    instrument_id: Optional[str] = None
 
 
 @dataclass
@@ -402,10 +403,10 @@ class GetTradingStatusResponse:
 
 @dataclass
 class GetLastTradesRequest:
-    figi: str
     from_: datetime
     to: datetime
-    instrument_id: str
+    figi: Optional[str] = None
+    instrument_id: Optional[str] = None
 
 
 @dataclass
@@ -510,11 +511,11 @@ class GetTechAnalysisResponse:
     @dataclass
     class TechAnalysisItem:
         timestamp: datetime
-        middle_band: 'Quotation'
-        upper_band: 'Quotation'
-        lower_band: 'Quotation'
-        signal: 'Quotation'
-        macd: 'Quotation'
+        middle_band: Optional['Quotation'] = None
+        upper_band: Optional['Quotation'] = None
+        lower_band: Optional['Quotation'] = None
+        signal: Optional['Quotation'] = None
+        macd: Optional['Quotation'] = None
 
 
 class OrderBookType(Enum):

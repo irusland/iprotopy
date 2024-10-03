@@ -5,15 +5,16 @@ from common import Quotation
 from dataclasses import dataclass
 from enum import Enum
 from typing import List
+from typing import Optional
 
 
 @dataclass
 class OperationsRequest:
     account_id: str
-    from_: datetime
-    to: datetime
-    state: 'OperationState'
-    figi: str
+    from_: Optional[datetime] = None
+    to: Optional[datetime] = None
+    state: Optional['OperationState'] = None
+    figi: Optional[str] = None
 
 
 @dataclass
@@ -53,7 +54,7 @@ class OperationTrade:
 @dataclass
 class PortfolioRequest:
     account_id: str
-    currency: 'CurrencyRequest'
+    currency: Optional['CurrencyRequest'] = None
 
 
     class CurrencyRequest(Enum):
@@ -193,7 +194,7 @@ class GenerateBrokerReportResponse:
 @dataclass
 class GetBrokerReportRequest:
     task_id: str
-    page: int
+    page: Optional[int] = None
 
 
 @dataclass
@@ -328,7 +329,7 @@ class GenerateDividendsForeignIssuerReportRequest:
 @dataclass
 class GetDividendsForeignIssuerReportRequest:
     task_id: str
-    page: int
+    page: Optional[int] = None
 
 
 @dataclass
@@ -391,16 +392,16 @@ class PortfolioSubscriptionStatus(Enum):
 @dataclass
 class GetOperationsByCursorRequest:
     account_id: str
-    instrument_id: str
-    from_: datetime
-    to: datetime
-    cursor: str
-    limit: int
     operation_types: List['OperationType']
-    state: 'OperationState'
-    without_commissions: bool
-    without_trades: bool
-    without_overnights: bool
+    instrument_id: Optional[str] = None
+    from_: Optional[datetime] = None
+    to: Optional[datetime] = None
+    cursor: Optional[str] = None
+    limit: Optional[int] = None
+    state: Optional['OperationState'] = None
+    without_commissions: Optional[bool] = None
+    without_trades: Optional[bool] = None
+    without_overnights: Optional[bool] = None
 
 
 @dataclass

@@ -208,6 +208,7 @@ class Generator:
             ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
         )
         class_name = current_element.name
+        class_body = self._reorder_fields(class_body)
         body.append(
             ClassDef(
                 name=class_name,
@@ -218,6 +219,20 @@ class Generator:
             )
         )
         self._importer.register_class(class_name, pyfile)
+
+    def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
+        default_fields = []
+        other_fields = []
+        other_members = []
+        for field in class_body:
+            if isinstance(field, AnnAssign):
+                if field.value is not None:
+                    default_fields.append(field)
+                else:
+                    other_fields.append(field)
+            else:
+                other_members.append(field)
+        return other_fields + default_fields + other_members
 
     def _process_enum(self, body, parent_element, element, imports, pyfile):
         enum_body = []
@@ -253,8 +268,8 @@ class Generator:
         if field.cardinality == FieldCardinality.REPEATED:
             self._process_repeated_field(field, fields, imports, pyfile)
         # todo
-        # elif field.cardinality == FieldCardinality.OPTIONAL:
-        #     self._process_optional_field(field, fields, imports, pyfile)
+        elif field.cardinality == FieldCardinality.OPTIONAL:
+            self._process_optional_field(field, fields, imports, pyfile)
         else:
             self._process_single_field(field, fields, imports, pyfile)
 
