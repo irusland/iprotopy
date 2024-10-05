@@ -1,8 +1,8 @@
 from pathlib import Path
 from typing import Set
 
-from src.import_types import AstImport
 from importer import Importer
+from src.import_types import AstImport
 
 
 class DomesticImporter:

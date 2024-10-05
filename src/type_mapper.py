@@ -16,9 +16,10 @@ class TypeMapper:
         }
 
         self._google_types_mapping = {
-            'google.protobuf.Timestamp': ('datetime', Import(
-                module='datetime', names=[alias(name='datetime')], level=0
-            ))
+            'google.protobuf.Timestamp': (
+                'datetime',
+                Import(module='datetime', names=[alias(name='datetime')], level=0),
+            )
         }
 
     def map(self, proto_type: str) -> Tuple[str, Union[AstImport, None]]:

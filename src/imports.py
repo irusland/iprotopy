@@ -41,7 +41,6 @@ if __name__ == '__main__':
     custom_set = {imp1}
     print(imp2 in custom_set)  # This should now return True
 
-
     imp1 = ImportFrom(module='datetime', names=[alias(name='datetime')], level=0)
     imp2 = ImportFrom(module='datetime', names=[alias(name='datetime')], level=0)
 

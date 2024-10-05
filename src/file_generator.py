@@ -5,23 +5,37 @@ from pathlib import Path
 from types import NoneType
 from typing import List
 
-from proto_schema_parser import Parser, Message, Option
+from proto_schema_parser import Message, Option, Parser
 from proto_schema_parser.ast import (
-    File, Package, Import as ProtoImport, Service,
-    Comment, Enum, Extension,
+    Comment,
+    Enum,
+    Extension,
+    File,
+    Package,
+    Service,
 )
-from type_mapper import TypeMapper
-from importer import Importer
+from proto_schema_parser.ast import (
+    Import as ProtoImport,
+)
+
 from domestic_importer import DomesticImporter
 from enum_generator import ProtoEnumProcessor
+from importer import Importer
 from message_class_generator import ProtoMessageProcessor
+from type_mapper import TypeMapper
 
 logger = logging.getLogger(__name__)
 
+
 class SourceGenerator:
     def __init__(
-        self, proto_file: Path, out_dir: Path, pyfile: Path, parser: Parser,
-        type_mapper: TypeMapper, global_importer: Importer
+        self,
+        proto_file: Path,
+        out_dir: Path,
+        pyfile: Path,
+        parser: Parser,
+        type_mapper: TypeMapper,
+        global_importer: Importer,
     ):
         self._parser = parser
         self._type_mapper = type_mapper
@@ -58,12 +72,8 @@ class SourceGenerator:
             elif isinstance(element, Comment):
                 continue
             elif isinstance(element, Enum):
-                proto_enum_processor = ProtoEnumProcessor(
-                    self._importer
-                )
-                self._body.append(
-                    proto_enum_processor.process_enum(element)
-                )
+                proto_enum_processor = ProtoEnumProcessor(self._importer)
+                self._body.append(proto_enum_processor.process_enum(element))
             elif isinstance(element, NoneType):
                 continue
             elif isinstance(element, Extension):

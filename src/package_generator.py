@@ -1,20 +1,17 @@
 import logging
-from _ast import (
-    Module,
-)
 from ast import (
     Module,
 )
 from pathlib import Path
-from typing import Set, Dict
+from typing import Dict, Set
 
 import astor
 from proto_schema_parser.parser import Parser
 
-from paths import ROOT_DIR
 from file_generator import SourceGenerator
 from importer import Importer
 from imports import Import, ImportFrom
+from paths import ROOT_DIR
 from src.import_types import AstImport
 from type_mapper import TypeMapper
 
@@ -37,8 +34,7 @@ class PackageGenerator:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
             source_generator = SourceGenerator(
-                proto_file, out_dir, pyfile, self._parser, self._type_mapper,
-                importer
+                proto_file, out_dir, pyfile, self._parser, self._type_mapper, importer
             )
             module = source_generator.generate_source()
             modules[proto_file] = module
@@ -75,5 +71,5 @@ if __name__ == '__main__':
     gen = PackageGenerator(parser, type_mapper)
     gen.generate_sources(
         proto_dir=ROOT_DIR / 'tinkoff/invest/grpc',
-        out_dir=ROOT_DIR / "models",
+        out_dir=ROOT_DIR / 'models',
     )

@@ -1,28 +1,34 @@
 import dataclasses
 import enum
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import (
-    Any, Type, get_type_hints, Dict, get_origin, get_args, Union, Tuple,
+    Any,
+    Dict,
+    Tuple,
+    Type,
     TypeVar,
+    Union,
+    get_args,
+    get_origin,
+    get_type_hints,
 )
 
 from google.protobuf import symbol_database
 from google.protobuf.timestamp_pb2 import Timestamp
 
-
 _UNKNOWN: Any = object()
 
 
 def to_unsafe_field_name(field_name: str) -> str:
-    if field_name.endswith("_"):
+    if field_name.endswith('_'):
         unsafe_field_name = field_name[:-1]
         if unsafe_field_name in PYTHON_KEYWORDS:
             return unsafe_field_name
     return field_name
 
 
-T = TypeVar("T")
+T = TypeVar('T')
 
 
 def protobuf_to_dataclass(pb_obj: Any, dataclass_type: Type[T]) -> T:  # noqa:C901
@@ -69,10 +75,10 @@ def protobuf_to_dataclass(pb_obj: Any, dataclass_type: Type[T]) -> T:  # noqa:C9
             args = get_args(field_type)
             if len(args) > 2:
                 raise NotImplementedError(
-                    "Union of more than 2 args is not supported yet."
+                    'Union of more than 2 args is not supported yet.'
                 )
             first_arg, second_arg = args[0], args[1]
-            if second_arg == NoneType and str(pb_value) == "":
+            if second_arg == NoneType and str(pb_value) == '':
                 field_value = None
             elif first_arg in PRIMITIVE_TYPES:
                 field_value = pb_value
@@ -120,20 +126,20 @@ def dataclass_to_protobuff(dataclass_obj: Any, protobuff_obj: T) -> T:  # noqa:C
             elif issubclass(first_arg, Enum):
                 pb_value.extend(item.value for item in field_value)
             else:
-                raise UnknownType(f"type {field_type} unknown")
+                raise UnknownType(f'type {field_type} unknown')
         elif origin == Union:
             args = get_args(field_type)
             first_arg = args[0]
             second_arg = args[1]
             if second_arg != NoneType:
-                raise UnknownType(f"type {field_type} unknown")
+                raise UnknownType(f'type {field_type} unknown')
 
             if field_value is None:
                 pass  # just skip setting the field, since its set to None by default
             else:
                 _update_field(first_arg, protobuff_obj, field_name, field_value)
         else:
-            raise UnknownType(f"type {field_type} unknown")
+            raise UnknownType(f'type {field_type} unknown')
 
     return protobuff_obj
 
@@ -145,8 +151,8 @@ def _update_field(
         setattr(protobuff_obj, field_name, field_value)
     elif issubclass(field_type, datetime):
         field_name_ = field_name
-        if field_name == "from_":
-            field_name_ = "from"
+        if field_name == 'from_':
+            field_name_ = 'from'
         pb_value = getattr(protobuff_obj, field_name_)
         seconds, nanos = datetime_to_ts(field_value)
         pb_value.seconds = seconds
@@ -159,7 +165,7 @@ def _update_field(
             field_value = field_type(field_value)
         setattr(protobuff_obj, field_name, field_value.value)
     else:
-        raise UnknownType(f"type {field_type} unknown")
+        raise UnknownType(f'type {field_type} unknown')
 
 
 def datetime_to_ts(value: datetime) -> Tuple[int, int]:
@@ -182,11 +188,11 @@ PLACEHOLDER: Any = object()
 
 class Enum(enum.IntEnum):
     @classmethod
-    def from_string(cls, name: str) -> "Enum":
+    def from_string(cls, name: str) -> 'Enum':
         try:
             return cls._member_map_[name]  # type: ignore  # pylint:disable=no-member
         except KeyError as e:
-            raise ValueError(f"Unknown value {name} for enum {cls.__name__}") from e
+            raise ValueError(f'Unknown value {name} for enum {cls.__name__}') from e
 
 
 PRIMITIVE_TYPES = (str, float, bool, int)
@@ -197,52 +203,52 @@ class UnknownType(TypeError):
 
 
 PYTHON_KEYWORDS = (
-    "False",
-    "None",
-    "True",
-    "and",
-    "as",
-    "assert",
-    "async",
-    "await",
-    "break",
-    "class",
-    "continue",
-    "def",
-    "del",
-    "elif",
-    "else",
-    "except",
-    "finally",
-    "for",
-    "from",
-    "global",
-    "if",
-    "import",
-    "in",
-    "is",
-    "lambda",
-    "nonlocal",
-    "not",
-    "or",
-    "pass",
-    "raise",
-    "return",
-    "try",
-    "while",
-    "with",
-    "yield",
+    'False',
+    'None',
+    'True',
+    'and',
+    'as',
+    'assert',
+    'async',
+    'await',
+    'break',
+    'class',
+    'continue',
+    'def',
+    'del',
+    'elif',
+    'else',
+    'except',
+    'finally',
+    'for',
+    'from',
+    'global',
+    'if',
+    'import',
+    'in',
+    'is',
+    'lambda',
+    'nonlocal',
+    'not',
+    'or',
+    'pass',
+    'raise',
+    'return',
+    'try',
+    'while',
+    'with',
+    'yield',
 )
 
 
 if __name__ == '__main__':
-
-
     from models.common import MoneyValue
-    mv = MoneyValue(currency="USD",units=100,nano=1000)
+
+    mv = MoneyValue(currency='USD', units=100, nano=1000)
     print(mv)
 
     from mypy_models.tinkoff.invest.grpc.common_pb2 import MoneyValue as ProtoMoneyValue
+
     pmv = ProtoMoneyValue()
     print(pmv)
 

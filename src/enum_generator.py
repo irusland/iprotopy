@@ -1,9 +1,9 @@
-from _ast import ClassDef, Assign, Name, Store, Constant, alias, Load
+from _ast import Assign, ClassDef, Constant, Load, Name, Store, alias
 
-from proto_schema_parser.ast import EnumValue, Comment
+from proto_schema_parser.ast import Comment, EnumValue
 
-from imports import ImportFrom
 from domestic_importer import DomesticImporter
+from imports import ImportFrom
 
 
 class ProtoEnumProcessor:
@@ -17,7 +17,7 @@ class ProtoEnumProcessor:
                 enum_body.append(
                     Assign(
                         targets=[Name(id=enum_element.name, ctx=Store())],
-                        value=Constant(value=enum_element.number)
+                        value=Constant(value=enum_element.number),
                     ),
                 )
             elif isinstance(enum_element, Comment):
@@ -36,5 +36,5 @@ class ProtoEnumProcessor:
             bases=[Name(id='Enum', ctx=Load())],
             keywords=[],
             body=enum_body,
-            decorator_list=[]
+            decorator_list=[],
         )

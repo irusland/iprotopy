@@ -1,15 +1,15 @@
 import ast
-from _ast import ClassDef, Pass, alias, Name, Load, AnnAssign
+from _ast import AnnAssign, ClassDef, Load, Name, Pass, alias
 from typing import List
 
 from proto_schema_parser import Field, Message
 from proto_schema_parser.ast import Comment, Enum, OneOf, Reserved
 
-from imports import ImportFrom
-from type_mapper import TypeMapper
+from class_field_generator import ProtoFieldProcessor
 from domestic_importer import DomesticImporter
 from enum_generator import ProtoEnumProcessor
-from class_field_generator import ProtoFieldProcessor
+from imports import ImportFrom
+from type_mapper import TypeMapper
 
 
 class ProtoMessageProcessor:
@@ -17,10 +17,7 @@ class ProtoMessageProcessor:
         self._importer = importer
         self._type_mapper = type_mapper
 
-    def process_proto_message(
-        self,
-        current_element
-    ) -> ClassDef:
+    def process_proto_message(self, current_element) -> ClassDef:
         class_body = []
         for element in current_element.elements:
             if isinstance(element, Field):
@@ -33,18 +30,12 @@ class ProtoMessageProcessor:
                 continue
             elif isinstance(element, Enum):
                 proto_enum_processor = ProtoEnumProcessor(self._importer)
-                class_body.append(
-                    proto_enum_processor.process_enum(
-                        element
-                    )
-                )
+                class_body.append(proto_enum_processor.process_enum(element))
             elif isinstance(element, OneOf):
                 # todo process oneof
                 continue
             elif isinstance(element, Message):
-                class_body.append(
-                    self.process_proto_message(element)
-                )
+                class_body.append(self.process_proto_message(element))
             elif isinstance(element, Reserved):
                 continue
             else:
@@ -62,7 +53,7 @@ class ProtoMessageProcessor:
             bases=[],
             keywords=[],
             body=class_body,
-            decorator_list=[Name(id='dataclass', ctx=Load())]
+            decorator_list=[Name(id='dataclass', ctx=Load())],
         )
 
     def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:

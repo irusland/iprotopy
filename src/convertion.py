@@ -10,24 +10,24 @@ from typing import (
 from convertion_fix import PLACEHOLDER
 
 # Proto 3 data types
-TYPE_ENUM = "enum"
-TYPE_BOOL = "bool"
-TYPE_INT32 = "int32"
-TYPE_INT64 = "int64"
-TYPE_UINT32 = "uint32"
-TYPE_UINT64 = "uint64"
-TYPE_SINT32 = "sint32"
-TYPE_SINT64 = "sint64"
-TYPE_FLOAT = "float"
-TYPE_DOUBLE = "double"
-TYPE_FIXED32 = "fixed32"
-TYPE_SFIXED32 = "sfixed32"
-TYPE_FIXED64 = "fixed64"
-TYPE_SFIXED64 = "sfixed64"
-TYPE_STRING = "string"
-TYPE_BYTES = "bytes"
-TYPE_MESSAGE = "message"
-TYPE_MAP = "map"
+TYPE_ENUM = 'enum'
+TYPE_BOOL = 'bool'
+TYPE_INT32 = 'int32'
+TYPE_INT64 = 'int64'
+TYPE_UINT32 = 'uint32'
+TYPE_UINT64 = 'uint64'
+TYPE_SINT32 = 'sint32'
+TYPE_SINT64 = 'sint64'
+TYPE_FLOAT = 'float'
+TYPE_DOUBLE = 'double'
+TYPE_FIXED32 = 'fixed32'
+TYPE_SFIXED32 = 'sfixed32'
+TYPE_FIXED64 = 'fixed64'
+TYPE_SFIXED64 = 'sfixed64'
+TYPE_STRING = 'string'
+TYPE_BYTES = 'bytes'
+TYPE_MESSAGE = 'message'
+TYPE_MAP = 'map'
 
 
 @dataclasses.dataclass(frozen=True)
@@ -48,9 +48,9 @@ class FieldMetadata:
     optional: Optional[bool] = False
 
     @staticmethod
-    def get(field: dataclasses.Field) -> "FieldMetadata":
+    def get(field: dataclasses.Field) -> 'FieldMetadata':
         """Return the field metadata for a dataclass field."""
-        return field.metadata["proto"]
+        return field.metadata['proto']
 
 
 def dataclass_field(
@@ -66,7 +66,7 @@ def dataclass_field(
     return dataclasses.field(
         default=None if optional else PLACEHOLDER,  # type:ignore
         metadata={
-            "proto": FieldMetadata(
+            'proto': FieldMetadata(
                 number, proto_type, map_types, group, wraps, optional
             )
         },
@@ -184,8 +184,7 @@ def map_field(
     )
 
 
-class Message:
-    ...
+class Message: ...
 
 
 class Service(ABC):
@@ -203,5 +202,3 @@ _UNKNOWN: Any = object()
 # pylint:disable=too-many-locals
 # pylint:disable=too-many-nested-blocks
 # pylint:disable=too-many-statements
-
-

@@ -5,6 +5,7 @@ from typing import Dict, Set
 
 from imports import ImportFrom
 from src.import_types import AstImport
+
 logger = logging.getLogger(__name__)
 
 
@@ -29,8 +30,8 @@ class Importer:
 
     def get_dependency_imports(self, pyfile: Path) -> Set[AstImport]:
         dependencies_imports = {
-            self._get_import_for(class_name, pyfile) for class_name in
-            self._dependencies.get(pyfile, ())
+            self._get_import_for(class_name, pyfile)
+            for class_name in self._dependencies.get(pyfile, ())
         }
         for import_ in self._imports.get(pyfile, ()):
             dependencies_imports.add(import_)
@@ -42,8 +43,9 @@ class Importer:
                 f'Class {class_name} not registered but requested in {pyfile}'
             )
         return ImportFrom(
-            module=self._classes[class_name].stem, names=[alias(name=class_name)],
-            level=0
+            module=self._classes[class_name].stem,
+            names=[alias(name=class_name)],
+            level=0,
         )
 
     def remove_circular_dependencies(self):

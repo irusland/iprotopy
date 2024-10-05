@@ -15,3 +15,12 @@ grpc:
 	python -m grpc_tools.protoc -I${PROTOS} --python_out=${OUT} --pyi_out=${OUT} --grpc_python_out=${OUT} ${PROTO_DIR}/google/api/*.proto
 	python -m grpc_tools.protoc -I${PROTOS} --python_out=${OUT} --pyi_out=${OUT} --grpc_python_out=${OUT} ${PROTO_DIR}/*.proto
 	touch ${PACKAGE_PROTO_DIR}/__init__.py
+
+.PHONY: format
+format:
+	ruff check --select I --fix src/
+	ruff format src/
+
+.PHONY: lint
+lint:
+	ruff src/
