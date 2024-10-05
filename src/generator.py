@@ -425,5 +425,5 @@ if __name__ == '__main__':
     gen = Generator(parser, type_mapper)
     gen.generate_sources(
         proto_dir=ROOT_DIR / 'tinkoff/invest/grpc',
-        out_dir=ROOT_DIR / 'src' / "models",
+        out_dir=ROOT_DIR / "models",
     )
