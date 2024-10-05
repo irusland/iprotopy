@@ -56,9 +56,9 @@ class ClassFieldGenerator:
         except ValueError:
             if '.' in field_type:
                 class_name = field_type.split('.')[0]
-                self._importer.register_dependency(class_name)
+                self._importer.import_dependency(class_name)
             else:
-                self._importer.register_dependency(field_type)
+                self._importer.import_dependency(field_type)
             field_type = f"'{field_type}'"
 
         fields.append(get_field(safe_field_name, field_type))

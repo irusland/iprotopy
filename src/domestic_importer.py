@@ -10,14 +10,14 @@ class DomesticImporter:
         self._importer = importer
         self._pyfile = pyfile
 
-    def register_class(self, class_name: str):
-        self._importer.register_class(class_name, self._pyfile)
+    def define_dependency(self, name: str):
+        self._importer.define_dependency(name, self._pyfile)
 
-    def register_dependency(self, class_name: str):
-        self._importer.register_dependency(class_name, self._pyfile)
+    def import_dependency(self, name: str):
+        self._importer.import_dependency(name, self._pyfile)
 
-    def get_dependency_imports(self) -> Set[AstImport]:
-        return self._importer.get_dependency_imports(self._pyfile)
+    def get_imports(self) -> Set[AstImport]:
+        return self._importer.get_imports(self._pyfile)
 
     def add_import(self, import_statement: AstImport):
         self._importer.add_import(import_statement, self._pyfile)

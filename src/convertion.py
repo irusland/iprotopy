@@ -1,5 +1,5 @@
 import dataclasses
-import enum
+from enum import Enum
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from typing import (
@@ -97,31 +97,31 @@ def protobuf_to_dataclass(pb_obj: Any, dataclass_type: Type[T]) -> T:  # noqa:C9
     return dataclass_type(**dataclass_dict)
 
 
-def dataclass_to_protobuff(dataclass_obj: Any, protobuff_obj: T) -> T:  # noqa:C901
+def dataclass_to_protobuf(dataclass_obj: Any, protobuf_obj: T) -> T:  # noqa:C901
     dataclass_type = type(dataclass_obj)
     dataclass_hints = get_type_hints(dataclass_type)
     if not dataclass_hints:
-        protobuff_obj.SetInParent()  # type:ignore
-        return protobuff_obj
+        protobuf_obj.SetInParent()  # type:ignore
+        return protobuf_obj
     for field_name, field_type in dataclass_hints.items():
         field_value = getattr(dataclass_obj, field_name)
         if field_value is PLACEHOLDER:
             continue
         origin = get_origin(field_type)
         if origin is None:
-            _update_field(field_type, protobuff_obj, field_name, field_value)
+            _update_field(field_type, protobuf_obj, field_name, field_value)
         elif origin == list:
             args = get_args(field_type)
             first_arg = args[0]
-            pb_value = getattr(protobuff_obj, field_name)
+            pb_value = getattr(protobuf_obj, field_name)
             if first_arg in PRIMITIVE_TYPES:
                 pb_value.extend(item for item in field_value)
             elif dataclasses.is_dataclass(first_arg):
-                descriptor = protobuff_obj.DESCRIPTOR  # type:ignore
+                descriptor = protobuf_obj.DESCRIPTOR  # type:ignore
                 field_descriptor = descriptor.fields_by_name[field_name].message_type
                 type_ = _sym_db.GetPrototype(field_descriptor)
                 pb_value.extend(
-                    dataclass_to_protobuff(item, type_()) for item in field_value
+                    dataclass_to_protobuf(item, type_()) for item in field_value
                 )
             elif issubclass(first_arg, Enum):
                 pb_value.extend(item.value for item in field_value)
@@ -137,11 +137,11 @@ def dataclass_to_protobuff(dataclass_obj: Any, protobuff_obj: T) -> T:  # noqa:C
             if field_value is None:
                 pass  # just skip setting the field, since its set to None by default
             else:
-                _update_field(first_arg, protobuff_obj, field_name, field_value)
+                _update_field(first_arg, protobuf_obj, field_name, field_value)
         else:
             raise UnknownType(f'type {field_type} unknown')
 
-    return protobuff_obj
+    return protobuf_obj
 
 
 def _update_field(
@@ -159,7 +159,7 @@ def _update_field(
         pb_value.nanos = nanos
     elif dataclasses.is_dataclass(field_type):
         pb_value = getattr(protobuff_obj, field_name)
-        dataclass_to_protobuff(field_value, pb_value)
+        dataclass_to_protobuf(field_value, pb_value)
     elif issubclass(field_type, Enum):
         if isinstance(field_value, int):
             field_value = field_type(field_value)
@@ -186,13 +186,11 @@ def ts_to_datetime(value: Timestamp) -> datetime:
 PLACEHOLDER: Any = object()
 
 
-class Enum(enum.IntEnum):
-    @classmethod
-    def from_string(cls, name: str) -> 'Enum':
-        try:
-            return cls._member_map_[name]  # type: ignore  # pylint:disable=no-member
-        except KeyError as e:
-            raise ValueError(f'Unknown value {name} for enum {cls.__name__}') from e
+def enum_from_string(cls, name: str) -> 'Enum':
+    try:
+        return cls._member_map_[name]  # type: ignore  # pylint:disable=no-member
+    except KeyError as e:
+        raise ValueError(f'Unknown value {name} for enum {cls.__name__}') from e
 
 
 PRIMITIVE_TYPES = (str, float, bool, int)
@@ -247,12 +245,12 @@ if __name__ == '__main__':
     mv = MoneyValue(currency='USD', units=100, nano=1000)
     print(mv)
 
-    from mypy_models.tinkoff.invest.grpc.common_pb2 import MoneyValue as ProtoMoneyValue
+    from mypy_models import MoneyValue as ProtoMoneyValue
 
     pmv = ProtoMoneyValue()
     print(pmv)
 
-    pmv = dataclass_to_protobuff(mv, pmv)
+    pmv = dataclass_to_protobuf(mv, pmv)
 
     print(pmv)
 

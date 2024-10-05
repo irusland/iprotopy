@@ -47,7 +47,7 @@ class MessageClassGenerator:
         )
         class_name = current_element.name
         class_body = self._reorder_fields(class_body)
-        self._importer.register_class(class_name)
+        self._importer.define_dependency(class_name)
         return ClassDef(
             name=class_name,
             bases=[],

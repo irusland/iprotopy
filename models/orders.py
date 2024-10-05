@@ -1,4 +1,3 @@
-import datetime
 from base_service import BaseService
 from common import ErrorDetail
 from common import MoneyValue
@@ -7,7 +6,10 @@ from common import Quotation
 from common import ResponseMetadata
 from common import ResultSubscriptionStatus
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import Iterable
 from typing import List
 from typing import Optional
@@ -21,11 +23,19 @@ class OrdersStreamService(BaseService):
 
     def TradesStream(self, request: 'TradesStreamRequest') ->Iterable[
         'TradesStreamResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def OrderStateStream(self, request: 'OrderStateStreamRequest') ->Iterable[
         'OrderStateStreamResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 class OrdersService(BaseService):
@@ -37,28 +47,56 @@ class OrdersService(BaseService):
     _protobuf_stub = _protobuf_grpc.OrdersServiceStub
 
     def PostOrder(self, request: 'PostOrderRequest') ->'PostOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def CancelOrder(self, request: 'CancelOrderRequest'
         ) ->'CancelOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetOrderState(self, request: 'GetOrderStateRequest') ->'OrderState':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetOrders(self, request: 'GetOrdersRequest') ->'GetOrdersResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def ReplaceOrder(self, request: 'ReplaceOrderRequest'
         ) ->'PostOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetMaxLots(self, request: 'GetMaxLotsRequest') ->'GetMaxLotsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetOrderPrice(self, request: 'GetOrderPriceRequest'
         ) ->'GetOrderPriceResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass
@@ -307,7 +345,7 @@ class OrderStateStreamResponse:
         marker: Optional['MarkerType'] = None
 
 
-    class MarkerType(Enum):
+    class MarkerType(IntEnum):
         MARKER_UNKNOWN = 0
         MARKER_BROKER = 1
         MARKER_CHAT = 2
@@ -319,7 +357,7 @@ class OrderStateStreamResponse:
         MARKER_PO = 8
 
 
-    class StatusCauseInfo(Enum):
+    class StatusCauseInfo(IntEnum):
         CAUSE_UNSPECIFIED = 0
         CAUSE_CANCELLED_BY_CLIENT = 15
         CAUSE_CANCELLED_BY_EXCHANGE = 1
@@ -330,20 +368,20 @@ class OrderStateStreamResponse:
         CAUSE_CANCELLED_BY_BROKER = 6
 
 
-class OrderDirection(Enum):
+class OrderDirection(IntEnum):
     ORDER_DIRECTION_UNSPECIFIED = 0
     ORDER_DIRECTION_BUY = 1
     ORDER_DIRECTION_SELL = 2
 
 
-class OrderType(Enum):
+class OrderType(IntEnum):
     ORDER_TYPE_UNSPECIFIED = 0
     ORDER_TYPE_LIMIT = 1
     ORDER_TYPE_MARKET = 2
     ORDER_TYPE_BESTPRICE = 3
 
 
-class OrderExecutionReportStatus(Enum):
+class OrderExecutionReportStatus(IntEnum):
     EXECUTION_REPORT_STATUS_UNSPECIFIED = 0
     EXECUTION_REPORT_STATUS_FILL = 1
     EXECUTION_REPORT_STATUS_REJECTED = 2
@@ -352,7 +390,7 @@ class OrderExecutionReportStatus(Enum):
     EXECUTION_REPORT_STATUS_PARTIALLYFILL = 5
 
 
-class TimeInForceType(Enum):
+class TimeInForceType(IntEnum):
     TIME_IN_FORCE_UNSPECIFIED = 0
     TIME_IN_FORCE_DAY = 1
     TIME_IN_FORCE_FILL_AND_KILL = 2

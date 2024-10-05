@@ -26,14 +26,15 @@ class EnumGenerator:
             else:
                 raise NotImplementedError(f'Unknown enum_element {enum_element}')
 
+        enum_type = 'IntEnum'
         self._importer.add_import(
-            ImportFrom(module='enum', names=[alias(name='Enum')], level=0)
+            ImportFrom(module='enum', names=[alias(name=enum_type)], level=0)
         )
         enum_name = element.name
-        self._importer.register_class(enum_name)
+        self._importer.define_dependency(enum_name)
         return ClassDef(
             name=enum_name,
-            bases=[Name(id='Enum', ctx=Load())],
+            bases=[Name(id=enum_type, ctx=Load())],
             keywords=[],
             body=enum_body,
             decorator_list=[],

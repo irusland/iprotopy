@@ -1,9 +1,13 @@
-import datetime
 from base_service import BaseService
 from common import MoneyValue
 from common import Quotation
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
+
+from invest.grpc import users_pb2, users_pb2_grpc
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import List
 
 
@@ -16,18 +20,34 @@ class UsersService(BaseService):
 
     def GetAccounts(self, request: 'GetAccountsRequest'
         ) ->'GetAccountsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetMarginAttributes(self, request: 'GetMarginAttributesRequest'
         ) ->'GetMarginAttributesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetUserTariff(self, request: 'GetUserTariffRequest'
         ) ->'GetUserTariffResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetInfo(self, request: 'GetInfoRequest') ->'GetInfoResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass
@@ -51,7 +71,7 @@ class Account:
     access_level: 'AccessLevel'
 
 
-class AccountType(Enum):
+class AccountType(IntEnum):
     ACCOUNT_TYPE_UNSPECIFIED = 0
     ACCOUNT_TYPE_TINKOFF = 1
     ACCOUNT_TYPE_TINKOFF_IIS = 2
@@ -59,7 +79,7 @@ class AccountType(Enum):
     ACCOUNT_TYPE_INVEST_FUND = 4
 
 
-class AccountStatus(Enum):
+class AccountStatus(IntEnum):
     ACCOUNT_STATUS_UNSPECIFIED = 0
     ACCOUNT_STATUS_NEW = 1
     ACCOUNT_STATUS_OPEN = 2
@@ -118,7 +138,7 @@ class GetInfoResponse:
     tariff: str
 
 
-class AccessLevel(Enum):
+class AccessLevel(IntEnum):
     ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0
     ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1
     ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2

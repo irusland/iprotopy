@@ -1,20 +1,25 @@
 import ast
 import logging
-from _ast import (
+from ast import (
     Assign,
     Attribute,
     Call,
+    ClassDef,
+    Constant,
+    Expr,
     FunctionDef,
     Load,
+    Module,
     Name,
-    Pass,
+    Return,
     Store,
     Subscript,
+    Tuple,
     alias,
     arg,
     arguments,
+    keyword,
 )
-from ast import ClassDef, Constant, Expr, Module
 from pathlib import Path
 from types import NoneType
 from typing import List
@@ -59,17 +64,17 @@ class ServiceMethodGenerator:
         args = self._get_args(input_class, is_input_stream)
 
         output_annotation = self._get_annotation(output_class, is_output_stream)
-
+        body = self._get_function_body(method)
         return FunctionDef(
             name=method.name,
             args=args,
-            body=[Pass()],
+            body=body,
             decorator_list=[],
             returns=output_annotation,
         )
 
     def _get_annotation(self, class_type: str, is_stream: bool) -> ast.expr:
-        self._importer.register_dependency(class_type)
+        self._importer.import_dependency(class_type)
         if is_stream:
             self._importer.add_import(
                 ImportFrom(module='typing', names=[alias(name='Iterable')], level=0)
@@ -101,6 +106,100 @@ class ServiceMethodGenerator:
             kw_defaults=[],
             defaults=[],
         )
+
+    def _get_function_body(self, method) -> list[ast.stmt]:
+        body = [
+            Assign(
+                targets=[Name(id='protobuf_request', ctx=Store())],
+                value=Call(
+                    func=Name(id='dataclass_to_protobuf', ctx=Load()),
+                    args=[
+                        Name(id='request', ctx=Load()),
+                        Call(
+                            func=Attribute(
+                                value=Attribute(
+                                    value=Name(id='self', ctx=Load()),
+                                    attr='_protobuf',
+                                    ctx=Load(),
+                                ),
+                                attr='GetAccountsRequest',
+                                ctx=Load(),
+                            ),
+                            args=[],
+                            keywords=[],
+                        ),
+                    ],
+                    keywords=[],
+                ),
+            ),
+            Assign(
+                targets=[
+                    Tuple(
+                        elts=[
+                            Name(id='response', ctx=Store()),
+                            Name(id='call', ctx=Store()),
+                        ],
+                        ctx=Store(),
+                    )
+                ],
+                value=Call(
+                    func=Attribute(
+                        value=Attribute(
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='_stub',
+                                ctx=Load(),
+                            ),
+                            attr='GetAccounts',
+                            ctx=Load(),
+                        ),
+                        attr='with_call',
+                        ctx=Load(),
+                    ),
+                    args=[],
+                    keywords=[
+                        keyword(
+                            arg='request',
+                            value=Name(id='protobuf_request', ctx=Load()),
+                        ),
+                        keyword(
+                            arg='metadata',
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='_metadata',
+                                ctx=Load(),
+                            ),
+                        ),
+                    ],
+                ),
+            ),
+            Return(
+                value=Call(
+                    func=Name(id='protobuf_to_dataclass', ctx=Load()),
+                    args=[
+                        Name(id='response', ctx=Load()),
+                        Name(id='GetAccountsResponse', ctx=Load()),
+                    ],
+                    keywords=[],
+                )
+            ),
+        ]
+
+        self._importer.add_import(
+            ImportFrom(
+                module='src.convertion',
+                names=[alias(name='dataclass_to_protobuf')],
+                level=0,
+            )
+        )
+        self._importer.add_import(
+            ImportFrom(
+                module='src.convertion',
+                names=[alias(name='protobuf_to_dataclass')],
+                level=0,
+            )
+        )
+        return body
 
 
 class BaseServiceSourceGenerator:
@@ -168,7 +267,7 @@ class BaseServiceSourceGenerator:
                 decorator_list=[],
             )
         ]
-        self._importer.register_class(class_name)
+        self._importer.define_dependency(class_name)
         return Module(body=body, type_ignores=[])
 
 
@@ -209,7 +308,7 @@ class ServiceGenerator:
             service.elements = service.elements[1:]
 
     def _get_bases(self) -> List[ast.expr]:
-        self._importer.register_dependency('BaseService')
+        self._importer.import_dependency('BaseService')
         return [Name(id='BaseService', ctx=Load())]
 
     def _get_protobuf_attributes(self, service: Service) -> List[ast.stmt]:

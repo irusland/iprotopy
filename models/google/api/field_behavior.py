@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class FieldBehavior(Enum):
+class FieldBehavior(IntEnum):
     FIELD_BEHAVIOR_UNSPECIFIED = 0
     OPTIONAL = 1
     REQUIRED = 2

@@ -22,6 +22,8 @@ from orders import OrderState
 from orders import PostOrderRequest
 from orders import PostOrderResponse
 from orders import ReplaceOrderRequest
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import Optional
 from users import GetAccountsRequest
 from users import GetAccountsResponse
@@ -35,63 +37,123 @@ class SandboxService(BaseService):
 
     def OpenSandboxAccount(self, request: 'OpenSandboxAccountRequest'
         ) ->'OpenSandboxAccountResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxAccounts(self, request: 'GetAccountsRequest'
         ) ->'GetAccountsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def CloseSandboxAccount(self, request: 'CloseSandboxAccountRequest'
         ) ->'CloseSandboxAccountResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def PostSandboxOrder(self, request: 'PostOrderRequest'
         ) ->'PostOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def ReplaceSandboxOrder(self, request: 'ReplaceOrderRequest'
         ) ->'PostOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxOrders(self, request: 'GetOrdersRequest'
         ) ->'GetOrdersResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def CancelSandboxOrder(self, request: 'CancelOrderRequest'
         ) ->'CancelOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxOrderState(self, request: 'GetOrderStateRequest'
         ) ->'OrderState':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxPositions(self, request: 'PositionsRequest'
         ) ->'PositionsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxOperations(self, request: 'OperationsRequest'
         ) ->'OperationsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxOperationsByCursor(self, request:
         'GetOperationsByCursorRequest') ->'GetOperationsByCursorResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxPortfolio(self, request: 'PortfolioRequest'
         ) ->'PortfolioResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def SandboxPayIn(self, request: 'SandboxPayInRequest'
         ) ->'SandboxPayInResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxWithdrawLimits(self, request: 'WithdrawLimitsRequest'
         ) ->'WithdrawLimitsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetSandboxMaxLots(self, request: 'GetMaxLotsRequest'
         ) ->'GetMaxLotsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass

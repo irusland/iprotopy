@@ -1,9 +1,11 @@
-import datetime
 from base_service import BaseService
 from common import Quotation
 from common import SecurityTradingStatus
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import Iterable
 from typing import List
 from typing import Optional
@@ -16,35 +18,67 @@ class MarketDataService(BaseService):
     _protobuf_stub = _protobuf_grpc.MarketDataServiceStub
 
     def GetCandles(self, request: 'GetCandlesRequest') ->'GetCandlesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetLastPrices(self, request: 'GetLastPricesRequest'
         ) ->'GetLastPricesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetOrderBook(self, request: 'GetOrderBookRequest'
         ) ->'GetOrderBookResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetTradingStatus(self, request: 'GetTradingStatusRequest'
         ) ->'GetTradingStatusResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetTradingStatuses(self, request: 'GetTradingStatusesRequest'
         ) ->'GetTradingStatusesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetLastTrades(self, request: 'GetLastTradesRequest'
         ) ->'GetLastTradesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetClosePrices(self, request: 'GetClosePricesRequest'
         ) ->'GetClosePricesResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetTechAnalysis(self, request: 'GetTechAnalysisRequest'
         ) ->'GetTechAnalysisResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 class MarketDataStreamService(BaseService):
@@ -55,11 +89,19 @@ class MarketDataStreamService(BaseService):
 
     def MarketDataStream(self, requests: Iterable['MarketDataRequest']
         ) ->Iterable['MarketDataResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def MarketDataServerSideStream(self, request:
         'MarketDataServerSideStreamRequest') ->Iterable['MarketDataResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass
@@ -88,13 +130,13 @@ class SubscribeCandlesRequest:
     waiting_close: bool
 
 
-class SubscriptionAction(Enum):
+class SubscriptionAction(IntEnum):
     SUBSCRIPTION_ACTION_UNSPECIFIED = 0
     SUBSCRIPTION_ACTION_SUBSCRIBE = 1
     SUBSCRIPTION_ACTION_UNSUBSCRIBE = 2
 
 
-class SubscriptionInterval(Enum):
+class SubscriptionInterval(IntEnum):
     SUBSCRIPTION_INTERVAL_UNSPECIFIED = 0
     SUBSCRIPTION_INTERVAL_ONE_MINUTE = 1
     SUBSCRIPTION_INTERVAL_FIVE_MINUTES = 2
@@ -135,7 +177,7 @@ class CandleSubscription:
     subscription_id: str
 
 
-class SubscriptionStatus(Enum):
+class SubscriptionStatus(IntEnum):
     SUBSCRIPTION_STATUS_UNSPECIFIED = 0
     SUBSCRIPTION_STATUS_SUCCESS = 1
     SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND = 2
@@ -179,7 +221,7 @@ class OrderBookSubscription:
     order_book_type: 'OrderBookType'
 
 
-class TradeSourceType(Enum):
+class TradeSourceType(IntEnum):
     TRADE_SOURCE_UNSPECIFIED = 0
     TRADE_SOURCE_EXCHANGE = 1
     TRADE_SOURCE_DEALER = 2
@@ -314,7 +356,7 @@ class Trade:
     tradeSource: 'TradeSourceType'
 
 
-class TradeDirection(Enum):
+class TradeDirection(IntEnum):
     TRADE_DIRECTION_UNSPECIFIED = 0
     TRADE_DIRECTION_BUY = 1
     TRADE_DIRECTION_SELL = 2
@@ -340,13 +382,13 @@ class GetCandlesRequest:
     candle_source_type: Optional['CandleSource'] = None
 
 
-    class CandleSource(Enum):
+    class CandleSource(IntEnum):
         CANDLE_SOURCE_UNSPECIFIED = 0
         CANDLE_SOURCE_EXCHANGE = 1
         CANDLE_SOURCE_INCLUDE_WEEKEND = 3
 
 
-class CandleInterval(Enum):
+class CandleInterval(IntEnum):
     CANDLE_INTERVAL_UNSPECIFIED = 0
     CANDLE_INTERVAL_1_MIN = 1
     CANDLE_INTERVAL_5_MIN = 2
@@ -363,7 +405,7 @@ class CandleInterval(Enum):
     CANDLE_INTERVAL_MONTH = 13
 
 
-class CandleSource(Enum):
+class CandleSource(IntEnum):
     CANDLE_SOURCE_UNSPECIFIED = 0
     CANDLE_SOURCE_EXCHANGE = 1
     CANDLE_SOURCE_DEALER_WEEKEND = 2
@@ -523,7 +565,7 @@ class GetTechAnalysisRequest:
         deviation_multiplier: 'Quotation'
 
 
-    class IndicatorInterval(Enum):
+    class IndicatorInterval(IntEnum):
         INDICATOR_INTERVAL_UNSPECIFIED = 0
         INDICATOR_INTERVAL_ONE_MINUTE = 1
         INDICATOR_INTERVAL_FIVE_MINUTES = 2
@@ -540,7 +582,7 @@ class GetTechAnalysisRequest:
         INDICATOR_INTERVAL_MONTH = 13
 
 
-    class TypeOfPrice(Enum):
+    class TypeOfPrice(IntEnum):
         TYPE_OF_PRICE_UNSPECIFIED = 0
         TYPE_OF_PRICE_CLOSE = 1
         TYPE_OF_PRICE_OPEN = 2
@@ -549,7 +591,7 @@ class GetTechAnalysisRequest:
         TYPE_OF_PRICE_AVG = 5
 
 
-    class IndicatorType(Enum):
+    class IndicatorType(IntEnum):
         INDICATOR_TYPE_UNSPECIFIED = 0
         INDICATOR_TYPE_BB = 1
         INDICATOR_TYPE_EMA = 2
@@ -573,7 +615,7 @@ class GetTechAnalysisResponse:
         macd: Optional['Quotation'] = None
 
 
-class OrderBookType(Enum):
+class OrderBookType(IntEnum):
     ORDERBOOK_TYPE_UNSPECIFIED = 0
     ORDERBOOK_TYPE_EXCHANGE = 1
     ORDERBOOK_TYPE_DEALER = 2

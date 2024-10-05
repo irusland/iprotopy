@@ -1,11 +1,13 @@
-import datetime
 from base_service import BaseService
 from common import MoneyValue
 from common import PriceType
 from common import Quotation
 from common import ResponseMetadata
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import List
 from typing import Optional
 
@@ -19,15 +21,27 @@ class StopOrdersService(BaseService):
 
     def PostStopOrder(self, request: 'PostStopOrderRequest'
         ) ->'PostStopOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetStopOrders(self, request: 'GetStopOrdersRequest'
         ) ->'GetStopOrdersResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def CancelStopOrder(self, request: 'CancelStopOrderRequest'
         ) ->'CancelStopOrderResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass
@@ -119,26 +133,26 @@ class StopOrder:
         extr: 'Quotation'
 
 
-class StopOrderDirection(Enum):
+class StopOrderDirection(IntEnum):
     STOP_ORDER_DIRECTION_UNSPECIFIED = 0
     STOP_ORDER_DIRECTION_BUY = 1
     STOP_ORDER_DIRECTION_SELL = 2
 
 
-class StopOrderExpirationType(Enum):
+class StopOrderExpirationType(IntEnum):
     STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED = 0
     STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL = 1
     STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE = 2
 
 
-class StopOrderType(Enum):
+class StopOrderType(IntEnum):
     STOP_ORDER_TYPE_UNSPECIFIED = 0
     STOP_ORDER_TYPE_TAKE_PROFIT = 1
     STOP_ORDER_TYPE_STOP_LOSS = 2
     STOP_ORDER_TYPE_STOP_LIMIT = 3
 
 
-class StopOrderStatusOption(Enum):
+class StopOrderStatusOption(IntEnum):
     STOP_ORDER_STATUS_UNSPECIFIED = 0
     STOP_ORDER_STATUS_ALL = 1
     STOP_ORDER_STATUS_ACTIVE = 2
@@ -147,25 +161,25 @@ class StopOrderStatusOption(Enum):
     STOP_ORDER_STATUS_EXPIRED = 5
 
 
-class ExchangeOrderType(Enum):
+class ExchangeOrderType(IntEnum):
     EXCHANGE_ORDER_TYPE_UNSPECIFIED = 0
     EXCHANGE_ORDER_TYPE_MARKET = 1
     EXCHANGE_ORDER_TYPE_LIMIT = 2
 
 
-class TakeProfitType(Enum):
+class TakeProfitType(IntEnum):
     TAKE_PROFIT_TYPE_UNSPECIFIED = 0
     TAKE_PROFIT_TYPE_REGULAR = 1
     TAKE_PROFIT_TYPE_TRAILING = 2
 
 
-class TrailingValueType(Enum):
+class TrailingValueType(IntEnum):
     TRAILING_VALUE_UNSPECIFIED = 0
     TRAILING_VALUE_ABSOLUTE = 1
     TRAILING_VALUE_RELATIVE = 2
 
 
-class TrailingStopStatus(Enum):
+class TrailingStopStatus(IntEnum):
     TRAILING_STOP_UNSPECIFIED = 0
     TRAILING_STOP_ACTIVE = 1
     TRAILING_STOP_ACTIVATED = 2

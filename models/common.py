@@ -1,9 +1,9 @@
-import datetime
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
 
 
-class InstrumentType(Enum):
+class InstrumentType(IntEnum):
     INSTRUMENT_TYPE_UNSPECIFIED = 0
     INSTRUMENT_TYPE_BOND = 1
     INSTRUMENT_TYPE_SHARE = 2
@@ -30,7 +30,7 @@ class Quotation:
     nano: int
 
 
-class SecurityTradingStatus(Enum):
+class SecurityTradingStatus(IntEnum):
     SECURITY_TRADING_STATUS_UNSPECIFIED = 0
     SECURITY_TRADING_STATUS_NOT_AVAILABLE_FOR_TRADING = 1
     SECURITY_TRADING_STATUS_OPENING_PERIOD = 2
@@ -56,7 +56,7 @@ class Ping:
     stream_id: str
 
 
-class PriceType(Enum):
+class PriceType(IntEnum):
     PRICE_TYPE_UNSPECIFIED = 0
     PRICE_TYPE_POINT = 1
     PRICE_TYPE_CURRENCY = 2
@@ -88,7 +88,7 @@ class BrandData:
     text_color: str
 
 
-class ResultSubscriptionStatus(Enum):
+class ResultSubscriptionStatus(IntEnum):
     RESULT_SUBSCRIPTION_STATUS_UNSPECIFIED = 0
     RESULT_SUBSCRIPTION_STATUS_OK = 1
     RESULT_SUBSCRIPTION_STATUS_ERROR = 13

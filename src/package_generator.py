@@ -46,7 +46,7 @@ class PackageGenerator:
 
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
-            imports = importer.get_dependency_imports(pyfile)
+            imports = importer.get_imports(pyfile)
             module = modules[proto_file]
             self._insert_imports(module, imports)
             result_src = astor.to_source(module)
@@ -68,15 +68,16 @@ class PackageGenerator:
         module.body = body_imports + body
 
     def _create_lib_dependencies(self, out_dir, importer):
-        pyfile = Path('base_service').with_suffix('.py')
+        self._create_base_service(importer, out_dir)
 
+    def _create_base_service(self, importer, out_dir):
+        pyfile = Path('base_service').with_suffix('.py')
         base_service_source_generator = BaseServiceSourceGenerator(
             DomesticImporter(importer, pyfile)
         )
         module = base_service_source_generator.create_source()
-        imports = importer.get_dependency_imports(pyfile)
+        imports = importer.get_imports(pyfile)
         self._insert_imports(module, imports)
-
         result_src = astor.to_source(module)
         filepath = out_dir / pyfile
         filepath.parent.mkdir(parents=True, exist_ok=True)

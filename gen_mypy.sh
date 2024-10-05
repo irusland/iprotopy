@@ -12,4 +12,10 @@ python -m grpc_tools.protoc \
     --mypy_out=$MODELS_PATH \
     --python_out=$MODELS_PATH \
     --grpc_python_out=$MODELS_PATH \
+    $GOOGLE_API_PATH/*.proto
+python -m grpc_tools.protoc \
+	--proto_path=$PROJECT_ROOT \
+    --mypy_out=$MODELS_PATH \
+    --python_out=$MODELS_PATH \
+    --grpc_python_out=$MODELS_PATH \
     $PROTO_INCLUDE_PATH/*.proto

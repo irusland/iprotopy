@@ -1,7 +1,7 @@
 from _ast import alias
 from typing import Tuple, Union
 
-from imports import Import
+from imports import ImportFrom
 from src.import_types import AstImport
 
 
@@ -18,7 +18,7 @@ class TypeMapper:
         self._google_types_mapping = {
             'google.protobuf.Timestamp': (
                 'datetime',
-                Import(module='datetime', names=[alias(name='datetime')], level=0),
+                ImportFrom(module='datetime', names=[alias(name='datetime')], level=0),
             )
         }
 

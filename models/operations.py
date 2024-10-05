@@ -1,10 +1,12 @@
-import datetime
 from base_service import BaseService
 from common import InstrumentType
 from common import MoneyValue
 from common import Quotation
 from dataclasses import dataclass
-from enum import Enum
+from datetime import datetime
+from enum import IntEnum
+from src.convertion import dataclass_to_protobuf
+from src.convertion import protobuf_to_dataclass
 from typing import Iterable
 from typing import List
 from typing import Optional
@@ -20,30 +22,58 @@ class OperationsService(BaseService):
 
     def GetOperations(self, request: 'OperationsRequest'
         ) ->'OperationsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetPortfolio(self, request: 'PortfolioRequest') ->'PortfolioResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetPositions(self, request: 'PositionsRequest') ->'PositionsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetWithdrawLimits(self, request: 'WithdrawLimitsRequest'
         ) ->'WithdrawLimitsResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetBrokerReport(self, request: 'BrokerReportRequest'
         ) ->'BrokerReportResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetDividendsForeignIssuer(self, request:
         'GetDividendsForeignIssuerRequest'
         ) ->'GetDividendsForeignIssuerResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def GetOperationsByCursor(self, request: 'GetOperationsByCursorRequest'
         ) ->'GetOperationsByCursorResponse':
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 class OperationsStreamService(BaseService):
@@ -54,11 +84,19 @@ class OperationsStreamService(BaseService):
 
     def PortfolioStream(self, request: 'PortfolioStreamRequest') ->Iterable[
         'PortfolioStreamResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
     def PositionsStream(self, request: 'PositionsStreamRequest') ->Iterable[
         'PositionsStreamResponse']:
-        pass
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetAccountsRequest())
+        response, call = self._stub.GetAccounts.with_call(request=
+            protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetAccountsResponse)
 
 
 @dataclass
@@ -110,7 +148,7 @@ class PortfolioRequest:
     currency: Optional['CurrencyRequest'] = None
 
 
-    class CurrencyRequest(Enum):
+    class CurrencyRequest(IntEnum):
         RUB = 0
         USD = 1
         EUR = 2
@@ -289,14 +327,14 @@ class BrokerReport:
     delivery_type: str
 
 
-class OperationState(Enum):
+class OperationState(IntEnum):
     OPERATION_STATE_UNSPECIFIED = 0
     OPERATION_STATE_EXECUTED = 1
     OPERATION_STATE_CANCELED = 2
     OPERATION_STATE_PROGRESS = 3
 
 
-class OperationType(Enum):
+class OperationType(IntEnum):
     OPERATION_TYPE_UNSPECIFIED = 0
     OPERATION_TYPE_INPUT = 1
     OPERATION_TYPE_BOND_TAX = 2
@@ -435,7 +473,7 @@ class AccountSubscriptionStatus:
     subscription_status: 'PortfolioSubscriptionStatus'
 
 
-class PortfolioSubscriptionStatus(Enum):
+class PortfolioSubscriptionStatus(IntEnum):
     PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED = 0
     PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS = 1
     PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2
@@ -531,7 +569,7 @@ class PositionsSubscriptionStatus:
     subscription_status: 'PositionsAccountSubscriptionStatus'
 
 
-class PositionsAccountSubscriptionStatus(Enum):
+class PositionsAccountSubscriptionStatus(IntEnum):
     POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED = 0
     POSITIONS_SUBSCRIPTION_STATUS_SUCCESS = 1
     POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = 2
