@@ -1,6 +1,10 @@
 import ast
 import keyword
 import logging
+from _ast import (
+    Module, AnnAssign, Pass, alias, ClassDef, Name, Load, Assign, Store,
+    Constant, Subscript,
+)
 from ast import (
     Store, Load, ClassDef, alias, AnnAssign, Name, Subscript, Constant,
     Module, Assign, Pass,
@@ -10,9 +14,11 @@ from types import NoneType
 from typing import Union, Tuple, List, Set, Dict, Callable
 
 import astor
+from proto_schema_parser import Message, Option, Field, FieldCardinality
 from proto_schema_parser.ast import (
     File, Message, Field, Comment, Enum,
     EnumValue, Package, Option, Service, OneOf, Reserved, Extension, FieldCardinality,
+    Import as ProtoImport,
 )
 from proto_schema_parser.ast import Import as ProtoImport
 from proto_schema_parser.parser import Parser
@@ -91,6 +97,219 @@ class Importer:
                 dependencies.remove(class_name)
 
 
+class SourceGenerator:
+    def __init__(self, proto_file: Path, out_dir: Path, pyfile: Path, parser: Parser, type_mapper: TypeMapper, importer: Importer):
+        self._parser = parser
+        self._type_mapper = type_mapper
+        self._importer = importer
+        self._proto_file = proto_file
+        self._out_dir = out_dir
+        self._pyfile = pyfile
+        self._body: List[ast.stmt] = []
+        self._imports: Set[AstImport] = set()
+
+    def _safe_field_name(self, unsafe_field_name: str) -> str:
+        if keyword.iskeyword(unsafe_field_name):
+            return f'{unsafe_field_name}_'
+        return unsafe_field_name
+
+    def generate_source(self) -> Module:
+        logger.debug(f'Generating source for {self._proto_file}')
+        with open(self._proto_file) as f:
+            text = f.read()
+
+        file: File = self._parser.parse(text)
+
+        for element in file.file_elements:
+            if isinstance(element, Message):
+                self._process_proto_message(self._body, file, element)
+            elif isinstance(element, Package):
+                continue
+            elif isinstance(element, Option):
+                continue
+            elif isinstance(element, ProtoImport):
+                continue
+            elif isinstance(element, Service):
+                # todo process services
+                continue
+            elif isinstance(element, Comment):
+                continue
+            elif isinstance(element, Enum):
+                self._process_enum(self._body, file, element)
+            elif isinstance(element, NoneType):
+                continue
+            elif isinstance(element, Extension):
+                continue
+            else:
+                raise NotImplementedError(f'Unknown element {element}')
+        module = Module(
+            body=list(self._imports) + self._body, type_ignores=[]
+        )
+
+        return module
+
+    def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
+        default_fields = []
+        other_fields = []
+        other_members = []
+        for field in class_body:
+            if isinstance(field, AnnAssign):
+                if field.value is not None:
+                    default_fields.append(field)
+                else:
+                    other_fields.append(field)
+            else:
+                other_members.append(field)
+        return other_fields + default_fields + other_members
+
+    def _process_proto_message(
+        self, body: List[ast.stmt], parent_element, current_element
+    ):
+        class_body = []
+        for element in current_element.elements:
+            if isinstance(element, Field):
+                self._process_field(element, class_body)
+            elif isinstance(element, Comment):
+                # todo process comments
+                continue
+            elif isinstance(element, Enum):
+                self._process_enum(
+                    class_body, current_element, element
+                )
+            elif isinstance(element, OneOf):
+                # todo process oneof
+                continue
+            elif isinstance(element, Message):
+                self._process_proto_message(
+                    class_body, current_element, element
+                )
+            elif isinstance(element, Reserved):
+                continue
+            else:
+                raise NotImplementedError(f'Unknown element {element}')
+        if not class_body:
+            class_body.append(Pass())
+        self._imports.add(
+            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
+        )
+        class_name = current_element.name
+        class_body = self._reorder_fields(class_body)
+        body.append(
+            ClassDef(
+                name=class_name,
+                bases=[],
+                keywords=[],
+                body=class_body,
+                decorator_list=[Name(id='dataclass', ctx=Load())]
+            )
+        )
+        self._importer.register_class(class_name, self._pyfile)
+
+    def _process_enum(self, body, parent_element, element):
+        enum_body = []
+        for enum_element in element.elements:
+            if isinstance(enum_element, EnumValue):
+                enum_body.append(
+                    Assign(
+                        targets=[Name(id=enum_element.name, ctx=Store())],
+                        value=Constant(value=enum_element.number)
+                    ),
+                )
+            elif isinstance(enum_element, Comment):
+                # todo process comments
+                continue
+            else:
+                raise NotImplementedError(f'Unknown enum_element {enum_element}')
+
+        self._imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
+        enum_name = element.name
+        enum_class = ClassDef(
+            name=enum_name,
+            bases=[Name(id='Enum', ctx=Load())],
+            keywords=[],
+            body=enum_body,
+            decorator_list=[]
+        )
+        body.append(enum_class)
+        self._importer.register_class(enum_name, self._pyfile)
+
+    def _process_optional_field(
+        self, field: Field, fields
+    ):
+        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
+            return AnnAssign(
+                target=Name(id=safe_field_name, ctx=Store()),
+                annotation=Subscript(
+                    value=Name(id='Optional', ctx=Load()),
+                    slice=Name(id=safe_field_type, ctx=Load()), ctx=Load()
+                ), value=Constant(value=None), simple=1
+            )
+
+        self._process_field_template(field, fields, get_field)
+        self._imports.add(
+            ImportFrom(module='typing', names=[alias(name='Optional')], level=0)
+        )
+
+    def _process_field(
+        self, field: Field, fields
+    ):
+        if field.cardinality == FieldCardinality.REPEATED:
+            self._process_repeated_field(field, fields)
+        # todo
+        elif field.cardinality == FieldCardinality.OPTIONAL:
+            self._process_optional_field(field, fields)
+        else:
+            self._process_single_field(field, fields)
+
+    def _process_field_template(
+        self, field: Field, fields: List[ast.stmt],
+        get_field: Callable[[str, str], AnnAssign]
+    ):
+        safe_field_name = self._safe_field_name(field.name)
+        field_type = field.type
+        try:
+            field_type, field_import = self._type_mapper.map(field_type)
+            if field_import is not None:
+                self._imports.add(field_import)
+        except ValueError:
+            if '.' in field_type:
+                class_name = field_type.split('.')[0]
+                self._importer.register_dependency(class_name, self._pyfile)
+            else:
+                self._importer.register_dependency(field_type, self._pyfile)
+            field_type = f"'{field_type}'"
+
+        fields.append(
+            get_field(safe_field_name, field_type)
+        )
+
+    def _process_repeated_field(
+        self, field: Field, fields
+    ):
+        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
+            return AnnAssign(
+                target=Name(id=safe_field_name, ctx=Store()),
+                annotation=Subscript(
+                    value=Name(id='List', ctx=Load()),
+                    slice=Name(id=safe_field_type, ctx=Load()), ctx=Load()
+                ), simple=1
+            )
+
+        self._process_field_template(field, fields, get_field)
+        self._imports.add(ImportFrom(module='typing', names=[alias(name='List')], level=0))
+
+    def _process_single_field(
+        self, field: Field, fields
+    ):
+        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
+            return AnnAssign(
+                target=Name(id=safe_field_name, ctx=Store()),
+                annotation=Name(id=safe_field_type, ctx=Load()), simple=1
+            )
+
+        self._process_field_template(field, fields, get_field)
+
+
 class Generator:
     def __init__(self, parser: Parser, type_mapper: TypeMapper, importer: Importer):
         self._parser = parser
@@ -105,7 +324,8 @@ class Generator:
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
-            module = self.generate_source(proto_file, out_dir, pyfile)
+            source_generator = SourceGenerator(proto_file, out_dir, pyfile, self._parser, self._type_mapper, self._importer)
+            module = source_generator.generate_source()
             modules[proto_file] = module
 
         self._importer.remove_circular_dependencies()
@@ -133,210 +353,6 @@ class Generator:
         body_imports.extend(imports)
         body_imports.sort()
         module.body = body_imports + body
-
-    def _safe_field_name(self, unsafe_field_name: str) -> str:
-        if keyword.iskeyword(unsafe_field_name):
-            return f'{unsafe_field_name}_'
-        return unsafe_field_name
-
-    def generate_source(self, proto_file: Path, out_dir: Path, pyfile: Path) -> Module:
-        logger.debug(f'Generating source for {proto_file}')
-        with open(proto_file) as f:
-            text = f.read()
-
-        file: File = self._parser.parse(text)
-
-        body = []
-        imports = set()
-        for element in file.file_elements:
-            if isinstance(element, Message):
-                self._process_proto_message(body, file, element, imports, pyfile)
-            elif isinstance(element, Package):
-                continue
-            elif isinstance(element, Option):
-                continue
-            elif isinstance(element, ProtoImport):
-                continue
-            elif isinstance(element, Service):
-                # todo process services
-                continue
-            elif isinstance(element, Comment):
-                continue
-            elif isinstance(element, Enum):
-                self._process_enum(body, file, element, imports, pyfile)
-            elif isinstance(element, NoneType):
-                continue
-            elif isinstance(element, Extension):
-                continue
-            else:
-                raise NotImplementedError(f'Unknown element {element}')
-        module = Module(
-            body=list(imports) + body, type_ignores=[]
-        )
-
-        return module
-
-    def _process_proto_message(
-        self, body: List[ast.stmt], parent_element, current_element,
-        imports: Set[AstImport], pyfile: Path
-    ):
-        class_body = []
-        for element in current_element.elements:
-            if isinstance(element, Field):
-                self._process_field(element, class_body, imports, pyfile)
-            elif isinstance(element, Comment):
-                # todo process comments
-                continue
-            elif isinstance(element, Enum):
-                self._process_enum(
-                    class_body, current_element, element, imports, pyfile
-                )
-            elif isinstance(element, OneOf):
-                # todo process oneof
-                continue
-            elif isinstance(element, Message):
-                self._process_proto_message(
-                    class_body, current_element, element, imports, pyfile
-                )
-            elif isinstance(element, Reserved):
-                continue
-            else:
-                raise NotImplementedError(f'Unknown element {element}')
-        if not class_body:
-            class_body.append(Pass())
-        imports.add(
-            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
-        )
-        class_name = current_element.name
-        class_body = self._reorder_fields(class_body)
-        body.append(
-            ClassDef(
-                name=class_name,
-                bases=[],
-                keywords=[],
-                body=class_body,
-                decorator_list=[Name(id='dataclass', ctx=Load())]
-            )
-        )
-        self._importer.register_class(class_name, pyfile)
-
-    def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
-        default_fields = []
-        other_fields = []
-        other_members = []
-        for field in class_body:
-            if isinstance(field, AnnAssign):
-                if field.value is not None:
-                    default_fields.append(field)
-                else:
-                    other_fields.append(field)
-            else:
-                other_members.append(field)
-        return other_fields + default_fields + other_members
-
-    def _process_enum(self, body, parent_element, element, imports, pyfile):
-        enum_body = []
-        for enum_element in element.elements:
-            if isinstance(enum_element, EnumValue):
-                enum_body.append(
-                    Assign(
-                        targets=[Name(id=enum_element.name, ctx=Store())],
-                        value=Constant(value=enum_element.number)
-                    ),
-                )
-            elif isinstance(enum_element, Comment):
-                # todo process comments
-                continue
-            else:
-                raise NotImplementedError(f'Unknown enum_element {enum_element}')
-
-        imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
-        enum_name = element.name
-        enum_class = ClassDef(
-            name=enum_name,
-            bases=[Name(id='Enum', ctx=Load())],
-            keywords=[],
-            body=enum_body,
-            decorator_list=[]
-        )
-        body.append(enum_class)
-        self._importer.register_class(enum_name, pyfile)
-
-    def _process_field(
-        self, field: Field, fields, imports: Set[AstImport], pyfile: Path
-    ):
-        if field.cardinality == FieldCardinality.REPEATED:
-            self._process_repeated_field(field, fields, imports, pyfile)
-        # todo
-        elif field.cardinality == FieldCardinality.OPTIONAL:
-            self._process_optional_field(field, fields, imports, pyfile)
-        else:
-            self._process_single_field(field, fields, imports, pyfile)
-
-    def _process_optional_field(
-        self, field: Field, fields, imports: Set[AstImport], pyfile: Path
-    ):
-        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
-            return AnnAssign(
-                target=Name(id=safe_field_name, ctx=Store()),
-                annotation=Subscript(
-                    value=Name(id='Optional', ctx=Load()),
-                    slice=Name(id=safe_field_type, ctx=Load()), ctx=Load()
-                ), value=Constant(value=None), simple=1
-            )
-
-        self._process_field_template(field, fields, imports, pyfile, get_field)
-        imports.add(
-            ImportFrom(module='typing', names=[alias(name='Optional')], level=0)
-        )
-
-    def _process_repeated_field(
-        self, field: Field, fields, imports: Set[AstImport], pyfile: Path
-    ):
-        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
-            return AnnAssign(
-                target=Name(id=safe_field_name, ctx=Store()),
-                annotation=Subscript(
-                    value=Name(id='List', ctx=Load()),
-                    slice=Name(id=safe_field_type, ctx=Load()), ctx=Load()
-                ), simple=1
-            )
-
-        self._process_field_template(field, fields, imports, pyfile, get_field)
-        imports.add(ImportFrom(module='typing', names=[alias(name='List')], level=0))
-
-    def _process_single_field(
-        self, field: Field, fields, imports: Set[AstImport], pyfile: Path
-    ):
-        def get_field(safe_field_name: str, safe_field_type: str) -> AnnAssign:
-            return AnnAssign(
-                target=Name(id=safe_field_name, ctx=Store()),
-                annotation=Name(id=safe_field_type, ctx=Load()), simple=1
-            )
-
-        self._process_field_template(field, fields, imports, pyfile, get_field)
-
-    def _process_field_template(
-        self, field: Field, fields, imports: Set[AstImport], pyfile: Path,
-        get_field: Callable[[str, str], AnnAssign]
-    ):
-        safe_field_name = self._safe_field_name(field.name)
-        field_type = field.type
-        try:
-            field_type, field_import = self._type_mapper.map(field_type)
-            if field_import is not None:
-                imports.add(field_import)
-        except ValueError:
-            if '.' in field_type:
-                class_name = field_type.split('.')[0]
-                self._importer.register_dependency(class_name, pyfile)
-            else:
-                self._importer.register_dependency(field_type, pyfile)
-            field_type = f"'{field_type}'"
-
-        fields.append(
-            get_field(safe_field_name, field_type)
-        )
 
 
 if __name__ == '__main__':
