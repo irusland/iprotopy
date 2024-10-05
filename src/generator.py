@@ -384,6 +384,7 @@ class Generator:
         proto_files = list(proto_dir.rglob('*.proto'))
         modules: Dict[Path, Module] = {}
         importer = Importer()
+
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
@@ -401,9 +402,7 @@ class Generator:
             imports = importer.get_dependency_imports(pyfile)
             module = modules[proto_file]
             self._insert_imports(module, imports)
-
             result_src = astor.to_source(module)
-
             (out_dir / pyfile).parent.mkdir(parents=True, exist_ok=True)
             with open(out_dir / pyfile, 'w') as f:
                 f.write(result_src)
