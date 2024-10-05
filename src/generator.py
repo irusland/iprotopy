@@ -131,56 +131,12 @@ class ProtoEnumProcessor:
         )
 
 
-class ProtoMessageProcessor:
+class ProtoFieldProcessor:
     def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
         self._imports = imports
         self._importer = importer
         self._pyfile = pyfile
         self._type_mapper = type_mapper
-
-    def process_proto_message(self,
-        current_element
-    ) -> ClassDef:
-        class_body = []
-        for element in current_element.elements:
-            if isinstance(element, Field):
-                self._process_field(element, class_body)
-            elif isinstance(element, Comment):
-                # todo process comments
-                continue
-            elif isinstance(element, Enum):
-                proto_enum_processor = ProtoEnumProcessor(self._imports, self._importer, self._pyfile)
-                class_body.append(
-                    proto_enum_processor.process_enum(
-                        element
-                    )
-                )
-            elif isinstance(element, OneOf):
-                # todo process oneof
-                continue
-            elif isinstance(element, Message):
-                class_body.append(
-                    self.process_proto_message(element)
-                )
-            elif isinstance(element, Reserved):
-                continue
-            else:
-                raise NotImplementedError(f'Unknown element {element}')
-        if not class_body:
-            class_body.append(Pass())
-        self._imports.add(
-            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
-        )
-        class_name = current_element.name
-        class_body = self._reorder_fields(class_body)
-        self._importer.register_class(class_name, self._pyfile)
-        return ClassDef(
-            name=class_name,
-            bases=[],
-            keywords=[],
-            body=class_body,
-            decorator_list=[Name(id='dataclass', ctx=Load())]
-        )
 
     def _process_optional_field(
         self, field: Field, fields
@@ -199,7 +155,7 @@ class ProtoMessageProcessor:
             ImportFrom(module='typing', names=[alias(name='Optional')], level=0)
         )
 
-    def _process_field(
+    def process_field(
         self, field: Field, fields
     ):
         if field.cardinality == FieldCardinality.REPEATED:
@@ -257,6 +213,64 @@ class ProtoMessageProcessor:
 
         self._process_field_template(field, fields, get_field)
 
+    def _safe_field_name(self, unsafe_field_name: str) -> str:
+        if keyword.iskeyword(unsafe_field_name):
+            return f'{unsafe_field_name}_'
+        return unsafe_field_name
+
+
+class ProtoMessageProcessor:
+    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
+        self._imports = imports
+        self._importer = importer
+        self._pyfile = pyfile
+        self._type_mapper = type_mapper
+
+    def process_proto_message(self,
+        current_element
+    ) -> ClassDef:
+        class_body = []
+        for element in current_element.elements:
+            if isinstance(element, Field):
+                proto_field_processor = ProtoFieldProcessor(self._imports, self._importer, self._pyfile, self._type_mapper)
+                proto_field_processor.process_field(element, class_body)
+            elif isinstance(element, Comment):
+                # todo process comments
+                continue
+            elif isinstance(element, Enum):
+                proto_enum_processor = ProtoEnumProcessor(self._imports, self._importer, self._pyfile)
+                class_body.append(
+                    proto_enum_processor.process_enum(
+                        element
+                    )
+                )
+            elif isinstance(element, OneOf):
+                # todo process oneof
+                continue
+            elif isinstance(element, Message):
+                class_body.append(
+                    self.process_proto_message(element)
+                )
+            elif isinstance(element, Reserved):
+                continue
+            else:
+                raise NotImplementedError(f'Unknown element {element}')
+        if not class_body:
+            class_body.append(Pass())
+        self._imports.add(
+            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
+        )
+        class_name = current_element.name
+        class_body = self._reorder_fields(class_body)
+        self._importer.register_class(class_name, self._pyfile)
+        return ClassDef(
+            name=class_name,
+            bases=[],
+            keywords=[],
+            body=class_body,
+            decorator_list=[Name(id='dataclass', ctx=Load())]
+        )
+
     def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
         default_fields = []
         other_fields = []
@@ -270,12 +284,6 @@ class ProtoMessageProcessor:
             else:
                 other_members.append(field)
         return other_fields + default_fields + other_members
-
-    def _safe_field_name(self, unsafe_field_name: str) -> str:
-        if keyword.iskeyword(unsafe_field_name):
-            return f'{unsafe_field_name}_'
-        return unsafe_field_name
-
 
 
 class SourceGenerator:
