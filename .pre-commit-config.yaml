@@ -3,11 +3,6 @@ repos:
   hooks:
   - id: make-format
     name: Make Format
-    entry: make format  # This is the command that the hook will run
+    entry: make format
     language: system
     types: [ python ]
-
-- repo: https://github.com/kieran-ryan/pyprojectsort
-  rev: v0.2.2
-  hooks:
-  - id: pyprojectsort

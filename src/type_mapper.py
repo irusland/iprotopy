@@ -4,6 +4,7 @@ from typing import Tuple, Union
 from imports import Import
 from src.import_types import AstImport
 
+
 class TypeMapper:
     def __init__(self):
         self._standard_types_mapping = {

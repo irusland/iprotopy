@@ -26,6 +26,7 @@ format:
 	ruff check --fix src/
 	ruff check --select I --fix src/
 	ruff format src/
+	pyprojectsort
 
 .PHONY: lint
 lint:

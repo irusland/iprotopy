@@ -1,36 +1,43 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = [
+    "poetry-core",
+]
+
 [tool.poetry]
-name = "autoproto"
-version = "0.1.0"
+authors = [
+    "Ruslan Sirazhetdinov <ruslansir@icloud.com>",
+]
 description = ""
-authors = ["Ruslan Sirazhetdinov <ruslansir@icloud.com>"]
+name = "autoproto"
 readme = "README.md"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4.0.0"
-grpcio-tools = "^1.64.1"
+astor = "^0.8.1"
 grpcio = "^1.64.1"
-pydantic = "^2.8.0"
-pure-protobuf = "^3.1.0"
+grpcio-tools = "^1.64.1"
 mypy-protobuf = "^3.6.0"
 proto-schema-parser = "^1.3.5"
-astor = "^0.8.1"
-
+pure-protobuf = "^3.1.0"
+pydantic = "^2.8.0"
+python = ">=3.8,<4.0.0"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.6.9"
 pre-commit = "^3.5.0"
 pyprojectsort = "^0.3.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
+ruff = "^0.6.9"
 
 [tool.ruff]
-line-length = 88
-exclude = ["build", "dist", ".git", "__pycache__",
-    "convertion.py" # todo remove
+exclude = [
+    ".git",
+    "__pycache__",
+    "astor_parse.py",
+    "build",
+    "convertion.py",
+    "dist",
 ]
+line-length = 88
 
 [tool.ruff.format]
 quote-style = "single"
