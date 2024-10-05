@@ -238,7 +238,7 @@ PYTHON_KEYWORDS = (
 if __name__ == '__main__':
 
 
-    from src.models.common import MoneyValue
+    from models.common import MoneyValue
     mv = MoneyValue(currency="USD",units=100,nano=1000)
     print(mv)
 

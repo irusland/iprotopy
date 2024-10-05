@@ -7,7 +7,7 @@ from typing import (
     Tuple,
 )
 
-from src.convertion_fix import PLACEHOLDER
+from convertion_fix import PLACEHOLDER
 
 # Proto 3 data types
 TYPE_ENUM = "enum"
