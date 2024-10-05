@@ -40,7 +40,7 @@ class Importer:
     def _get_import_for(self, class_name: str, pyfile: Path) -> AstImport:
         if class_name not in self._classes:
             raise ValueError(
-                f'Class {class_name} not registered but requested in {pyfile}'
+                f'Class {class_name} not registered but needed in {pyfile}'
             )
         return ImportFrom(
             module=self._classes[class_name].stem,

@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import MoneyValue
 from common import Quotation
 from dataclasses import dataclass
@@ -6,9 +7,12 @@ from enum import Enum
 from typing import List
 
 
-class UsersService:
+class UsersService(BaseService):
     """/*С помощью сервиса можно получить: </br> 1.
                        список счетов пользователя; </br> 2. маржинальные показатели по счёту.*/"""
+    _protobuf = users_pb2
+    _protobuf_grpc = users_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.UsersServiceStub
 
     def GetAccounts(self, request: 'GetAccountsRequest'
         ) ->'GetAccountsResponse':

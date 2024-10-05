@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import InstrumentType
 from common import MoneyValue
 from common import Quotation
@@ -9,10 +10,13 @@ from typing import List
 from typing import Optional
 
 
-class OperationsService:
+class OperationsService(BaseService):
     """/*Сервис предназначен для получения:</br> **1**.  списка операций по счёту;</br> **2**.
                               портфеля по счёту;</br> **3**. позиций ценных бумаг на счёте;</br> **4**.
                               доступного остатка для вывода средств;</br> **5**. получения различных отчётов.*/"""
+    _protobuf = operations_pb2
+    _protobuf_grpc = operations_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.OperationsServiceStub
 
     def GetOperations(self, request: 'OperationsRequest'
         ) ->'OperationsResponse':
@@ -42,8 +46,11 @@ class OperationsService:
         pass
 
 
-class OperationsStreamService:
+class OperationsStreamService(BaseService):
     """//Server-side stream обновлений портфеля"""
+    _protobuf = operations_pb2
+    _protobuf_grpc = operations_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.OperationsStreamServiceStub
 
     def PortfolioStream(self, request: 'PortfolioStreamRequest') ->Iterable[
         'PortfolioStreamResponse']:

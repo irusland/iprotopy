@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import Quotation
 from common import SecurityTradingStatus
 from dataclasses import dataclass
@@ -8,8 +9,11 @@ from typing import List
 from typing import Optional
 
 
-class MarketDataService:
+class MarketDataService(BaseService):
     """//Сервис получения биржевой информации:</br> **1**. свечи;</br> **2**. стаканы;</br> **3**. торговые статусы;</br> **4**. лента сделок."""
+    _protobuf = marketdata_pb2
+    _protobuf_grpc = marketdata_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.MarketDataServiceStub
 
     def GetCandles(self, request: 'GetCandlesRequest') ->'GetCandlesResponse':
         pass
@@ -43,8 +47,11 @@ class MarketDataService:
         pass
 
 
-class MarketDataStreamService:
+class MarketDataStreamService(BaseService):
     """//Bi-directional стрим предоставления биржевой информации."""
+    _protobuf = marketdata_pb2
+    _protobuf_grpc = marketdata_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.MarketDataStreamServiceStub
 
     def MarketDataStream(self, requests: Iterable['MarketDataRequest']
         ) ->Iterable['MarketDataResponse']:

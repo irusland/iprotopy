@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import BrandData
 from common import InstrumentType
 from common import MoneyValue
@@ -11,10 +12,13 @@ from enum import Enum
 from typing import List
 
 
-class InstrumentsService:
+class InstrumentsService(BaseService):
     """/*Методы сервиса предназначены для получения:</br>1. Информации об инструментах.</br>2.
                             Расписания торговых сессий.</br>3. Календаря выплат купонов по облигациям.</br>4.
                             Размера гарантийного обеспечения по фьючерсам.</br>5. Дивидендов по ценной бумаге.*/"""
+    _protobuf = instruments_pb2
+    _protobuf_grpc = instruments_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.InstrumentsServiceStub
 
     def TradingSchedules(self, request: 'TradingSchedulesRequest'
         ) ->'TradingSchedulesResponse':

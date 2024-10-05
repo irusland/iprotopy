@@ -1,6 +1,19 @@
 import ast
 import logging
-from _ast import FunctionDef, Load, Name, Pass, Subscript, alias, arg, arguments
+from _ast import (
+    Assign,
+    Attribute,
+    Call,
+    FunctionDef,
+    Load,
+    Name,
+    Pass,
+    Store,
+    Subscript,
+    alias,
+    arg,
+    arguments,
+)
 from ast import ClassDef, Constant, Expr, Module
 from pathlib import Path
 from types import NoneType
@@ -90,15 +103,86 @@ class ServiceMethodGenerator:
         )
 
 
-class ServiceGenerator:
+class BaseServiceSourceGenerator:
     def __init__(self, importer: DomesticImporter):
         self._importer = importer
 
+    def create_source(self) -> Module:
+        class_name = 'BaseService'
+        body = [
+            ClassDef(
+                name=class_name,
+                bases=[],
+                keywords=[],
+                body=[
+                    Assign(
+                        targets=[Name(id='_protobuf_stub', ctx=Store())],
+                        value=Constant(value=None),
+                    ),
+                    FunctionDef(
+                        name='__init__',
+                        args=arguments(
+                            posonlyargs=[],
+                            args=[
+                                arg(arg='self'),
+                                arg(arg='channel'),
+                                arg(arg='metadata'),
+                            ],
+                            kwonlyargs=[],
+                            kw_defaults=[],
+                            defaults=[],
+                        ),
+                        body=[
+                            Assign(
+                                targets=[
+                                    Attribute(
+                                        value=Name(id='self', ctx=Load()),
+                                        attr='_stub',
+                                        ctx=Store(),
+                                    )
+                                ],
+                                value=Call(
+                                    func=Attribute(
+                                        value=Name(id='self', ctx=Load()),
+                                        attr='_protobuf_stub',
+                                        ctx=Load(),
+                                    ),
+                                    args=[Name(id='channel', ctx=Load())],
+                                    keywords=[],
+                                ),
+                            ),
+                            Assign(
+                                targets=[
+                                    Attribute(
+                                        value=Name(id='self', ctx=Load()),
+                                        attr='_metadata',
+                                        ctx=Store(),
+                                    )
+                                ],
+                                value=Name(id='metadata', ctx=Load()),
+                            ),
+                        ],
+                        decorator_list=[],
+                    ),
+                ],
+                decorator_list=[],
+            )
+        ]
+        self._importer.register_class(class_name)
+        return Module(body=body, type_ignores=[])
+
+
+class ServiceGenerator:
+    def __init__(self, importer: DomesticImporter, pyfile: Path):
+        self._importer = importer
+        self._pyfile = pyfile
+
     def process_service(self, service: Service) -> ClassDef:
         body = []
-        if service.elements and isinstance(service.elements[0], Comment):
-            body.append(Expr(value=Constant(value=service.elements[0].text)))
-            service.elements = service.elements[1:]
+
+        self._try_add_docstring(body, service)
+
+        body.extend(self._get_protobuf_attributes(service))
 
         for element in service.elements:
             if isinstance(element, Comment):
@@ -109,13 +193,47 @@ class ServiceGenerator:
                 continue
             else:
                 raise NotImplementedError(f'Unknown element {element}')
+
+        bases = self._get_bases()
         return ClassDef(
             name=service.name,
-            bases=[],
+            bases=bases,
             keywords=[],
             body=body,
             decorator_list=[],
         )
+
+    def _try_add_docstring(self, body: List[ast.stmt], service: Service):
+        if service.elements and isinstance(service.elements[0], Comment):
+            body.append(Expr(value=Constant(value=service.elements[0].text)))
+            service.elements = service.elements[1:]
+
+    def _get_bases(self) -> List[ast.expr]:
+        self._importer.register_dependency('BaseService')
+        return [Name(id='BaseService', ctx=Load())]
+
+    def _get_protobuf_attributes(self, service: Service) -> List[ast.stmt]:
+        package_name = self._pyfile.stem
+        protobuf_package_name = f'{package_name}_pb2'
+        protobuf_grpc_package_name = f'{package_name}_pb2_grpc'
+        return [
+            Assign(
+                targets=[Name(id='_protobuf', ctx=Store())],
+                value=Name(id=protobuf_package_name, ctx=Load()),
+            ),
+            Assign(
+                targets=[Name(id='_protobuf_grpc', ctx=Store())],
+                value=Name(id=protobuf_grpc_package_name, ctx=Load()),
+            ),
+            Assign(
+                targets=[Name(id='_protobuf_stub', ctx=Store())],
+                value=Attribute(
+                    value=Name(id='_protobuf_grpc', ctx=Load()),
+                    attr=f'{service.name}Stub',
+                    ctx=Load(),
+                ),
+            ),
+        ]
 
 
 class SourceGenerator:
@@ -158,7 +276,7 @@ class SourceGenerator:
             elif isinstance(element, ProtoImport):
                 continue
             elif isinstance(element, Service):
-                service_generator = ServiceGenerator(self._importer)
+                service_generator = ServiceGenerator(self._importer, self._pyfile)
                 self._body.append(service_generator.process_service(element))
                 # todo AsyncServiceGenerator
             elif isinstance(element, Comment):
@@ -172,6 +290,4 @@ class SourceGenerator:
                 continue
             else:
                 raise NotImplementedError(f'Unknown element {element}')
-        module = Module(body=self._body, type_ignores=[])
-
-        return module
+        return Module(body=self._body, type_ignores=[])

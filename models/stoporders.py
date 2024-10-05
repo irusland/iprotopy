@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import MoneyValue
 from common import PriceType
 from common import Quotation
@@ -9,9 +10,12 @@ from typing import List
 from typing import Optional
 
 
-class StopOrdersService:
+class StopOrdersService(BaseService):
     """/* Сервис предназначен для работы со стоп-заявками:</br> **1**.
                                выставление;</br> **2**. отмена;</br> **3**. получение списка стоп-заявок.*/"""
+    _protobuf = stoporders_pb2
+    _protobuf_grpc = stoporders_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.StopOrdersServiceStub
 
     def PostStopOrder(self, request: 'PostStopOrderRequest'
         ) ->'PostStopOrderResponse':

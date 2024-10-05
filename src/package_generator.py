@@ -8,10 +8,11 @@ from typing import Dict, Set
 import astor
 from proto_schema_parser.parser import Parser
 
-from file_generator import SourceGenerator
+from file_generator import BaseServiceSourceGenerator, SourceGenerator
 from importer import Importer
 from imports import Import, ImportFrom
 from paths import ROOT_DIR
+from src.domestic_importer import DomesticImporter
 from src.import_types import AstImport
 from type_mapper import TypeMapper
 
@@ -30,6 +31,8 @@ class PackageGenerator:
         modules: Dict[Path, Module] = {}
         importer = Importer()
 
+        self._create_lib_dependencies(out_dir, importer)
+
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
@@ -47,8 +50,9 @@ class PackageGenerator:
             module = modules[proto_file]
             self._insert_imports(module, imports)
             result_src = astor.to_source(module)
-            (out_dir / pyfile).parent.mkdir(parents=True, exist_ok=True)
-            with open(out_dir / pyfile, 'w') as f:
+            filepath = out_dir / pyfile
+            filepath.parent.mkdir(parents=True, exist_ok=True)
+            with open(filepath, 'w') as f:
                 f.write(result_src)
 
     def _insert_imports(self, module: Module, imports: Set[AstImport]):
@@ -62,6 +66,22 @@ class PackageGenerator:
         body_imports.extend(imports)
         body_imports.sort()
         module.body = body_imports + body
+
+    def _create_lib_dependencies(self, out_dir, importer):
+        pyfile = Path('base_service').with_suffix('.py')
+
+        base_service_source_generator = BaseServiceSourceGenerator(
+            DomesticImporter(importer, pyfile)
+        )
+        module = base_service_source_generator.create_source()
+        imports = importer.get_dependency_imports(pyfile)
+        self._insert_imports(module, imports)
+
+        result_src = astor.to_source(module)
+        filepath = out_dir / pyfile
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        with open(filepath, 'w') as f:
+            f.write(result_src)
 
 
 if __name__ == '__main__':

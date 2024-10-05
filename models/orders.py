@@ -1,4 +1,5 @@
 import datetime
+from base_service import BaseService
 from common import ErrorDetail
 from common import MoneyValue
 from common import PriceType
@@ -12,8 +13,11 @@ from typing import List
 from typing import Optional
 
 
-class OrdersStreamService:
+class OrdersStreamService(BaseService):
     """//Stream сделок пользователя"""
+    _protobuf = orders_pb2
+    _protobuf_grpc = orders_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.OrdersStreamServiceStub
 
     def TradesStream(self, request: 'TradesStreamRequest') ->Iterable[
         'TradesStreamResponse']:
@@ -24,10 +28,13 @@ class OrdersStreamService:
         pass
 
 
-class OrdersService:
+class OrdersService(BaseService):
     """/* Сервис предназначен для работы с торговыми поручениями:</br> **1**.
                         выставление;</br> **2**. отмена;</br> **3**. получение статуса;</br> **4**.
                         расчёт полной стоимости;</br> **5**. получение списка заявок.*/"""
+    _protobuf = orders_pb2
+    _protobuf_grpc = orders_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.OrdersServiceStub
 
     def PostOrder(self, request: 'PostOrderRequest') ->'PostOrderResponse':
         pass

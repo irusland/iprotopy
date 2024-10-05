@@ -1,3 +1,4 @@
+from base_service import BaseService
 from common import MoneyValue
 from dataclasses import dataclass
 from operations import GetOperationsByCursorRequest
@@ -26,8 +27,11 @@ from users import GetAccountsRequest
 from users import GetAccountsResponse
 
 
-class SandboxService:
+class SandboxService(BaseService):
     """// Методы для работы с песочницей Tinkoff Invest API"""
+    _protobuf = sandbox_pb2
+    _protobuf_grpc = sandbox_pb2_grpc
+    _protobuf_stub = _protobuf_grpc.SandboxServiceStub
 
     def OpenSandboxAccount(self, request: 'OpenSandboxAccountRequest'
         ) ->'OpenSandboxAccountResponse':
