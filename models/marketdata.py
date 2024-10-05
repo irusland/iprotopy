@@ -3,8 +3,56 @@ from common import Quotation
 from common import SecurityTradingStatus
 from dataclasses import dataclass
 from enum import Enum
+from typing import Iterable
 from typing import List
 from typing import Optional
+
+
+class MarketDataService:
+    """//Сервис получения биржевой информации:</br> **1**. свечи;</br> **2**. стаканы;</br> **3**. торговые статусы;</br> **4**. лента сделок."""
+
+    def GetCandles(self, request: 'GetCandlesRequest') ->'GetCandlesResponse':
+        pass
+
+    def GetLastPrices(self, request: 'GetLastPricesRequest'
+        ) ->'GetLastPricesResponse':
+        pass
+
+    def GetOrderBook(self, request: 'GetOrderBookRequest'
+        ) ->'GetOrderBookResponse':
+        pass
+
+    def GetTradingStatus(self, request: 'GetTradingStatusRequest'
+        ) ->'GetTradingStatusResponse':
+        pass
+
+    def GetTradingStatuses(self, request: 'GetTradingStatusesRequest'
+        ) ->'GetTradingStatusesResponse':
+        pass
+
+    def GetLastTrades(self, request: 'GetLastTradesRequest'
+        ) ->'GetLastTradesResponse':
+        pass
+
+    def GetClosePrices(self, request: 'GetClosePricesRequest'
+        ) ->'GetClosePricesResponse':
+        pass
+
+    def GetTechAnalysis(self, request: 'GetTechAnalysisRequest'
+        ) ->'GetTechAnalysisResponse':
+        pass
+
+
+class MarketDataStreamService:
+    """//Bi-directional стрим предоставления биржевой информации."""
+
+    def MarketDataStream(self, requests: Iterable['MarketDataRequest']
+        ) ->Iterable['MarketDataResponse']:
+        pass
+
+    def MarketDataServerSideStream(self, request:
+        'MarketDataServerSideStreamRequest') ->Iterable['MarketDataResponse']:
+        pass
 
 
 @dataclass

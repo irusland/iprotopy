@@ -7,8 +7,51 @@ from common import ResponseMetadata
 from common import ResultSubscriptionStatus
 from dataclasses import dataclass
 from enum import Enum
+from typing import Iterable
 from typing import List
 from typing import Optional
+
+
+class OrdersStreamService:
+    """//Stream сделок пользователя"""
+
+    def TradesStream(self, request: 'TradesStreamRequest') ->Iterable[
+        'TradesStreamResponse']:
+        pass
+
+    def OrderStateStream(self, request: 'OrderStateStreamRequest') ->Iterable[
+        'OrderStateStreamResponse']:
+        pass
+
+
+class OrdersService:
+    """/* Сервис предназначен для работы с торговыми поручениями:</br> **1**.
+                        выставление;</br> **2**. отмена;</br> **3**. получение статуса;</br> **4**.
+                        расчёт полной стоимости;</br> **5**. получение списка заявок.*/"""
+
+    def PostOrder(self, request: 'PostOrderRequest') ->'PostOrderResponse':
+        pass
+
+    def CancelOrder(self, request: 'CancelOrderRequest'
+        ) ->'CancelOrderResponse':
+        pass
+
+    def GetOrderState(self, request: 'GetOrderStateRequest') ->'OrderState':
+        pass
+
+    def GetOrders(self, request: 'GetOrdersRequest') ->'GetOrdersResponse':
+        pass
+
+    def ReplaceOrder(self, request: 'ReplaceOrderRequest'
+        ) ->'PostOrderResponse':
+        pass
+
+    def GetMaxLots(self, request: 'GetMaxLotsRequest') ->'GetMaxLotsResponse':
+        pass
+
+    def GetOrderPrice(self, request: 'GetOrderPriceRequest'
+        ) ->'GetOrderPriceResponse':
+        pass
 
 
 @dataclass

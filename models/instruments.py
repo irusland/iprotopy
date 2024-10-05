@@ -11,6 +11,127 @@ from enum import Enum
 from typing import List
 
 
+class InstrumentsService:
+    """/*Методы сервиса предназначены для получения:</br>1. Информации об инструментах.</br>2.
+                            Расписания торговых сессий.</br>3. Календаря выплат купонов по облигациям.</br>4.
+                            Размера гарантийного обеспечения по фьючерсам.</br>5. Дивидендов по ценной бумаге.*/"""
+
+    def TradingSchedules(self, request: 'TradingSchedulesRequest'
+        ) ->'TradingSchedulesResponse':
+        pass
+
+    def BondBy(self, request: 'InstrumentRequest') ->'BondResponse':
+        pass
+
+    def Bonds(self, request: 'InstrumentsRequest') ->'BondsResponse':
+        pass
+
+    def GetBondCoupons(self, request: 'GetBondCouponsRequest'
+        ) ->'GetBondCouponsResponse':
+        pass
+
+    def GetBondEvents(self, request: 'GetBondEventsRequest'
+        ) ->'GetBondEventsResponse':
+        pass
+
+    def CurrencyBy(self, request: 'InstrumentRequest') ->'CurrencyResponse':
+        pass
+
+    def Currencies(self, request: 'InstrumentsRequest') ->'CurrenciesResponse':
+        pass
+
+    def EtfBy(self, request: 'InstrumentRequest') ->'EtfResponse':
+        pass
+
+    def Etfs(self, request: 'InstrumentsRequest') ->'EtfsResponse':
+        pass
+
+    def FutureBy(self, request: 'InstrumentRequest') ->'FutureResponse':
+        pass
+
+    def Futures(self, request: 'InstrumentsRequest') ->'FuturesResponse':
+        pass
+
+    def OptionBy(self, request: 'InstrumentRequest') ->'OptionResponse':
+        pass
+
+    def Options(self, request: 'InstrumentsRequest') ->'OptionsResponse':
+        pass
+
+    def OptionsBy(self, request: 'FilterOptionsRequest') ->'OptionsResponse':
+        pass
+
+    def ShareBy(self, request: 'InstrumentRequest') ->'ShareResponse':
+        pass
+
+    def Shares(self, request: 'InstrumentsRequest') ->'SharesResponse':
+        pass
+
+    def Indicatives(self, request: 'IndicativesRequest'
+        ) ->'IndicativesResponse':
+        pass
+
+    def GetAccruedInterests(self, request: 'GetAccruedInterestsRequest'
+        ) ->'GetAccruedInterestsResponse':
+        pass
+
+    def GetFuturesMargin(self, request: 'GetFuturesMarginRequest'
+        ) ->'GetFuturesMarginResponse':
+        pass
+
+    def GetInstrumentBy(self, request: 'InstrumentRequest'
+        ) ->'InstrumentResponse':
+        pass
+
+    def GetDividends(self, request: 'GetDividendsRequest'
+        ) ->'GetDividendsResponse':
+        pass
+
+    def GetAssetBy(self, request: 'AssetRequest') ->'AssetResponse':
+        pass
+
+    def GetAssets(self, request: 'AssetsRequest') ->'AssetsResponse':
+        pass
+
+    def GetFavorites(self, request: 'GetFavoritesRequest'
+        ) ->'GetFavoritesResponse':
+        pass
+
+    def EditFavorites(self, request: 'EditFavoritesRequest'
+        ) ->'EditFavoritesResponse':
+        pass
+
+    def GetCountries(self, request: 'GetCountriesRequest'
+        ) ->'GetCountriesResponse':
+        pass
+
+    def FindInstrument(self, request: 'FindInstrumentRequest'
+        ) ->'FindInstrumentResponse':
+        pass
+
+    def GetBrands(self, request: 'GetBrandsRequest') ->'GetBrandsResponse':
+        pass
+
+    def GetBrandBy(self, request: 'GetBrandRequest') ->'Brand':
+        pass
+
+    def GetAssetFundamentals(self, request: 'GetAssetFundamentalsRequest'
+        ) ->'GetAssetFundamentalsResponse':
+        pass
+
+    def GetAssetReports(self, request: 'GetAssetReportsRequest'
+        ) ->'GetAssetReportsResponse':
+        pass
+
+    def GetConsensusForecasts(self, request: 'GetConsensusForecastsRequest'
+        ) ->'GetConsensusForecastsResponse':
+        pass
+
+    def GetForecastBy(self, request: 'GetForecastRequest'
+        ) ->'GetForecastResponse':
+        pass
+
+
 @dataclass
 class TradingSchedulesRequest:
     exchange: str

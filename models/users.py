@@ -6,6 +6,26 @@ from enum import Enum
 from typing import List
 
 
+class UsersService:
+    """/*С помощью сервиса можно получить: </br> 1.
+                       список счетов пользователя; </br> 2. маржинальные показатели по счёту.*/"""
+
+    def GetAccounts(self, request: 'GetAccountsRequest'
+        ) ->'GetAccountsResponse':
+        pass
+
+    def GetMarginAttributes(self, request: 'GetMarginAttributesRequest'
+        ) ->'GetMarginAttributesResponse':
+        pass
+
+    def GetUserTariff(self, request: 'GetUserTariffRequest'
+        ) ->'GetUserTariffResponse':
+        pass
+
+    def GetInfo(self, request: 'GetInfoRequest') ->'GetInfoResponse':
+        pass
+
+
 @dataclass
 class GetAccountsRequest:
     pass

@@ -9,6 +9,23 @@ from typing import List
 from typing import Optional
 
 
+class StopOrdersService:
+    """/* Сервис предназначен для работы со стоп-заявками:</br> **1**.
+                               выставление;</br> **2**. отмена;</br> **3**. получение списка стоп-заявок.*/"""
+
+    def PostStopOrder(self, request: 'PostStopOrderRequest'
+        ) ->'PostStopOrderResponse':
+        pass
+
+    def GetStopOrders(self, request: 'GetStopOrdersRequest'
+        ) ->'GetStopOrdersResponse':
+        pass
+
+    def CancelStopOrder(self, request: 'CancelStopOrderRequest'
+        ) ->'CancelStopOrderResponse':
+        pass
+
+
 @dataclass
 class PostStopOrderRequest:
     quantity: int

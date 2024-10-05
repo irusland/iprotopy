@@ -4,8 +4,54 @@ from common import MoneyValue
 from common import Quotation
 from dataclasses import dataclass
 from enum import Enum
+from typing import Iterable
 from typing import List
 from typing import Optional
+
+
+class OperationsService:
+    """/*Сервис предназначен для получения:</br> **1**.  списка операций по счёту;</br> **2**.
+                              портфеля по счёту;</br> **3**. позиций ценных бумаг на счёте;</br> **4**.
+                              доступного остатка для вывода средств;</br> **5**. получения различных отчётов.*/"""
+
+    def GetOperations(self, request: 'OperationsRequest'
+        ) ->'OperationsResponse':
+        pass
+
+    def GetPortfolio(self, request: 'PortfolioRequest') ->'PortfolioResponse':
+        pass
+
+    def GetPositions(self, request: 'PositionsRequest') ->'PositionsResponse':
+        pass
+
+    def GetWithdrawLimits(self, request: 'WithdrawLimitsRequest'
+        ) ->'WithdrawLimitsResponse':
+        pass
+
+    def GetBrokerReport(self, request: 'BrokerReportRequest'
+        ) ->'BrokerReportResponse':
+        pass
+
+    def GetDividendsForeignIssuer(self, request:
+        'GetDividendsForeignIssuerRequest'
+        ) ->'GetDividendsForeignIssuerResponse':
+        pass
+
+    def GetOperationsByCursor(self, request: 'GetOperationsByCursorRequest'
+        ) ->'GetOperationsByCursorResponse':
+        pass
+
+
+class OperationsStreamService:
+    """//Server-side stream обновлений портфеля"""
+
+    def PortfolioStream(self, request: 'PortfolioStreamRequest') ->Iterable[
+        'PortfolioStreamResponse']:
+        pass
+
+    def PositionsStream(self, request: 'PositionsStreamRequest') ->Iterable[
+        'PositionsStreamResponse']:
+        pass
 
 
 @dataclass
