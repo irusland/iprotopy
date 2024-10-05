@@ -97,74 +97,16 @@ class Importer:
                 dependencies.remove(class_name)
 
 
-class SourceGenerator:
-    def __init__(self, proto_file: Path, out_dir: Path, pyfile: Path, parser: Parser, type_mapper: TypeMapper, importer: Importer):
-        self._parser = parser
-        self._type_mapper = type_mapper
+class ProtoMessageProcessor:
+    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
+        self._imports = imports
         self._importer = importer
-        self._proto_file = proto_file
-        self._out_dir = out_dir
         self._pyfile = pyfile
-        self._body: List[ast.stmt] = []
-        self._imports: Set[AstImport] = set()
+        self._type_mapper = type_mapper
 
-    def _safe_field_name(self, unsafe_field_name: str) -> str:
-        if keyword.iskeyword(unsafe_field_name):
-            return f'{unsafe_field_name}_'
-        return unsafe_field_name
-
-    def generate_source(self) -> Module:
-        logger.debug(f'Generating source for {self._proto_file}')
-        with open(self._proto_file) as f:
-            text = f.read()
-
-        file: File = self._parser.parse(text)
-
-        for element in file.file_elements:
-            if isinstance(element, Message):
-                self._process_proto_message(self._body, file, element)
-            elif isinstance(element, Package):
-                continue
-            elif isinstance(element, Option):
-                continue
-            elif isinstance(element, ProtoImport):
-                continue
-            elif isinstance(element, Service):
-                # todo process services
-                continue
-            elif isinstance(element, Comment):
-                continue
-            elif isinstance(element, Enum):
-                self._process_enum(self._body, file, element)
-            elif isinstance(element, NoneType):
-                continue
-            elif isinstance(element, Extension):
-                continue
-            else:
-                raise NotImplementedError(f'Unknown element {element}')
-        module = Module(
-            body=list(self._imports) + self._body, type_ignores=[]
-        )
-
-        return module
-
-    def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
-        default_fields = []
-        other_fields = []
-        other_members = []
-        for field in class_body:
-            if isinstance(field, AnnAssign):
-                if field.value is not None:
-                    default_fields.append(field)
-                else:
-                    other_fields.append(field)
-            else:
-                other_members.append(field)
-        return other_fields + default_fields + other_members
-
-    def _process_proto_message(
-        self, body: List[ast.stmt], parent_element, current_element
-    ):
+    def process_proto_message(self,
+        current_element
+    ) -> ClassDef:
         class_body = []
         for element in current_element.elements:
             if isinstance(element, Field):
@@ -173,15 +115,17 @@ class SourceGenerator:
                 # todo process comments
                 continue
             elif isinstance(element, Enum):
-                self._process_enum(
-                    class_body, current_element, element
+                class_body.append(
+                    self.process_enum(
+                        element
+                    )
                 )
             elif isinstance(element, OneOf):
                 # todo process oneof
                 continue
             elif isinstance(element, Message):
-                self._process_proto_message(
-                    class_body, current_element, element
+                class_body.append(
+                    self.process_proto_message(element)
                 )
             elif isinstance(element, Reserved):
                 continue
@@ -194,18 +138,16 @@ class SourceGenerator:
         )
         class_name = current_element.name
         class_body = self._reorder_fields(class_body)
-        body.append(
-            ClassDef(
-                name=class_name,
-                bases=[],
-                keywords=[],
-                body=class_body,
-                decorator_list=[Name(id='dataclass', ctx=Load())]
-            )
-        )
         self._importer.register_class(class_name, self._pyfile)
+        return ClassDef(
+            name=class_name,
+            bases=[],
+            keywords=[],
+            body=class_body,
+            decorator_list=[Name(id='dataclass', ctx=Load())]
+        )
 
-    def _process_enum(self, body, parent_element, element):
+    def process_enum(self, element) -> ClassDef:
         enum_body = []
         for enum_element in element.elements:
             if isinstance(enum_element, EnumValue):
@@ -223,15 +165,14 @@ class SourceGenerator:
 
         self._imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
         enum_name = element.name
-        enum_class = ClassDef(
+        self._importer.register_class(enum_name, self._pyfile)
+        return ClassDef(
             name=enum_name,
             bases=[Name(id='Enum', ctx=Load())],
             keywords=[],
             body=enum_body,
             decorator_list=[]
         )
-        body.append(enum_class)
-        self._importer.register_class(enum_name, self._pyfile)
 
     def _process_optional_field(
         self, field: Field, fields
@@ -308,6 +249,79 @@ class SourceGenerator:
             )
 
         self._process_field_template(field, fields, get_field)
+
+    def _reorder_fields(self, class_body: List[ast.stmt]) -> List[ast.stmt]:
+        default_fields = []
+        other_fields = []
+        other_members = []
+        for field in class_body:
+            if isinstance(field, AnnAssign):
+                if field.value is not None:
+                    default_fields.append(field)
+                else:
+                    other_fields.append(field)
+            else:
+                other_members.append(field)
+        return other_fields + default_fields + other_members
+
+    def _safe_field_name(self, unsafe_field_name: str) -> str:
+        if keyword.iskeyword(unsafe_field_name):
+            return f'{unsafe_field_name}_'
+        return unsafe_field_name
+
+
+
+class SourceGenerator:
+    def __init__(self, proto_file: Path, out_dir: Path, pyfile: Path, parser: Parser, type_mapper: TypeMapper, importer: Importer):
+        self._parser = parser
+        self._type_mapper = type_mapper
+        self._importer = importer
+        self._proto_file = proto_file
+        self._out_dir = out_dir
+        self._pyfile = pyfile
+        self._body: List[ast.stmt] = []
+        self._imports: Set[AstImport] = set()
+
+    def generate_source(self) -> Module:
+        logger.debug(f'Generating source for {self._proto_file}')
+        with open(self._proto_file) as f:
+            text = f.read()
+
+        file: File = self._parser.parse(text)
+
+        for element in file.file_elements:
+            if isinstance(element, Message):
+                proto_message_processor = ProtoMessageProcessor(self._imports, self._importer, self._pyfile, self._type_mapper)
+                self._body.append(proto_message_processor.process_proto_message(element))
+            elif isinstance(element, Package):
+                continue
+            elif isinstance(element, Option):
+                continue
+            elif isinstance(element, ProtoImport):
+                continue
+            elif isinstance(element, Service):
+                # todo process services
+                continue
+            elif isinstance(element, Comment):
+                continue
+            elif isinstance(element, Enum):
+                proto_message_processor = ProtoMessageProcessor(
+                    self._imports, self._importer, self._pyfile, self._type_mapper
+                )
+                self._body.append(
+                    proto_message_processor.process_enum(element)
+                )
+            elif isinstance(element, NoneType):
+                continue
+            elif isinstance(element, Extension):
+                continue
+            else:
+                raise NotImplementedError(f'Unknown element {element}')
+        module = Module(
+            body=list(self._imports) + self._body, type_ignores=[]
+        )
+
+        return module
 
 
 class Generator:
