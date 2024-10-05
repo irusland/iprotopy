@@ -10,7 +10,7 @@ from imports import ImportFrom
 from type_mapper import TypeMapper
 
 
-class ProtoFieldProcessor:
+class ClassFieldGenerator:
     def __init__(self, importer: DomesticImporter, type_mapper: TypeMapper):
         self._importer = importer
         self._type_mapper = type_mapper

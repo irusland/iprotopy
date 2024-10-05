@@ -19,9 +19,9 @@ from proto_schema_parser.ast import (
 )
 
 from domestic_importer import DomesticImporter
-from enum_generator import ProtoEnumProcessor
+from enum_generator import EnumGenerator
 from importer import Importer
-from message_class_generator import ProtoMessageProcessor
+from message_class_generator import MessageClassGenerator
 from type_mapper import TypeMapper
 
 logger = logging.getLogger(__name__)
@@ -54,7 +54,7 @@ class SourceGenerator:
 
         for element in file.file_elements:
             if isinstance(element, Message):
-                proto_message_processor = ProtoMessageProcessor(
+                proto_message_processor = MessageClassGenerator(
                     self._importer, self._type_mapper
                 )
                 self._body.append(
@@ -72,7 +72,7 @@ class SourceGenerator:
             elif isinstance(element, Comment):
                 continue
             elif isinstance(element, Enum):
-                proto_enum_processor = ProtoEnumProcessor(self._importer)
+                proto_enum_processor = EnumGenerator(self._importer)
                 self._body.append(proto_enum_processor.process_enum(element))
             elif isinstance(element, NoneType):
                 continue

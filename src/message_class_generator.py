@@ -5,14 +5,14 @@ from typing import List
 from proto_schema_parser import Field, Message
 from proto_schema_parser.ast import Comment, Enum, OneOf, Reserved
 
-from class_field_generator import ProtoFieldProcessor
+from class_field_generator import ClassFieldGenerator
 from domestic_importer import DomesticImporter
-from enum_generator import ProtoEnumProcessor
+from enum_generator import EnumGenerator
 from imports import ImportFrom
 from type_mapper import TypeMapper
 
 
-class ProtoMessageProcessor:
+class MessageClassGenerator:
     def __init__(self, importer: DomesticImporter, type_mapper: TypeMapper):
         self._importer = importer
         self._type_mapper = type_mapper
@@ -21,7 +21,7 @@ class ProtoMessageProcessor:
         class_body = []
         for element in current_element.elements:
             if isinstance(element, Field):
-                proto_field_processor = ProtoFieldProcessor(
+                proto_field_processor = ClassFieldGenerator(
                     self._importer, self._type_mapper
                 )
                 proto_field_processor.process_field(element, class_body)
@@ -29,7 +29,7 @@ class ProtoMessageProcessor:
                 # todo process comments
                 continue
             elif isinstance(element, Enum):
-                proto_enum_processor = ProtoEnumProcessor(self._importer)
+                proto_enum_processor = EnumGenerator(self._importer)
                 class_body.append(proto_enum_processor.process_enum(element))
             elif isinstance(element, OneOf):
                 # todo process oneof

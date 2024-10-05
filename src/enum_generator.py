@@ -6,7 +6,7 @@ from domestic_importer import DomesticImporter
 from imports import ImportFrom
 
 
-class ProtoEnumProcessor:
+class EnumGenerator:
     def __init__(self, importer: DomesticImporter):
         self._importer = importer
 
