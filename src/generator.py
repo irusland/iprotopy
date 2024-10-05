@@ -366,9 +366,7 @@ class SourceGenerator:
                 continue
             else:
                 raise NotImplementedError(f'Unknown element {element}')
-        module = Module(
-            body=self._body, type_ignores=[]
-        )
+        module = Module(body=self._body, type_ignores=[])
 
         return module
 
