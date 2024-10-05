@@ -56,6 +56,7 @@ class ServiceMethodGenerator:
         )
 
     def _get_annotation(self, class_type: str, is_stream: bool) -> ast.expr:
+        self._importer.register_dependency(class_type)
         if is_stream:
             self._importer.add_import(
                 ImportFrom(module='typing', names=[alias(name='Iterable')], level=0)
@@ -73,8 +74,6 @@ class ServiceMethodGenerator:
             if is_input_stream
             else self._unary_input_arg_name
         )
-        self._importer.register_dependency(input_class)
-
         input_annotation = self._get_annotation(input_class, is_input_stream)
         return arguments(
             posonlyargs=[],

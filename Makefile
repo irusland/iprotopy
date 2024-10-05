@@ -8,6 +8,7 @@ PROTOS = protos
 TEST = $(POETRY_RUN) pytest $(args)
 MAIN_CODE = tinkoff examples scripts
 CODE = tests $(MAIN_CODE)
+SOURCES = src/
 
 .PHONY: install
 install:
@@ -23,11 +24,12 @@ grpc:
 
 .PHONY: format
 format:
-	ruff check --fix src/
-	ruff check --select I --fix src/
-	ruff format src/
+	ruff format $(SOURCES)
+	ruff check --fix $(SOURCES)
+	ruff check --select I --fix $(SOURCES)
+	ruff format $(SOURCES)
 	pyprojectsort
 
 .PHONY: lint
 lint:
-	ruff src/
+	ruff $(SOURCES)
