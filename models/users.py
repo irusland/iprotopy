@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
 
-from invest.grpc import users_pb2, users_pb2_grpc
 from src.convertion import dataclass_to_protobuf
 from src.convertion import protobuf_to_dataclass
 from typing import List
