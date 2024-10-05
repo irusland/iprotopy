@@ -374,30 +374,31 @@ class SourceGenerator:
 
 
 class Generator:
-    def __init__(self, parser: Parser, type_mapper: TypeMapper, importer: Importer):
+    def __init__(self, parser: Parser, type_mapper: TypeMapper):
         self._parser = parser
         self._type_mapper = type_mapper
-        self._importer = importer
 
     def generate_sources(self, proto_dir: Path, out_dir: Path):
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / '__init__.py').touch()
         proto_files = list(proto_dir.rglob('*.proto'))
         modules: Dict[Path, Module] = {}
+        importer = Importer()
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
             source_generator = SourceGenerator(
                 proto_file, out_dir, pyfile, self._parser, self._type_mapper,
-                self._importer
+                importer
             )
             module = source_generator.generate_source()
             modules[proto_file] = module
 
-        self._importer.remove_circular_dependencies()
+        importer.remove_circular_dependencies()
+
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
-            imports = self._importer.get_dependency_imports(pyfile)
+            imports = importer.get_dependency_imports(pyfile)
             module = modules[proto_file]
             self._insert_imports(module, imports)
 
@@ -424,8 +425,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     parser = Parser()
     type_mapper = TypeMapper()
-    importer = Importer()
-    gen = Generator(parser, type_mapper, importer)
+    gen = Generator(parser, type_mapper)
     gen.generate_sources(
         proto_dir=ROOT_DIR / 'tinkoff/invest/grpc',
         out_dir=ROOT_DIR / 'src' / "models",
