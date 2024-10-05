@@ -204,7 +204,6 @@ class ProtoMessageProcessor:
     ):
         if field.cardinality == FieldCardinality.REPEATED:
             self._process_repeated_field(field, fields)
-        # todo
         elif field.cardinality == FieldCardinality.OPTIONAL:
             self._process_optional_field(field, fields)
         else:
