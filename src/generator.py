@@ -97,6 +97,40 @@ class Importer:
                 dependencies.remove(class_name)
 
 
+class ProtoEnumProcessor:
+    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path):
+        self._imports = imports
+        self._importer = importer
+        self._pyfile = pyfile
+
+    def process_enum(self, element) -> ClassDef:
+        enum_body = []
+        for enum_element in element.elements:
+            if isinstance(enum_element, EnumValue):
+                enum_body.append(
+                    Assign(
+                        targets=[Name(id=enum_element.name, ctx=Store())],
+                        value=Constant(value=enum_element.number)
+                    ),
+                )
+            elif isinstance(enum_element, Comment):
+                # todo process comments
+                continue
+            else:
+                raise NotImplementedError(f'Unknown enum_element {enum_element}')
+
+        self._imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
+        enum_name = element.name
+        self._importer.register_class(enum_name, self._pyfile)
+        return ClassDef(
+            name=enum_name,
+            bases=[Name(id='Enum', ctx=Load())],
+            keywords=[],
+            body=enum_body,
+            decorator_list=[]
+        )
+
+
 class ProtoMessageProcessor:
     def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
         self._imports = imports
@@ -115,8 +149,9 @@ class ProtoMessageProcessor:
                 # todo process comments
                 continue
             elif isinstance(element, Enum):
+                proto_enum_processor = ProtoEnumProcessor(self._imports, self._importer, self._pyfile)
                 class_body.append(
-                    self.process_enum(
+                    proto_enum_processor.process_enum(
                         element
                     )
                 )
@@ -145,33 +180,6 @@ class ProtoMessageProcessor:
             keywords=[],
             body=class_body,
             decorator_list=[Name(id='dataclass', ctx=Load())]
-        )
-
-    def process_enum(self, element) -> ClassDef:
-        enum_body = []
-        for enum_element in element.elements:
-            if isinstance(enum_element, EnumValue):
-                enum_body.append(
-                    Assign(
-                        targets=[Name(id=enum_element.name, ctx=Store())],
-                        value=Constant(value=enum_element.number)
-                    ),
-                )
-            elif isinstance(enum_element, Comment):
-                # todo process comments
-                continue
-            else:
-                raise NotImplementedError(f'Unknown enum_element {enum_element}')
-
-        self._imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
-        enum_name = element.name
-        self._importer.register_class(enum_name, self._pyfile)
-        return ClassDef(
-            name=enum_name,
-            bases=[Name(id='Enum', ctx=Load())],
-            keywords=[],
-            body=enum_body,
-            decorator_list=[]
         )
 
     def _process_optional_field(
@@ -305,11 +313,11 @@ class SourceGenerator:
             elif isinstance(element, Comment):
                 continue
             elif isinstance(element, Enum):
-                proto_message_processor = ProtoMessageProcessor(
-                    self._imports, self._importer, self._pyfile, self._type_mapper
+                proto_enum_processor = ProtoEnumProcessor(
+                    self._imports, self._importer, self._pyfile
                 )
                 self._body.append(
-                    proto_message_processor.process_enum(element)
+                    proto_enum_processor.process_enum(element)
                 )
             elif isinstance(element, NoneType):
                 continue
