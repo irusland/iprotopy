@@ -19,6 +19,7 @@ astor = "^0.8.1"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.9"
 pre-commit = "^3.5.0"
+pyprojectsort = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -27,7 +28,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 88
-exclude = ["build", "dist", ".git", "__pycache__"]
+exclude = ["build", "dist", ".git", "__pycache__",
+    "convertion.py" # todo remove
+]
 
 [tool.ruff.format]
 quote-style = "single"
