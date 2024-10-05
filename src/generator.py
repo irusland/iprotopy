@@ -303,7 +303,6 @@ class SourceGenerator:
         self._out_dir = out_dir
         self._pyfile = pyfile
         self._body: List[ast.stmt] = []
-        self._imports: Set[AstImport] = set()
 
     def generate_source(self) -> Module:
         logger.debug(f'Generating source for {self._proto_file}')
@@ -341,7 +340,7 @@ class SourceGenerator:
             else:
                 raise NotImplementedError(f'Unknown element {element}')
         module = Module(
-            body=list(self._imports) + self._body, type_ignores=[]
+            body=self._body, type_ignores=[]
         )
 
         return module
