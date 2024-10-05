@@ -9,6 +9,11 @@ TEST = $(POETRY_RUN) pytest $(args)
 MAIN_CODE = tinkoff examples scripts
 CODE = tests $(MAIN_CODE)
 
+.PHONY: install
+install:
+	pre-commit install
+
+
 .PHONY: grpc
 grpc:
 	#rm -r ${PACKAGE_PROTO_DIR}
