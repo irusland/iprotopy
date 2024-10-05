@@ -60,6 +60,7 @@ class Importer:
         self._classes: Dict[str, Path] = {}
         self._dependencies: Dict[Path, Set[str]] = {}
         self._default_dependencies = set(i.__name__ for i in (int, str, bool))
+        self._imports: Dict[Path, Set[AstImport]] = {}
 
     def register_class(self, class_name: str, pyfile: Path):
         if class_name in self._classes:
@@ -74,12 +75,13 @@ class Importer:
         self._dependencies[pyfile] = dependencies
 
     def get_dependency_imports(self, pyfile: Path) -> Set[AstImport]:
-        if pyfile not in self._dependencies:
-            return set()
-        return {
+        dependencies_imports = {
             self._get_import_for(class_name, pyfile) for class_name in
-                self._dependencies[pyfile]
+                self._dependencies.get(pyfile,())
         }
+        for import_ in self._imports.get(pyfile, ()):
+            dependencies_imports.add(import_)
+        return dependencies_imports
 
     def _get_import_for(self, class_name: str, pyfile: Path) -> AstImport:
         if class_name not in self._classes:
@@ -96,10 +98,14 @@ class Importer:
             if class_name in dependencies:
                 dependencies.remove(class_name)
 
+    def add_import(self, import_statement: AstImport, pyfile: Path):
+        imports = self._imports.get(pyfile, set())
+        imports.add(import_statement)
+        self._imports[pyfile] = imports
+
 
 class ProtoEnumProcessor:
-    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path):
-        self._imports = imports
+    def __init__(self, importer: Importer, pyfile: Path):
         self._importer = importer
         self._pyfile = pyfile
 
@@ -119,7 +125,7 @@ class ProtoEnumProcessor:
             else:
                 raise NotImplementedError(f'Unknown enum_element {enum_element}')
 
-        self._imports.add(ImportFrom(module='enum', names=[alias(name='Enum')], level=0))
+        self._importer.add_import(ImportFrom(module='enum', names=[alias(name='Enum')], level=0), self._pyfile)
         enum_name = element.name
         self._importer.register_class(enum_name, self._pyfile)
         return ClassDef(
@@ -132,8 +138,7 @@ class ProtoEnumProcessor:
 
 
 class ProtoFieldProcessor:
-    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
-        self._imports = imports
+    def __init__(self, importer: Importer, pyfile: Path, type_mapper: TypeMapper):
         self._importer = importer
         self._pyfile = pyfile
         self._type_mapper = type_mapper
@@ -151,8 +156,8 @@ class ProtoFieldProcessor:
             )
 
         self._process_field_template(field, fields, get_field)
-        self._imports.add(
-            ImportFrom(module='typing', names=[alias(name='Optional')], level=0)
+        self._importer.add_import(
+            ImportFrom(module='typing', names=[alias(name='Optional')], level=0), self._pyfile
         )
 
     def process_field(
@@ -174,7 +179,9 @@ class ProtoFieldProcessor:
         try:
             field_type, field_import = self._type_mapper.map(field_type)
             if field_import is not None:
-                self._imports.add(field_import)
+                self._importer.add_import(
+                    field_import, self._pyfile
+                )
         except ValueError:
             if '.' in field_type:
                 class_name = field_type.split('.')[0]
@@ -200,7 +207,9 @@ class ProtoFieldProcessor:
             )
 
         self._process_field_template(field, fields, get_field)
-        self._imports.add(ImportFrom(module='typing', names=[alias(name='List')], level=0))
+        self._importer.add_import(
+            ImportFrom(module='typing', names=[alias(name='List')], level=0), self._pyfile
+        )
 
     def _process_single_field(
         self, field: Field, fields
@@ -220,8 +229,7 @@ class ProtoFieldProcessor:
 
 
 class ProtoMessageProcessor:
-    def __init__(self, imports: Set[AstImport], importer: Importer, pyfile: Path, type_mapper: TypeMapper):
-        self._imports = imports
+    def __init__(self, importer: Importer, pyfile: Path, type_mapper: TypeMapper):
         self._importer = importer
         self._pyfile = pyfile
         self._type_mapper = type_mapper
@@ -232,13 +240,13 @@ class ProtoMessageProcessor:
         class_body = []
         for element in current_element.elements:
             if isinstance(element, Field):
-                proto_field_processor = ProtoFieldProcessor(self._imports, self._importer, self._pyfile, self._type_mapper)
+                proto_field_processor = ProtoFieldProcessor(self._importer, self._pyfile, self._type_mapper)
                 proto_field_processor.process_field(element, class_body)
             elif isinstance(element, Comment):
                 # todo process comments
                 continue
             elif isinstance(element, Enum):
-                proto_enum_processor = ProtoEnumProcessor(self._imports, self._importer, self._pyfile)
+                proto_enum_processor = ProtoEnumProcessor(self._importer, self._pyfile)
                 class_body.append(
                     proto_enum_processor.process_enum(
                         element
@@ -257,8 +265,8 @@ class ProtoMessageProcessor:
                 raise NotImplementedError(f'Unknown element {element}')
         if not class_body:
             class_body.append(Pass())
-        self._imports.add(
-            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0)
+        self._importer.add_import(
+            ImportFrom(module='dataclasses', names=[alias(name='dataclass')], level=0), self._pyfile
         )
         class_name = current_element.name
         class_body = self._reorder_fields(class_body)
@@ -306,7 +314,7 @@ class SourceGenerator:
 
         for element in file.file_elements:
             if isinstance(element, Message):
-                proto_message_processor = ProtoMessageProcessor(self._imports, self._importer, self._pyfile, self._type_mapper)
+                proto_message_processor = ProtoMessageProcessor(self._importer, self._pyfile, self._type_mapper)
                 self._body.append(proto_message_processor.process_proto_message(element))
             elif isinstance(element, Package):
                 continue
@@ -321,7 +329,7 @@ class SourceGenerator:
                 continue
             elif isinstance(element, Enum):
                 proto_enum_processor = ProtoEnumProcessor(
-                    self._imports, self._importer, self._pyfile
+                    self._importer, self._pyfile
                 )
                 self._body.append(
                     proto_enum_processor.process_enum(element)
@@ -358,7 +366,6 @@ class Generator:
             modules[proto_file] = module
 
         self._importer.remove_circular_dependencies()
-
         for proto_file in proto_files:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             imports = self._importer.get_dependency_imports(pyfile)
