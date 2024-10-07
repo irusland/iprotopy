@@ -43,10 +43,14 @@ class Importer:
                 f'Class {class_name} not registered but needed in {pyfile}'
             )
         return ImportFrom(
-            module=self._definitions[class_name].stem,
+            module=self._path_to_module(self._definitions[class_name]),
             names=[alias(name=class_name)],
             level=0,
         )
+
+    def _path_to_module(self, path: Path) -> str:
+        module_path = path.with_suffix('')
+        return str(module_path).replace('/', '.').replace('\\', '.')
 
     def remove_circular_dependencies(self):
         for class_name, pyfile in self._definitions.items():

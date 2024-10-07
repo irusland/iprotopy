@@ -2,7 +2,7 @@ import ast
 from ast import *
 
 src = """
-from datetime import datetime
+from models.tinkoff.invest.grpc.common import MoneyValue
 """
 
 ast_src = ast.parse(src)
