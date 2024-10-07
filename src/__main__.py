@@ -14,7 +14,6 @@ if __name__ == '__main__':
     protos_generator = ProtosGenerator()
     gen = PackageGenerator(parser, type_mapper, protos_generator)
     gen.generate_sources(
-        root_dir=ROOT_DIR,
-        proto_dir=ROOT_DIR / 'tinkoff/invest/grpc',
-        out_dir=ROOT_DIR / "models",
+        proto_dir=ROOT_DIR / 'protos',
+        out_dir=ROOT_DIR,
     )

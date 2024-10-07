@@ -28,8 +28,8 @@ class PackageGenerator:
         self._type_mapper = type_mapper
         self._protos_generator = protos_generator
 
-    def generate_sources(self, root_dir: Path, proto_dir: Path, out_dir: Path):
-        self._protos_generator.generate_protos(root_dir, proto_dir, out_dir)
+    def generate_sources(self, proto_dir: Path, out_dir: Path):
+        self._protos_generator.generate_protos(proto_dir, out_dir)
 
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / '__init__.py').touch()
@@ -40,7 +40,7 @@ class PackageGenerator:
         self._create_lib_dependencies(out_dir, importer)
 
         for proto_file in proto_files:
-            pyfile = proto_file.relative_to(root_dir).with_suffix('.py')
+            pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
             source_generator = SourceGenerator(
                 proto_file, out_dir, pyfile, self._parser, self._type_mapper, importer
@@ -51,7 +51,7 @@ class PackageGenerator:
         importer.remove_circular_dependencies()
 
         for proto_file in proto_files:
-            pyfile = proto_file.relative_to(root_dir).with_suffix('.py')
+            pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             imports = importer.get_imports(pyfile)
             module = modules[proto_file]
             self._insert_imports(module, imports)
