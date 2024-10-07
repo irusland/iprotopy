@@ -21,9 +21,9 @@ logger = logging.getLogger(__name__)
 
 
 class PackageGenerator:
-    def __init__(self, parser: Parser, type_mapper: TypeMapper):
-        self._parser = parser
-        self._type_mapper = type_mapper
+    def __init__(self):
+        self._parser = Parser()
+        self._type_mapper = TypeMapper()
 
     def generate_sources(self, proto_dir: Path, out_dir: Path):
         importer = Importer()
