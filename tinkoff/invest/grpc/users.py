@@ -29,25 +29,25 @@ class UsersService(BaseService):
     def GetMarginAttributes(self, request: 'GetMarginAttributesRequest'
         ) ->'GetMarginAttributesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetMarginAttributesRequest())
+        response, call = self._stub.GetMarginAttributes.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetMarginAttributesResponse)
 
     def GetUserTariff(self, request: 'GetUserTariffRequest'
         ) ->'GetUserTariffResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetUserTariffRequest())
+        response, call = self._stub.GetUserTariff.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetUserTariffResponse)
 
     def GetInfo(self, request: 'GetInfoRequest') ->'GetInfoResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetInfoRequest())
+        response, call = self._stub.GetInfo.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetInfoResponse)
 
 
 @dataclass

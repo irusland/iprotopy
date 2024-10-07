@@ -25,57 +25,58 @@ class OperationsService(BaseService):
     def GetOperations(self, request: 'OperationsRequest'
         ) ->'OperationsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            OperationsRequest())
+        response, call = self._stub.GetOperations.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OperationsResponse)
 
     def GetPortfolio(self, request: 'PortfolioRequest') ->'PortfolioResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PortfolioRequest())
+        response, call = self._stub.GetPortfolio.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PortfolioResponse)
 
     def GetPositions(self, request: 'PositionsRequest') ->'PositionsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PositionsRequest())
+        response, call = self._stub.GetPositions.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PositionsResponse)
 
     def GetWithdrawLimits(self, request: 'WithdrawLimitsRequest'
         ) ->'WithdrawLimitsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            WithdrawLimitsRequest())
+        response, call = self._stub.GetWithdrawLimits.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, WithdrawLimitsResponse)
 
     def GetBrokerReport(self, request: 'BrokerReportRequest'
         ) ->'BrokerReportResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            BrokerReportRequest())
+        response, call = self._stub.GetBrokerReport.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, BrokerReportResponse)
 
     def GetDividendsForeignIssuer(self, request:
         'GetDividendsForeignIssuerRequest'
         ) ->'GetDividendsForeignIssuerResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+            GetDividendsForeignIssuerRequest())
+        response, call = self._stub.GetDividendsForeignIssuer.with_call(request
+            =protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response,
+            GetDividendsForeignIssuerResponse)
 
     def GetOperationsByCursor(self, request: 'GetOperationsByCursorRequest'
         ) ->'GetOperationsByCursorResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+            GetOperationsByCursorRequest())
+        response, call = self._stub.GetOperationsByCursor.with_call(request
+            =protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetOperationsByCursorResponse)
 
 
 class OperationsStreamService(BaseService):
@@ -87,18 +88,18 @@ class OperationsStreamService(BaseService):
     def PortfolioStream(self, request: 'PortfolioStreamRequest') ->Iterable[
         'PortfolioStreamResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PortfolioStreamRequest())
+        response, call = self._stub.PortfolioStream.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PortfolioStreamResponse)
 
     def PositionsStream(self, request: 'PositionsStreamRequest') ->Iterable[
         'PositionsStreamResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PositionsStreamRequest())
+        response, call = self._stub.PositionsStream.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PositionsStreamResponse)
 
 
 @dataclass

@@ -26,18 +26,18 @@ class OrdersStreamService(BaseService):
     def TradesStream(self, request: 'TradesStreamRequest') ->Iterable[
         'TradesStreamResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            TradesStreamRequest())
+        response, call = self._stub.TradesStream.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, TradesStreamResponse)
 
     def OrderStateStream(self, request: 'OrderStateStreamRequest') ->Iterable[
         'OrderStateStreamResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            OrderStateStreamRequest())
+        response, call = self._stub.OrderStateStream.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OrderStateStreamResponse)
 
 
 class OrdersService(BaseService):
@@ -50,55 +50,55 @@ class OrdersService(BaseService):
 
     def PostOrder(self, request: 'PostOrderRequest') ->'PostOrderResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PostOrderRequest())
+        response, call = self._stub.PostOrder.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PostOrderResponse)
 
     def CancelOrder(self, request: 'CancelOrderRequest'
         ) ->'CancelOrderResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            CancelOrderRequest())
+        response, call = self._stub.CancelOrder.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, CancelOrderResponse)
 
     def GetOrderState(self, request: 'GetOrderStateRequest') ->'OrderState':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetOrderStateRequest())
+        response, call = self._stub.GetOrderState.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OrderState)
 
     def GetOrders(self, request: 'GetOrdersRequest') ->'GetOrdersResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetOrdersRequest())
+        response, call = self._stub.GetOrders.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetOrdersResponse)
 
     def ReplaceOrder(self, request: 'ReplaceOrderRequest'
         ) ->'PostOrderResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            ReplaceOrderRequest())
+        response, call = self._stub.ReplaceOrder.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PostOrderResponse)
 
     def GetMaxLots(self, request: 'GetMaxLotsRequest') ->'GetMaxLotsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetMaxLotsRequest())
+        response, call = self._stub.GetMaxLots.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetMaxLotsResponse)
 
     def GetOrderPrice(self, request: 'GetOrderPriceRequest'
         ) ->'GetOrderPriceResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetOrderPriceRequest())
+        response, call = self._stub.GetOrderPrice.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetOrderPriceResponse)
 
 
 @dataclass

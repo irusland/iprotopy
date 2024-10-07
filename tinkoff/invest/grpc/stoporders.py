@@ -24,26 +24,26 @@ class StopOrdersService(BaseService):
     def PostStopOrder(self, request: 'PostStopOrderRequest'
         ) ->'PostStopOrderResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            PostStopOrderRequest())
+        response, call = self._stub.PostStopOrder.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, PostStopOrderResponse)
 
     def GetStopOrders(self, request: 'GetStopOrdersRequest'
         ) ->'GetStopOrdersResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetStopOrdersRequest())
+        response, call = self._stub.GetStopOrders.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetStopOrdersResponse)
 
     def CancelStopOrder(self, request: 'CancelStopOrderRequest'
         ) ->'CancelStopOrderResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            CancelStopOrderRequest())
+        response, call = self._stub.CancelStopOrder.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, CancelStopOrderResponse)
 
 
 @dataclass

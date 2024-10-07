@@ -19,6 +19,7 @@ from _ast import (
 
 from proto_schema_parser.ast import Method
 
+from constants import SOURCE_DIR_NAME
 from src.domestic_importer import DomesticImporter
 from src.imports import ImportFrom
 
@@ -82,7 +83,10 @@ class ServiceMethodGenerator:
             defaults=[],
         )
 
-    def _get_function_body(self, method) -> list[ast.stmt]:
+    def _get_function_body(self, method: Method) -> list[ast.stmt]:
+        method_name = method.name
+        request_class_name = method.input_type.type
+        response_class_name = method.output_type.type
         body = [
             Assign(
                 targets=[Name(id='protobuf_request', ctx=Store())],
@@ -97,7 +101,7 @@ class ServiceMethodGenerator:
                                     attr='_protobuf',
                                     ctx=Load(),
                                 ),
-                                attr='GetAccountsRequest',
+                                attr=request_class_name,
                                 ctx=Load(),
                             ),
                             args=[],
@@ -125,7 +129,7 @@ class ServiceMethodGenerator:
                                 attr='_stub',
                                 ctx=Load(),
                             ),
-                            attr='GetAccounts',
+                            attr=method_name,
                             ctx=Load(),
                         ),
                         attr='with_call',
@@ -153,7 +157,7 @@ class ServiceMethodGenerator:
                     func=Name(id='protobuf_to_dataclass', ctx=Load()),
                     args=[
                         Name(id='response', ctx=Load()),
-                        Name(id='GetAccountsResponse', ctx=Load()),
+                        Name(id=response_class_name, ctx=Load()),
                     ],
                     keywords=[],
                 )
@@ -162,14 +166,14 @@ class ServiceMethodGenerator:
 
         self._importer.add_import(
             ImportFrom(
-                module='src.convertion',
+                module=f'{SOURCE_DIR_NAME}.convertion',
                 names=[alias(name='dataclass_to_protobuf')],
                 level=0,
             )
         )
         self._importer.add_import(
             ImportFrom(
-                module='src.convertion',
+                module=f'{SOURCE_DIR_NAME}.convertion',
                 names=[alias(name='protobuf_to_dataclass')],
                 level=0,
             )

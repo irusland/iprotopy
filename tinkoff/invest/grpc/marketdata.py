@@ -21,66 +21,66 @@ class MarketDataService(BaseService):
 
     def GetCandles(self, request: 'GetCandlesRequest') ->'GetCandlesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetCandlesRequest())
+        response, call = self._stub.GetCandles.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetCandlesResponse)
 
     def GetLastPrices(self, request: 'GetLastPricesRequest'
         ) ->'GetLastPricesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetLastPricesRequest())
+        response, call = self._stub.GetLastPrices.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetLastPricesResponse)
 
     def GetOrderBook(self, request: 'GetOrderBookRequest'
         ) ->'GetOrderBookResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetOrderBookRequest())
+        response, call = self._stub.GetOrderBook.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetOrderBookResponse)
 
     def GetTradingStatus(self, request: 'GetTradingStatusRequest'
         ) ->'GetTradingStatusResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetTradingStatusRequest())
+        response, call = self._stub.GetTradingStatus.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetTradingStatusResponse)
 
     def GetTradingStatuses(self, request: 'GetTradingStatusesRequest'
         ) ->'GetTradingStatusesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetTradingStatusesRequest())
+        response, call = self._stub.GetTradingStatuses.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetTradingStatusesResponse)
 
     def GetLastTrades(self, request: 'GetLastTradesRequest'
         ) ->'GetLastTradesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetLastTradesRequest())
+        response, call = self._stub.GetLastTrades.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetLastTradesResponse)
 
     def GetClosePrices(self, request: 'GetClosePricesRequest'
         ) ->'GetClosePricesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetClosePricesRequest())
+        response, call = self._stub.GetClosePrices.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetClosePricesResponse)
 
     def GetTechAnalysis(self, request: 'GetTechAnalysisRequest'
         ) ->'GetTechAnalysisResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetTechAnalysisRequest())
+        response, call = self._stub.GetTechAnalysis.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetTechAnalysisResponse)
 
 
 class MarketDataStreamService(BaseService):
@@ -92,18 +92,18 @@ class MarketDataStreamService(BaseService):
     def MarketDataStream(self, requests: Iterable['MarketDataRequest']
         ) ->Iterable['MarketDataResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            MarketDataRequest())
+        response, call = self._stub.MarketDataStream.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, MarketDataResponse)
 
     def MarketDataServerSideStream(self, request:
         'MarketDataServerSideStreamRequest') ->Iterable['MarketDataResponse']:
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+            MarketDataServerSideStreamRequest())
+        response, call = self._stub.MarketDataServerSideStream.with_call(
+            request=protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, MarketDataResponse)
 
 
 @dataclass

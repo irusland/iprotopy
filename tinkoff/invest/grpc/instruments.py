@@ -27,249 +27,249 @@ class InstrumentsService(BaseService):
     def TradingSchedules(self, request: 'TradingSchedulesRequest'
         ) ->'TradingSchedulesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            TradingSchedulesRequest())
+        response, call = self._stub.TradingSchedules.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, TradingSchedulesResponse)
 
     def BondBy(self, request: 'InstrumentRequest') ->'BondResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.BondBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, BondResponse)
 
     def Bonds(self, request: 'InstrumentsRequest') ->'BondsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentsRequest())
+        response, call = self._stub.Bonds.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, BondsResponse)
 
     def GetBondCoupons(self, request: 'GetBondCouponsRequest'
         ) ->'GetBondCouponsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetBondCouponsRequest())
+        response, call = self._stub.GetBondCoupons.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetBondCouponsResponse)
 
     def GetBondEvents(self, request: 'GetBondEventsRequest'
         ) ->'GetBondEventsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetBondEventsRequest())
+        response, call = self._stub.GetBondEvents.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetBondEventsResponse)
 
     def CurrencyBy(self, request: 'InstrumentRequest') ->'CurrencyResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.CurrencyBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, CurrencyResponse)
 
     def Currencies(self, request: 'InstrumentsRequest') ->'CurrenciesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentsRequest())
+        response, call = self._stub.Currencies.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, CurrenciesResponse)
 
     def EtfBy(self, request: 'InstrumentRequest') ->'EtfResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.EtfBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, EtfResponse)
 
     def Etfs(self, request: 'InstrumentsRequest') ->'EtfsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+            InstrumentsRequest())
+        response, call = self._stub.Etfs.with_call(request=protobuf_request,
+            metadata=self._metadata)
+        return protobuf_to_dataclass(response, EtfsResponse)
 
     def FutureBy(self, request: 'InstrumentRequest') ->'FutureResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.FutureBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, FutureResponse)
 
     def Futures(self, request: 'InstrumentsRequest') ->'FuturesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentsRequest())
+        response, call = self._stub.Futures.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, FuturesResponse)
 
     def OptionBy(self, request: 'InstrumentRequest') ->'OptionResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.OptionBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OptionResponse)
 
     def Options(self, request: 'InstrumentsRequest') ->'OptionsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentsRequest())
+        response, call = self._stub.Options.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OptionsResponse)
 
     def OptionsBy(self, request: 'FilterOptionsRequest') ->'OptionsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            FilterOptionsRequest())
+        response, call = self._stub.OptionsBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, OptionsResponse)
 
     def ShareBy(self, request: 'InstrumentRequest') ->'ShareResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.ShareBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, ShareResponse)
 
     def Shares(self, request: 'InstrumentsRequest') ->'SharesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentsRequest())
+        response, call = self._stub.Shares.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, SharesResponse)
 
     def Indicatives(self, request: 'IndicativesRequest'
         ) ->'IndicativesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            IndicativesRequest())
+        response, call = self._stub.Indicatives.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, IndicativesResponse)
 
     def GetAccruedInterests(self, request: 'GetAccruedInterestsRequest'
         ) ->'GetAccruedInterestsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetAccruedInterestsRequest())
+        response, call = self._stub.GetAccruedInterests.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetAccruedInterestsResponse)
 
     def GetFuturesMargin(self, request: 'GetFuturesMarginRequest'
         ) ->'GetFuturesMarginResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetFuturesMarginRequest())
+        response, call = self._stub.GetFuturesMargin.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetFuturesMarginResponse)
 
     def GetInstrumentBy(self, request: 'InstrumentRequest'
         ) ->'InstrumentResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            InstrumentRequest())
+        response, call = self._stub.GetInstrumentBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, InstrumentResponse)
 
     def GetDividends(self, request: 'GetDividendsRequest'
         ) ->'GetDividendsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetDividendsRequest())
+        response, call = self._stub.GetDividends.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetDividendsResponse)
 
     def GetAssetBy(self, request: 'AssetRequest') ->'AssetResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            AssetRequest())
+        response, call = self._stub.GetAssetBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, AssetResponse)
 
     def GetAssets(self, request: 'AssetsRequest') ->'AssetsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            AssetsRequest())
+        response, call = self._stub.GetAssets.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, AssetsResponse)
 
     def GetFavorites(self, request: 'GetFavoritesRequest'
         ) ->'GetFavoritesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetFavoritesRequest())
+        response, call = self._stub.GetFavorites.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetFavoritesResponse)
 
     def EditFavorites(self, request: 'EditFavoritesRequest'
         ) ->'EditFavoritesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            EditFavoritesRequest())
+        response, call = self._stub.EditFavorites.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, EditFavoritesResponse)
 
     def GetCountries(self, request: 'GetCountriesRequest'
         ) ->'GetCountriesResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetCountriesRequest())
+        response, call = self._stub.GetCountries.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetCountriesResponse)
 
     def FindInstrument(self, request: 'FindInstrumentRequest'
         ) ->'FindInstrumentResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            FindInstrumentRequest())
+        response, call = self._stub.FindInstrument.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, FindInstrumentResponse)
 
     def GetBrands(self, request: 'GetBrandsRequest') ->'GetBrandsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetBrandsRequest())
+        response, call = self._stub.GetBrands.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetBrandsResponse)
 
     def GetBrandBy(self, request: 'GetBrandRequest') ->'Brand':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetBrandRequest())
+        response, call = self._stub.GetBrandBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, Brand)
 
     def GetAssetFundamentals(self, request: 'GetAssetFundamentalsRequest'
         ) ->'GetAssetFundamentalsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetAssetFundamentalsRequest())
+        response, call = self._stub.GetAssetFundamentals.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetAssetFundamentalsResponse)
 
     def GetAssetReports(self, request: 'GetAssetReportsRequest'
         ) ->'GetAssetReportsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetAssetReportsRequest())
+        response, call = self._stub.GetAssetReports.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetAssetReportsResponse)
 
     def GetConsensusForecasts(self, request: 'GetConsensusForecastsRequest'
         ) ->'GetConsensusForecastsResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+            GetConsensusForecastsRequest())
+        response, call = self._stub.GetConsensusForecasts.with_call(request
+            =protobuf_request, metadata=self._metadata)
+        return protobuf_to_dataclass(response, GetConsensusForecastsResponse)
 
     def GetForecastBy(self, request: 'GetForecastRequest'
         ) ->'GetForecastResponse':
         protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            GetAccountsRequest())
-        response, call = self._stub.GetAccounts.with_call(request=
+            GetForecastRequest())
+        response, call = self._stub.GetForecastBy.with_call(request=
             protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, GetAccountsResponse)
+        return protobuf_to_dataclass(response, GetForecastResponse)
 
 
 @dataclass
