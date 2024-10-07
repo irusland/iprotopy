@@ -8,10 +8,11 @@ from typing import Dict, Set
 import astor
 from proto_schema_parser.parser import Parser
 
-from file_generator import BaseServiceSourceGenerator, SourceGenerator
+from file_generator import SourceGenerator
 from importer import Importer
 from imports import Import, ImportFrom
 from paths import ROOT_DIR
+from src.base_service_source_generator import BaseServiceSourceGenerator
 from src.domestic_importer import DomesticImporter
 from src.import_types import AstImport
 from type_mapper import TypeMapper

@@ -4,7 +4,6 @@ from common import Quotation
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
-
 from src.convertion import dataclass_to_protobuf
 from src.convertion import protobuf_to_dataclass
 from typing import List
