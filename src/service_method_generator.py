@@ -1,4 +1,6 @@
+import abc
 import ast
+import typing
 from _ast import (
     Assign,
     Attribute,
@@ -24,29 +26,32 @@ from src.domestic_importer import DomesticImporter
 from src.imports import ImportFrom
 
 
-class ServiceMethodGenerator:
-    _unary_input_arg_name = 'request'
-    _stream_input_arg_name = f'{_unary_input_arg_name}s'
+class BaseServiceMethodGenerator(abc.ABC):
+    _input_arg_name: str
+    _is_input_stream: bool
+    _is_output_stream: bool
 
     def __init__(self, importer: DomesticImporter):
         self._importer = importer
 
-    def process_service_method(self, method: Method) -> FunctionDef:
-        input_class = method.input_type.type
-        is_input_stream = method.input_type.stream
-        output_class = method.output_type.type
-        is_output_stream = method.output_type.stream
+    @abc.abstractmethod
+    def _get_function_body(self, method: Method) -> list[ast.stmt]:
+        pass
 
-        args = self._get_args(input_class, is_input_stream)
-
-        output_annotation = self._get_annotation(output_class, is_output_stream)
-        body = self._get_function_body(method)
-        return FunctionDef(
-            name=method.name,
-            args=args,
-            body=body,
-            decorator_list=[],
-            returns=output_annotation,
+    def _get_args(self, input_class: str) -> arguments:
+        input_annotation = self._get_annotation(input_class, self._is_input_stream)
+        return arguments(
+            posonlyargs=[],
+            args=[
+                arg(arg='self'),
+                arg(
+                    arg=self._input_arg_name,
+                    annotation=input_annotation,
+                ),
+            ],
+            kwonlyargs=[],
+            kw_defaults=[],
+            defaults=[],
         )
 
     def _get_annotation(self, class_type: str, is_stream: bool) -> ast.expr:
@@ -62,26 +67,27 @@ class ServiceMethodGenerator:
             )
         return Constant(value=class_type)
 
-    def _get_args(self, input_class: str, is_input_stream: bool) -> arguments:
-        input_arg_name = (
-            self._stream_input_arg_name
-            if is_input_stream
-            else self._unary_input_arg_name
+    def create(self, method: Method) -> FunctionDef:
+        input_class = method.input_type.type
+        output_class = method.output_type.type
+
+        args = self._get_args(input_class)
+
+        output_annotation = self._get_annotation(output_class, self._is_output_stream)
+        body = self._get_function_body(method)
+        return FunctionDef(
+            name=method.name,
+            args=args,
+            body=body,
+            decorator_list=[],
+            returns=output_annotation,
         )
-        input_annotation = self._get_annotation(input_class, is_input_stream)
-        return arguments(
-            posonlyargs=[],
-            args=[
-                arg(arg='self'),
-                arg(
-                    arg=input_arg_name,
-                    annotation=input_annotation,
-                ),
-            ],
-            kwonlyargs=[],
-            kw_defaults=[],
-            defaults=[],
-        )
+
+
+class ServiceMethodUnaryUnaryFunctionGenerator(BaseServiceMethodGenerator):
+    _input_arg_name: str = 'request'
+    _is_input_stream: bool = False
+    _is_output_stream: bool = False
 
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
         method_name = method.name
@@ -179,3 +185,59 @@ class ServiceMethodGenerator:
             )
         )
         return body
+
+
+class ServiceMethodUnaryStreamFunctionGenerator(BaseServiceMethodGenerator):
+    _input_arg_name: str = 'request'
+    _is_input_stream: bool = False
+    _is_output_stream: bool = True
+
+    def _get_function_body(self, method: Method) -> list[ast.stmt]:
+        # todo
+        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+
+
+class ServiceMethodStreamUnaryFunctionGenerator(BaseServiceMethodGenerator):
+    _input_arg_name: str = 'requests'
+    _is_input_stream: bool = True
+    _is_output_stream: bool = False
+
+    def _get_function_body(self, method: Method) -> list[ast.stmt]:
+        # todo
+        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+
+
+class ServiceMethodStreamStreamFunctionGenerator(BaseServiceMethodGenerator):
+    _input_arg_name: str = 'requests'
+    _is_input_stream: bool = True
+    _is_output_stream: bool = True
+
+    def _get_function_body(self, method: Method) -> list[ast.stmt]:
+        # todo
+        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+
+
+class ServiceMethodGenerator:
+    _unary_input_arg_name = 'request'
+    _stream_input_arg_name = f'{_unary_input_arg_name}s'
+    _method_generators: typing.Dict[
+        typing.Tuple[bool, bool], typing.Type[BaseServiceMethodGenerator]
+    ] = {
+        (False, False): ServiceMethodUnaryUnaryFunctionGenerator,
+        (True, False): ServiceMethodStreamUnaryFunctionGenerator,
+        (False, True): ServiceMethodUnaryStreamFunctionGenerator,
+        (True, True): ServiceMethodStreamStreamFunctionGenerator,
+    }
+
+    def __init__(self, importer: DomesticImporter):
+        self._importer = importer
+
+    def process_service_method(self, method: Method) -> FunctionDef:
+        is_input_stream = method.input_type.stream
+        is_output_stream = method.output_type.stream
+
+        method_generator = self._method_generators[(is_input_stream, is_output_stream)](
+            self._importer
+        )
+
+        return method_generator.create(method)
