@@ -4,6 +4,8 @@ from datetime import datetime
 from enum import IntEnum
 from src.convertion import dataclass_to_protobuf
 from src.convertion import protobuf_to_dataclass
+from tinkoff.invest.grpc import marketdata_pb2
+from tinkoff.invest.grpc import marketdata_pb2_grpc
 from tinkoff.invest.grpc.common import Quotation
 from tinkoff.invest.grpc.common import SecurityTradingStatus
 from typing import Iterable

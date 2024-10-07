@@ -21,21 +21,19 @@ logger = logging.getLogger(__name__)
 
 
 class PackageGenerator:
-    def __init__(
-        self, parser: Parser, type_mapper: TypeMapper, protos_generator: ProtosGenerator
-    ):
+    def __init__(self, parser: Parser, type_mapper: TypeMapper):
         self._parser = parser
         self._type_mapper = type_mapper
-        self._protos_generator = protos_generator
 
     def generate_sources(self, proto_dir: Path, out_dir: Path):
-        self._protos_generator.generate_protos(proto_dir, out_dir)
+        importer = Importer()
+        protos_generator = ProtosGenerator(importer)
+        protos_generator.generate_protos(proto_dir, out_dir)
 
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / '__init__.py').touch()
         proto_files = list(proto_dir.rglob('*.proto'))
         modules: Dict[Path, Module] = {}
-        importer = Importer()
 
         self._create_lib_dependencies(out_dir, importer)
 

@@ -2,6 +2,8 @@ from base_service import BaseService
 from dataclasses import dataclass
 from src.convertion import dataclass_to_protobuf
 from src.convertion import protobuf_to_dataclass
+from tinkoff.invest.grpc import sandbox_pb2
+from tinkoff.invest.grpc import sandbox_pb2_grpc
 from tinkoff.invest.grpc.common import MoneyValue
 from tinkoff.invest.grpc.operations import GetOperationsByCursorRequest
 from tinkoff.invest.grpc.operations import GetOperationsByCursorResponse

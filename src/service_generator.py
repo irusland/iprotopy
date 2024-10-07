@@ -53,6 +53,9 @@ class ServiceGenerator:
         package_name = self._pyfile.stem
         protobuf_package_name = f'{package_name}_pb2'
         protobuf_grpc_package_name = f'{package_name}_pb2_grpc'
+
+        self._importer.import_dependency(protobuf_package_name)
+        self._importer.import_dependency(protobuf_grpc_package_name)
         return [
             Assign(
                 targets=[Name(id='_protobuf', ctx=Store())],

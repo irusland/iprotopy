@@ -1,13 +1,19 @@
 import subprocess
 from pathlib import Path
 
+from src.importer import Importer
+
 
 class ProtosGenerator:
+    def __init__(self, importer: Importer):
+        self._importer = importer
+
     def generate_protos(self, proto_include_path: Path, models_path: Path):
-        models_dir = models_path
-        models_dir.mkdir(parents=True, exist_ok=True)
+        models_path.mkdir(parents=True, exist_ok=True)
 
         proto_files = list(proto_include_path.rglob('*.proto'))
+
+        self._register_modules(proto_files, proto_include_path)
 
         if not proto_files:
             raise ValueError(f'No .proto files found in {proto_include_path}')
@@ -27,11 +33,9 @@ class ProtosGenerator:
         except subprocess.CalledProcessError as e:
             raise ValueError(f'Error while generating protos: {e}') from e
 
-
-if __name__ == '__main__':
-    project_root = Path('..').resolve()
-    proto_include_path = project_root / 'protos'
-    models_output_path = project_root
-
-    generator = ProtosGenerator()
-    generator.generate_protos(proto_include_path, models_output_path)
+    def _register_modules(self, proto_files: list[Path], proto_include_path: Path):
+        for proto_file in proto_files:
+            package = proto_file.relative_to(proto_include_path).parent
+            filename = proto_file.stem
+            self._importer.define_dependency(f'{filename}_pb2', package)
+            self._importer.define_dependency(f'{filename}_pb2_grpc', package)

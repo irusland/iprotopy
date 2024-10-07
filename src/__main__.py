@@ -11,8 +11,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
     parser = Parser()
     type_mapper = TypeMapper()
-    protos_generator = ProtosGenerator()
-    gen = PackageGenerator(parser, type_mapper, protos_generator)
+    gen = PackageGenerator(parser, type_mapper)
     gen.generate_sources(
         proto_dir=ROOT_DIR / 'protos',
         out_dir=ROOT_DIR,
