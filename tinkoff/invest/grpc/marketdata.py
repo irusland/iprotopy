@@ -99,11 +99,10 @@ class MarketDataStreamService(BaseService):
 
     def MarketDataServerSideStream(self, request:
         'MarketDataServerSideStreamRequest') ->Iterable['MarketDataResponse']:
-        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            MarketDataServerSideStreamRequest())
-        response, call = self._stub.MarketDataServerSideStream.with_call(
-            request=protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, MarketDataResponse)
+        for response in self._stub.MarketDataServerSideStream(request=
+            dataclass_to_protobuf(request, self._protobuf.
+            MarketDataServerSideStreamRequest()), metadata=self._metadata):
+            yield protobuf_to_dataclass(response, MarketDataResponse)
 
 
 @dataclass

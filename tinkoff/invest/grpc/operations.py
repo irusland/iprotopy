@@ -87,19 +87,17 @@ class OperationsStreamService(BaseService):
 
     def PortfolioStream(self, request: 'PortfolioStreamRequest') ->Iterable[
         'PortfolioStreamResponse']:
-        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            PortfolioStreamRequest())
-        response, call = self._stub.PortfolioStream.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, PortfolioStreamResponse)
+        for response in self._stub.PortfolioStream(request=
+            dataclass_to_protobuf(request, self._protobuf.
+            PortfolioStreamRequest()), metadata=self._metadata):
+            yield protobuf_to_dataclass(response, PortfolioStreamResponse)
 
     def PositionsStream(self, request: 'PositionsStreamRequest') ->Iterable[
         'PositionsStreamResponse']:
-        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
-            PositionsStreamRequest())
-        response, call = self._stub.PositionsStream.with_call(request=
-            protobuf_request, metadata=self._metadata)
-        return protobuf_to_dataclass(response, PositionsStreamResponse)
+        for response in self._stub.PositionsStream(request=
+            dataclass_to_protobuf(request, self._protobuf.
+            PositionsStreamRequest()), metadata=self._metadata):
+            yield protobuf_to_dataclass(response, PositionsStreamResponse)
 
 
 @dataclass

@@ -6,6 +6,8 @@ from _ast import (
     Attribute,
     Call,
     Constant,
+    Expr,
+    For,
     FunctionDef,
     Load,
     Name,
@@ -13,6 +15,7 @@ from _ast import (
     Store,
     Subscript,
     Tuple,
+    Yield,
     alias,
     arg,
     arguments,
@@ -37,6 +40,22 @@ class BaseServiceMethodGenerator(abc.ABC):
     @abc.abstractmethod
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
         pass
+
+    def _add_function_body_imports(self):
+        self._importer.add_import(
+            ImportFrom(
+                module=f'{SOURCE_DIR_NAME}.convertion',
+                names=[alias(name='dataclass_to_protobuf')],
+                level=0,
+            )
+        )
+        self._importer.add_import(
+            ImportFrom(
+                module=f'{SOURCE_DIR_NAME}.convertion',
+                names=[alias(name='protobuf_to_dataclass')],
+                level=0,
+            )
+        )
 
     def _get_args(self, input_class: str) -> arguments:
         input_annotation = self._get_annotation(input_class, self._is_input_stream)
@@ -75,6 +94,7 @@ class BaseServiceMethodGenerator(abc.ABC):
 
         output_annotation = self._get_annotation(output_class, self._is_output_stream)
         body = self._get_function_body(method)
+        self._add_function_body_imports()
         return FunctionDef(
             name=method.name,
             args=args,
@@ -169,21 +189,6 @@ class ServiceMethodUnaryUnaryFunctionGenerator(BaseServiceMethodGenerator):
                 )
             ),
         ]
-
-        self._importer.add_import(
-            ImportFrom(
-                module=f'{SOURCE_DIR_NAME}.convertion',
-                names=[alias(name='dataclass_to_protobuf')],
-                level=0,
-            )
-        )
-        self._importer.add_import(
-            ImportFrom(
-                module=f'{SOURCE_DIR_NAME}.convertion',
-                names=[alias(name='protobuf_to_dataclass')],
-                level=0,
-            )
-        )
         return body
 
 
@@ -193,8 +198,72 @@ class ServiceMethodUnaryStreamFunctionGenerator(BaseServiceMethodGenerator):
     _is_output_stream: bool = True
 
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
-        # todo
-        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+        method_name = method.name
+        request_class_name = method.input_type.type
+        response_class_name = method.output_type.type
+        body = [
+            For(
+                target=Name(id='response', ctx=Store()),
+                iter=Call(
+                    func=Attribute(
+                        value=Attribute(
+                            value=Name(id='self', ctx=Load()), attr='_stub', ctx=Load()
+                        ),
+                        attr=method_name,
+                        ctx=Load(),
+                    ),
+                    args=[],
+                    keywords=[
+                        keyword(
+                            arg='request',
+                            value=Call(
+                                func=Name(id='dataclass_to_protobuf', ctx=Load()),
+                                args=[
+                                    Name(id='request', ctx=Load()),
+                                    Call(
+                                        func=Attribute(
+                                            value=Name(id='self', ctx=Load()),
+                                            attr=Attribute(
+                                                value=Name(id='_protobuf', ctx=Load()),
+                                                attr=request_class_name,
+                                                ctx=Load(),
+                                            ),
+                                        ),
+                                        args=[],
+                                        keywords=[],
+                                    ),
+                                ],
+                                keywords=[],
+                            ),
+                        ),
+                        keyword(
+                            arg='metadata',
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='_metadata',
+                                ctx=Load(),
+                            ),
+                        ),
+                    ],
+                ),
+                body=[
+                    Expr(
+                        value=Yield(
+                            value=Call(
+                                func=Name(id='protobuf_to_dataclass', ctx=Load()),
+                                args=[
+                                    Name(id='response', ctx=Load()),
+                                    Name(id=response_class_name, ctx=Load()),
+                                ],
+                                keywords=[],
+                            )
+                        )
+                    )
+                ],
+                orelse=[],
+            )
+        ]
+        return body
 
 
 class ServiceMethodStreamUnaryFunctionGenerator(BaseServiceMethodGenerator):
