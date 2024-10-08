@@ -7,7 +7,8 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
 
     gen = PackageGenerator()
+    usage_dir = ROOT_DIR / 'usage'
     gen.generate_sources(
-        proto_dir=ROOT_DIR / 'protos',
-        out_dir=ROOT_DIR / 'usage/package',
+        proto_dir=usage_dir / 'protos',
+        out_dir=usage_dir / 'package',
     )
