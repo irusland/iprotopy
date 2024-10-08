@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from protopy.importer import Importer
+from iprotopy.importer import Importer
 
 
 class ProtosGenerator:

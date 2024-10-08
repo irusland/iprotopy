@@ -1,5 +1,5 @@
 CODE = tests $(MAIN_CODE)
-SOURCES = protopy/
+SOURCES = iprotopy/
 
 
 .PHONY: install
@@ -18,3 +18,7 @@ format:
 .PHONY: lint
 lint:
 	ruff $(SOURCES)
+
+.PHONY: publish
+publish:
+	poetry publish --build

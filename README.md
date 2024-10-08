@@ -1,6 +1,6 @@
-# protopy
+# iprotopy
 
-`protopy` is a Python project designed to generate source files from Protocol Buffers (protos) using the `PackageGenerator` class.
+`iprotopy` is a Python project designed to generate source files from Protocol Buffers (protos) using the `PackageGenerator` class.
 
 ##
 
@@ -8,7 +8,7 @@
 import logging
 from pathlib import Path
 
-from protopy import PackageGenerator
+from iprotopy import PackageGenerator
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 - Packages the generated sources for easy usage.
 
 ```sh
-pip install protopy
+pip install iprotopy
 
 ```
 

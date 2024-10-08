@@ -5,8 +5,8 @@ from typing import List
 
 from proto_schema_parser.ast import Comment, Method, Service
 
-from protopy.domestic_importer import DomesticImporter
-from protopy.service_method_generator import ServiceMethodGenerator
+from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.service_method_generator import ServiceMethodGenerator
 
 
 class ServiceGenerator:

@@ -3,7 +3,7 @@ from typing import Set
 
 from importer import Importer
 
-from protopy.import_types import AstImport
+from iprotopy.import_types import AstImport
 
 
 class DomesticImporter:

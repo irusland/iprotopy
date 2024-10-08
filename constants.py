@@ -1,1 +1,1 @@
-SOURCE_PACKAGE_NAME = 'protopy'
+SOURCE_PACKAGE_NAME = 'iprotopy'

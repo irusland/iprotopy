@@ -1,5 +1,5 @@
 from typing import Union
 
-from protopy.imports import Import, ImportFrom
+from iprotopy.imports import Import, ImportFrom
 
 AstImport = Union[Import, ImportFrom]

@@ -27,8 +27,8 @@ from _ast import (
 from proto_schema_parser.ast import Method
 
 from constants import SOURCE_PACKAGE_NAME
-from protopy.domestic_importer import DomesticImporter
-from protopy.imports import ImportFrom
+from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.imports import ImportFrom
 
 
 class BaseServiceMethodGenerator(abc.ABC):

@@ -5,7 +5,7 @@ from typing import Dict, Set
 
 from imports import ImportFrom
 
-from protopy.import_types import AstImport
+from iprotopy.import_types import AstImport
 
 logger = logging.getLogger(__name__)
 

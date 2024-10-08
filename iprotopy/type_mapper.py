@@ -3,7 +3,7 @@ from typing import Tuple, Union
 
 from imports import ImportFrom
 
-from protopy.import_types import AstImport
+from iprotopy.import_types import AstImport
 
 
 class TypeMapper:

@@ -12,10 +12,10 @@ from imports import Import, ImportFrom
 from proto_schema_parser.parser import Parser
 from type_mapper import TypeMapper
 
-from protopy.base_service_source_generator import BaseServiceSourceGenerator
-from protopy.domestic_importer import DomesticImporter
-from protopy.import_types import AstImport
-from protopy.protos_generator import ProtosGenerator
+from iprotopy.base_service_source_generator import BaseServiceSourceGenerator
+from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.import_types import AstImport
+from iprotopy.protos_generator import ProtosGenerator
 
 logger = logging.getLogger(__name__)
 

@@ -10,7 +10,7 @@ from proto_schema_parser import Field, Message
 from proto_schema_parser.ast import Comment, Enum, OneOf, Reserved
 from type_mapper import TypeMapper
 
-from protopy.one_of_generator import OneOfGenerator
+from iprotopy.one_of_generator import OneOfGenerator
 
 
 class MessageClassGenerator:

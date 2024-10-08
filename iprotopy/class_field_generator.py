@@ -7,7 +7,7 @@ from imports import ImportFrom
 from proto_schema_parser import Field, FieldCardinality
 from type_mapper import TypeMapper
 
-from protopy.annotation_generator import AnnotationGenerator
+from iprotopy.annotation_generator import AnnotationGenerator
 
 
 class ClassFieldGenerator:

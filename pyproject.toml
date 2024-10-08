@@ -10,13 +10,13 @@ authors = [
 ]
 description = ""
 license = "MIT"
-name = "protopy"
-readme = "README.md"
-repository = "https://github.com/irusland/protopy"
-version = "0.1.0"
+name = "iprotopy"
 packages = [
-    { include = "protopy" }
+    { include = "iprotopy" },
 ]
+readme = "README.md"
+repository = "https://github.com/irusland/iprotopy"
+version = "0.1.0"
 
 [tool.poetry.dependencies]
 astor = "^0.8.1"

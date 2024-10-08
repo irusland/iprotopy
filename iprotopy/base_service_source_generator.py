@@ -13,7 +13,7 @@ from _ast import (
     arguments,
 )
 
-from protopy.domestic_importer import DomesticImporter
+from iprotopy.domestic_importer import DomesticImporter
 
 
 class BaseServiceSourceGenerator:

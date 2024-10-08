@@ -25,7 +25,7 @@ from proto_schema_parser.ast import (
 )
 from type_mapper import TypeMapper
 
-from protopy.service_generator import ServiceGenerator
+from iprotopy.service_generator import ServiceGenerator
 
 logger = logging.getLogger(__name__)
 
