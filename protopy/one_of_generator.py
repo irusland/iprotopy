@@ -4,7 +4,7 @@ from typing import Iterable
 from proto_schema_parser import Field
 from proto_schema_parser.ast import Comment, FieldCardinality, OneOf
 
-from src.class_field_generator import ClassFieldGenerator
+from protopy.class_field_generator import ClassFieldGenerator
 
 
 class OneOfGenerator:

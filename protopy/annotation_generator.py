@@ -1,5 +1,5 @@
-from src.domestic_importer import DomesticImporter
-from src.type_mapper import TypeMapper
+from protopy.domestic_importer import DomesticImporter
+from protopy.type_mapper import TypeMapper
 
 
 class AnnotationGenerator:

@@ -1,1 +1,1 @@
-SOURCE_DIR_NAME = 'src'
+SOURCE_PACKAGE_NAME = 'protopy'

@@ -4,7 +4,8 @@ from pathlib import Path
 from typing import Dict, Set
 
 from imports import ImportFrom
-from src.import_types import AstImport
+
+from protopy.import_types import AstImport
 
 logger = logging.getLogger(__name__)
 

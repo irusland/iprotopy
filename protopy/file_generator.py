@@ -7,6 +7,10 @@ from pathlib import Path
 from types import NoneType
 from typing import List
 
+from domestic_importer import DomesticImporter
+from enum_generator import EnumGenerator
+from importer import Importer
+from message_class_generator import MessageClassGenerator
 from proto_schema_parser import Message, Option, Parser
 from proto_schema_parser.ast import (
     Comment,
@@ -19,13 +23,9 @@ from proto_schema_parser.ast import (
 from proto_schema_parser.ast import (
     Import as ProtoImport,
 )
-
-from domestic_importer import DomesticImporter
-from enum_generator import EnumGenerator
-from importer import Importer
-from message_class_generator import MessageClassGenerator
-from src.service_generator import ServiceGenerator
 from type_mapper import TypeMapper
+
+from protopy.service_generator import ServiceGenerator
 
 logger = logging.getLogger(__name__)
 

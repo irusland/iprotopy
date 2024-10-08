@@ -2,8 +2,8 @@ from base_service import BaseService
 from dataclasses import dataclass
 from datetime import datetime
 from enum import IntEnum
-from src.convertion import dataclass_to_protobuf
-from src.convertion import protobuf_to_dataclass
+from protopy import dataclass_to_protobuf
+from protopy import protobuf_to_dataclass
 from tinkoff.invest.grpc import instruments_pb2
 from tinkoff.invest.grpc import instruments_pb2_grpc
 from tinkoff.invest.grpc.common import BrandData

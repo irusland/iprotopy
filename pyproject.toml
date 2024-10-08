@@ -9,8 +9,10 @@ authors = [
     "Ruslan Sirazhetdinov <ruslansir@icloud.com>",
 ]
 description = ""
+license = "MIT"
 name = "autoproto"
 readme = "README.md"
+repository = "https://github.com/irusland/protopy"
 version = "0.1.0"
 
 [tool.poetry.dependencies]

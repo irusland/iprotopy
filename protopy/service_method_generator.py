@@ -26,9 +26,9 @@ from _ast import (
 
 from proto_schema_parser.ast import Method
 
-from constants import SOURCE_DIR_NAME
-from src.domestic_importer import DomesticImporter
-from src.imports import ImportFrom
+from constants import SOURCE_PACKAGE_NAME
+from protopy.domestic_importer import DomesticImporter
+from protopy.imports import ImportFrom
 
 
 class BaseServiceMethodGenerator(abc.ABC):
@@ -46,14 +46,14 @@ class BaseServiceMethodGenerator(abc.ABC):
     def _add_function_body_imports(self):
         self._importer.add_import(
             ImportFrom(
-                module=f'{SOURCE_DIR_NAME}.convertion',
+                module=SOURCE_PACKAGE_NAME,
                 names=[alias(name='dataclass_to_protobuf')],
                 level=0,
             )
         )
         self._importer.add_import(
             ImportFrom(
-                module=f'{SOURCE_DIR_NAME}.convertion',
+                module=SOURCE_PACKAGE_NAME,
                 names=[alias(name='protobuf_to_dataclass')],
                 level=0,
             )

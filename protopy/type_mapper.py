@@ -2,7 +2,8 @@ from _ast import alias
 from typing import Tuple, Union
 
 from imports import ImportFrom
-from src.import_types import AstImport
+
+from protopy.import_types import AstImport
 
 
 class TypeMapper:

@@ -2,15 +2,15 @@ import ast
 from ast import AnnAssign, ClassDef, Load, Name, Pass, alias
 from typing import List
 
-from proto_schema_parser import Field, Message
-from proto_schema_parser.ast import Comment, Enum, OneOf, Reserved
-
 from class_field_generator import ClassFieldGenerator
 from domestic_importer import DomesticImporter
 from enum_generator import EnumGenerator
 from imports import ImportFrom
-from src.one_of_generator import OneOfGenerator
+from proto_schema_parser import Field, Message
+from proto_schema_parser.ast import Comment, Enum, OneOf, Reserved
 from type_mapper import TypeMapper
+
+from protopy.one_of_generator import OneOfGenerator
 
 
 class MessageClassGenerator:
