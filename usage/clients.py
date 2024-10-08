@@ -1,6 +1,45 @@
 from typing import Optional, List
 
+import grpc
 from grpc.aio import ChannelArgumentType, ClientInterceptor
+
+from usage.channels import create_channel
+from usage.metadata import get_metadata
+from usage.package.tinkoff.invest.grpc.instruments import InstrumentsService
+from usage.package.tinkoff.invest.grpc.marketdata import (
+    MarketDataService,
+    MarketDataStreamService,
+)
+from usage.package.tinkoff.invest.grpc.operations import (
+    OperationsService,
+    OperationsStreamService,
+)
+from usage.package.tinkoff.invest.grpc.orders import OrdersStreamService, OrdersService
+from usage.package.tinkoff.invest.grpc.sandbox import SandboxService
+from usage.package.tinkoff.invest.grpc.stoporders import StopOrdersService
+from usage.package.tinkoff.invest.grpc.users import UsersService
+
+
+class Services:
+    def __init__(
+        self,
+        channel: grpc.Channel,
+        token: str,
+        sandbox_token: Optional[str] = None,
+        app_name: Optional[str] = None,
+    ) -> None:
+        metadata = get_metadata(token, app_name)
+        sandbox_metadata = get_metadata(sandbox_token or token, app_name)
+        self.instruments_service = InstrumentsService(channel, metadata)
+        self.market_data_service = MarketDataService(channel, metadata)
+        self.market_data_stream_service = MarketDataStreamService(channel, metadata)
+        self.operations_service = OperationsService(channel, metadata)
+        self.operations_stream_service = OperationsStreamService(channel, metadata)
+        self.orders_stream_service = OrdersStreamService(channel, metadata)
+        self.orders_service = OrdersService(channel, metadata)
+        self.users_service = UsersService(channel, metadata)
+        self.sandbox_service = SandboxService(channel, sandbox_metadata)
+        self.stop_orders_service = StopOrdersService(channel, metadata)
 
 
 class Client:
