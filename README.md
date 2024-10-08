@@ -1,6 +1,6 @@
-# autoproto
+# protopy
 
-`autoproto` is a Python project designed to generate source files from Protocol Buffers (protos) using the `PackageGenerator` class.
+`protopy` is a Python project designed to generate source files from Protocol Buffers (protos) using the `PackageGenerator` class.
 
 ##
 
