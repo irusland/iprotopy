@@ -14,6 +14,7 @@ from tinkoff.invest.grpc.common import PageResponse
 from tinkoff.invest.grpc.common import Quotation
 from tinkoff.invest.grpc.common import SecurityTradingStatus
 from typing import List
+from typing import Optional
 
 
 class InstrumentsService(BaseService):
@@ -953,6 +954,8 @@ class AssetFull:
     br_code: str
     br_code_name: str
     instruments: List['AssetInstrument']
+    currency: Optional['AssetCurrency'] = None
+    security: Optional['AssetSecurity'] = None
 
 
 @dataclass
@@ -981,6 +984,11 @@ class AssetSecurity:
     isin: str
     type: str
     instrument_kind: 'InstrumentType'
+    share: Optional['AssetShare'] = None
+    bond: Optional['AssetBond'] = None
+    sp: Optional['AssetStructuredProduct'] = None
+    etf: Optional['AssetEtf'] = None
+    clearing_certificate: Optional['AssetClearingCertificate'] = None
 
 
 @dataclass

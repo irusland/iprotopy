@@ -8,6 +8,7 @@ from tinkoff.invest.grpc import operations_pb2
 from tinkoff.invest.grpc import operations_pb2_grpc
 from tinkoff.invest.grpc.common import InstrumentType
 from tinkoff.invest.grpc.common import MoneyValue
+from tinkoff.invest.grpc.common import Ping
 from tinkoff.invest.grpc.common import Quotation
 from typing import Iterable
 from typing import List
@@ -263,12 +264,16 @@ class PositionsOptions:
 
 @dataclass
 class BrokerReportRequest:
-    pass
+    generate_broker_report_request: Optional['GenerateBrokerReportRequest'
+        ] = None
+    get_broker_report_request: Optional['GetBrokerReportRequest'] = None
 
 
 @dataclass
 class BrokerReportResponse:
-    pass
+    generate_broker_report_response: Optional['GenerateBrokerReportResponse'
+        ] = None
+    get_broker_report_response: Optional['GetBrokerReportResponse'] = None
 
 
 @dataclass
@@ -403,12 +408,18 @@ class OperationType(IntEnum):
 
 @dataclass
 class GetDividendsForeignIssuerRequest:
-    pass
+    generate_div_foreign_issuer_report: Optional[
+        'GenerateDividendsForeignIssuerReportRequest'] = None
+    get_div_foreign_issuer_report: Optional[
+        'GetDividendsForeignIssuerReportRequest'] = None
 
 
 @dataclass
 class GetDividendsForeignIssuerResponse:
-    pass
+    generate_div_foreign_issuer_report_response: Optional[
+        'GenerateDividendsForeignIssuerReportResponse'] = None
+    div_foreign_issuer_report: Optional[
+        'GetDividendsForeignIssuerReportResponse'] = None
 
 
 @dataclass
@@ -460,7 +471,9 @@ class PortfolioStreamRequest:
 
 @dataclass
 class PortfolioStreamResponse:
-    pass
+    subscriptions: Optional['PortfolioSubscriptionResult'] = None
+    portfolio: Optional['PortfolioResponse'] = None
+    ping: Optional['Ping'] = None
 
 
 @dataclass
@@ -556,7 +569,9 @@ class PositionsStreamRequest:
 
 @dataclass
 class PositionsStreamResponse:
-    pass
+    subscriptions: Optional['PositionsSubscriptionResult'] = None
+    position: Optional['PositionData'] = None
+    ping: Optional['Ping'] = None
 
 
 @dataclass

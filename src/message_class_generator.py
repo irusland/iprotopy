@@ -1,5 +1,5 @@
 import ast
-from _ast import AnnAssign, ClassDef, Load, Name, Pass, alias
+from ast import AnnAssign, ClassDef, Load, Name, Pass, alias
 from typing import List
 
 from proto_schema_parser import Field, Message
@@ -9,32 +9,24 @@ from class_field_generator import ClassFieldGenerator
 from domestic_importer import DomesticImporter
 from enum_generator import EnumGenerator
 from imports import ImportFrom
+from src.one_of_generator import OneOfGenerator
 from type_mapper import TypeMapper
-
-
-class OneOfGenerator:
-    def __init__(self, importer: DomesticImporter, type_mapper: TypeMapper):
-        self._importer = importer
-        self._type_mapper = type_mapper
-
-    def process(self, one_of: OneOf) -> List[ast.stmt]:
-        # ClassFieldGenerator(self._importer, self._type_mapper).process_field(one_of, [])
-        return []
 
 
 class MessageClassGenerator:
     def __init__(self, importer: DomesticImporter, type_mapper: TypeMapper):
         self._importer = importer
         self._type_mapper = type_mapper
+        self._class_field_generator = ClassFieldGenerator(
+            self._importer, self._type_mapper
+        )
+        self._one_of_generator = OneOfGenerator(self._class_field_generator)
 
     def process_proto_message(self, current_element) -> ClassDef:
         class_body = []
         for element in current_element.elements:
             if isinstance(element, Field):
-                proto_field_processor = ClassFieldGenerator(
-                    self._importer, self._type_mapper
-                )
-                class_body.append(proto_field_processor.process_field(element))
+                class_body.append(self._class_field_generator.process_field(element))
             elif isinstance(element, Comment):
                 # todo process comments
                 continue
@@ -42,8 +34,7 @@ class MessageClassGenerator:
                 proto_enum_processor = EnumGenerator(self._importer)
                 class_body.append(proto_enum_processor.process_enum(element))
             elif isinstance(element, OneOf):
-                one_of_generator = OneOfGenerator(self._importer, self._type_mapper)
-                one_of_generator.process(element)
+                class_body.extend(self._one_of_generator.process(element))
             elif isinstance(element, Message):
                 class_body.append(self.process_proto_message(element))
             elif isinstance(element, Reserved):

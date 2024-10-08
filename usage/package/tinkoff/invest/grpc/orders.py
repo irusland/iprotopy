@@ -8,6 +8,7 @@ from tinkoff.invest.grpc import orders_pb2
 from tinkoff.invest.grpc import orders_pb2_grpc
 from tinkoff.invest.grpc.common import ErrorDetail
 from tinkoff.invest.grpc.common import MoneyValue
+from tinkoff.invest.grpc.common import Ping
 from tinkoff.invest.grpc.common import PriceType
 from tinkoff.invest.grpc.common import Quotation
 from tinkoff.invest.grpc.common import ResponseMetadata
@@ -106,7 +107,8 @@ class TradesStreamRequest:
 
 @dataclass
 class TradesStreamResponse:
-    pass
+    order_trades: Optional['OrderTrades'] = None
+    ping: Optional['Ping'] = None
 
 
 @dataclass
@@ -282,6 +284,8 @@ class GetOrderPriceResponse:
     executed_commission_rub: 'MoneyValue'
     service_commission: 'MoneyValue'
     deal_commission: 'MoneyValue'
+    extra_bond: Optional['ExtraBond'] = None
+    extra_future: Optional['ExtraFuture'] = None
 
 
     @dataclass
@@ -303,6 +307,9 @@ class OrderStateStreamRequest:
 
 @dataclass
 class OrderStateStreamResponse:
+    order_state: Optional['OrderState'] = None
+    ping: Optional['Ping'] = None
+    subscription: Optional['SubscriptionResponse'] = None
 
 
     @dataclass

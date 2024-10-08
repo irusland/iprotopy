@@ -6,6 +6,7 @@ from src.convertion import dataclass_to_protobuf
 from src.convertion import protobuf_to_dataclass
 from tinkoff.invest.grpc import marketdata_pb2
 from tinkoff.invest.grpc import marketdata_pb2_grpc
+from tinkoff.invest.grpc.common import Ping
 from tinkoff.invest.grpc.common import Quotation
 from tinkoff.invest.grpc.common import SecurityTradingStatus
 from typing import Iterable
@@ -106,7 +107,12 @@ class MarketDataStreamService(BaseService):
 
 @dataclass
 class MarketDataRequest:
-    pass
+    subscribe_candles_request: Optional['SubscribeCandlesRequest'] = None
+    subscribe_order_book_request: Optional['SubscribeOrderBookRequest'] = None
+    subscribe_trades_request: Optional['SubscribeTradesRequest'] = None
+    subscribe_info_request: Optional['SubscribeInfoRequest'] = None
+    subscribe_last_price_request: Optional['SubscribeLastPriceRequest'] = None
+    get_my_subscriptions: Optional['GetMySubscriptions'] = None
 
 
 @dataclass
@@ -120,7 +126,19 @@ class MarketDataServerSideStreamRequest:
 
 @dataclass
 class MarketDataResponse:
-    pass
+    subscribe_candles_response: Optional['SubscribeCandlesResponse'] = None
+    subscribe_order_book_response: Optional['SubscribeOrderBookResponse'
+        ] = None
+    subscribe_trades_response: Optional['SubscribeTradesResponse'] = None
+    subscribe_info_response: Optional['SubscribeInfoResponse'] = None
+    candle: Optional['Candle'] = None
+    trade: Optional['Trade'] = None
+    orderbook: Optional['OrderBook'] = None
+    trading_status: Optional['TradingStatus'] = None
+    ping: Optional['Ping'] = None
+    subscribe_last_price_response: Optional['SubscribeLastPriceResponse'
+        ] = None
+    last_price: Optional['LastPrice'] = None
 
 
 @dataclass
