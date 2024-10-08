@@ -275,7 +275,9 @@ class ServiceMethodStreamUnaryFunctionGenerator(BaseServiceMethodGenerator):
 
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
         # todo
-        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+        raise NotImplementedError(
+            f'Stream Unary for {method.name} is not implemented yet'
+        )
 
 
 class ServiceMethodStreamStreamFunctionGenerator(BaseServiceMethodGenerator):
