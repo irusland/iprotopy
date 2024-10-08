@@ -4,18 +4,14 @@ from ast import *
 src = """
 class A:
     def method():
-        for response in self.stub.TradesStream(
-            request=_grpc_helpers.dataclass_to_protobuff(
-                request, orders_pb2.TradesStreamRequest()
-            ),
-            metadata=self.metadata,
+        for response in self._stub.MarketDataStream(
+            request_iterator=(dataclass_to_protobuf(request, self._protobuf.MarketDataRequest()) for request in requests),
+            metadata=self._metadata,
         ):
-            yield _grpc_helpers.protobuf_to_dataclass(response, TradesStreamResponse)
+            yield protobuf_to_dataclass(response, MarketDataResponse)
 
 """
 
 ast_src = ast.parse(src)
 
 print(ast.dump(ast_src))
-
-

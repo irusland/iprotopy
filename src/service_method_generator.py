@@ -9,6 +9,7 @@ from _ast import (
     Expr,
     For,
     FunctionDef,
+    GeneratorExp,
     Load,
     Name,
     Return,
@@ -19,6 +20,7 @@ from _ast import (
     alias,
     arg,
     arguments,
+    comprehension,
     keyword,
 )
 
@@ -282,8 +284,83 @@ class ServiceMethodStreamStreamFunctionGenerator(BaseServiceMethodGenerator):
     _is_output_stream: bool = True
 
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
-        # todo
-        return ServiceMethodUnaryUnaryFunctionGenerator._get_function_body(self, method)
+        method_name = method.name
+        request_class_name = method.input_type.type
+        response_class_name = method.output_type.type
+        body = [
+            For(
+                target=Name(id='response', ctx=Store()),
+                iter=Call(
+                    func=Attribute(
+                        value=Attribute(
+                            value=Name(id='self', ctx=Load()), attr='_stub', ctx=Load()
+                        ),
+                        attr=method_name,
+                        ctx=Load(),
+                    ),
+                    args=[],
+                    keywords=[
+                        keyword(
+                            arg='request_iterator',
+                            value=GeneratorExp(
+                                elt=Call(
+                                    func=Name(id='dataclass_to_protobuf', ctx=Load()),
+                                    args=[
+                                        Name(id='request', ctx=Load()),
+                                        Call(
+                                            func=Attribute(
+                                                value=Attribute(
+                                                    value=Name(id='self', ctx=Load()),
+                                                    attr='_protobuf',
+                                                    ctx=Load(),
+                                                ),
+                                                attr=request_class_name,
+                                                ctx=Load(),
+                                            ),
+                                            args=[],
+                                            keywords=[],
+                                        ),
+                                    ],
+                                    keywords=[],
+                                ),
+                                generators=[
+                                    comprehension(
+                                        target=Name(id='request', ctx=Store()),
+                                        iter=Name(id='requests', ctx=Load()),
+                                        ifs=[],
+                                        is_async=0,
+                                    )
+                                ],
+                            ),
+                        ),
+                        keyword(
+                            arg='metadata',
+                            value=Attribute(
+                                value=Name(id='self', ctx=Load()),
+                                attr='_metadata',
+                                ctx=Load(),
+                            ),
+                        ),
+                    ],
+                ),
+                body=[
+                    Expr(
+                        value=Yield(
+                            value=Call(
+                                func=Name(id='protobuf_to_dataclass', ctx=Load()),
+                                args=[
+                                    Name(id='response', ctx=Load()),
+                                    Name(id=response_class_name, ctx=Load()),
+                                ],
+                                keywords=[],
+                            )
+                        )
+                    )
+                ],
+                orelse=[],
+            )
+        ]
+        return body
 
 
 class ServiceMethodGenerator:

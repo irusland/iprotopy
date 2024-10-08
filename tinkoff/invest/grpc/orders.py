@@ -23,26 +23,18 @@ class OrdersStreamService(BaseService):
     _protobuf_grpc = orders_pb2_grpc
     _protobuf_stub = _protobuf_grpc.OrdersStreamServiceStub
 
-    def TradesStream(self, request: 'TradesStreamRequest') -> Iterable[
+    def TradesStream(self, request: 'TradesStreamRequest') ->Iterable[
         'TradesStreamResponse']:
-        for response in self._stub.TradesStream(
-                request=
-                dataclass_to_protobuf(
-                    request, self._protobuf.
-                            TradesStreamRequest()
-                ), metadata=self._metadata
-        ):
+        for response in self._stub.TradesStream(request=
+            dataclass_to_protobuf(request, self._protobuf.
+            TradesStreamRequest()), metadata=self._metadata):
             yield protobuf_to_dataclass(response, TradesStreamResponse)
 
-    def OrderStateStream(self, request: 'OrderStateStreamRequest') -> Iterable[
+    def OrderStateStream(self, request: 'OrderStateStreamRequest') ->Iterable[
         'OrderStateStreamResponse']:
-        for response in self._stub.OrderStateStream(
-                request=
-                dataclass_to_protobuf(
-                    request, self._protobuf.
-                            OrderStateStreamRequest()
-                ), metadata=self._metadata
-        ):
+        for response in self._stub.OrderStateStream(request=
+            dataclass_to_protobuf(request, self._protobuf.
+            OrderStateStreamRequest()), metadata=self._metadata):
             yield protobuf_to_dataclass(response, OrderStateStreamResponse)
 
 
@@ -54,87 +46,56 @@ class OrdersService(BaseService):
     _protobuf_grpc = orders_pb2_grpc
     _protobuf_stub = _protobuf_grpc.OrdersServiceStub
 
-    def PostOrder(self, request: 'PostOrderRequest') -> 'PostOrderResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            PostOrderRequest()
-            )
-        response, call = self._stub.PostOrder.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def PostOrder(self, request: 'PostOrderRequest') ->'PostOrderResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            PostOrderRequest())
+        response, call = self._stub.PostOrder.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, PostOrderResponse)
 
-    def CancelOrder(
-        self, request: 'CancelOrderRequest'
-    ) -> 'CancelOrderResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            CancelOrderRequest()
-            )
-        response, call = self._stub.CancelOrder.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def CancelOrder(self, request: 'CancelOrderRequest'
+        ) ->'CancelOrderResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            CancelOrderRequest())
+        response, call = self._stub.CancelOrder.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, CancelOrderResponse)
 
-    def GetOrderState(self, request: 'GetOrderStateRequest') -> 'OrderState':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            GetOrderStateRequest()
-            )
-        response, call = self._stub.GetOrderState.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def GetOrderState(self, request: 'GetOrderStateRequest') ->'OrderState':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetOrderStateRequest())
+        response, call = self._stub.GetOrderState.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, OrderState)
 
-    def GetOrders(self, request: 'GetOrdersRequest') -> 'GetOrdersResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            GetOrdersRequest()
-            )
-        response, call = self._stub.GetOrders.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def GetOrders(self, request: 'GetOrdersRequest') ->'GetOrdersResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetOrdersRequest())
+        response, call = self._stub.GetOrders.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, GetOrdersResponse)
 
-    def ReplaceOrder(
-        self, request: 'ReplaceOrderRequest'
-    ) -> 'PostOrderResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            ReplaceOrderRequest()
-            )
-        response, call = self._stub.ReplaceOrder.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def ReplaceOrder(self, request: 'ReplaceOrderRequest'
+        ) ->'PostOrderResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            ReplaceOrderRequest())
+        response, call = self._stub.ReplaceOrder.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, PostOrderResponse)
 
-    def GetMaxLots(self, request: 'GetMaxLotsRequest') -> 'GetMaxLotsResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            GetMaxLotsRequest()
-            )
-        response, call = self._stub.GetMaxLots.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def GetMaxLots(self, request: 'GetMaxLotsRequest') ->'GetMaxLotsResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetMaxLotsRequest())
+        response, call = self._stub.GetMaxLots.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, GetMaxLotsResponse)
 
-    def GetOrderPrice(
-        self, request: 'GetOrderPriceRequest'
-    ) -> 'GetOrderPriceResponse':
-        protobuf_request = dataclass_to_protobuf(
-            request, self._protobuf.
-            GetOrderPriceRequest()
-            )
-        response, call = self._stub.GetOrderPrice.with_call(
-            request=
-            protobuf_request, metadata=self._metadata
-        )
+    def GetOrderPrice(self, request: 'GetOrderPriceRequest'
+        ) ->'GetOrderPriceResponse':
+        protobuf_request = dataclass_to_protobuf(request, self._protobuf.
+            GetOrderPriceRequest())
+        response, call = self._stub.GetOrderPrice.with_call(request=
+            protobuf_request, metadata=self._metadata)
         return protobuf_to_dataclass(response, GetOrderPriceResponse)
 
 
@@ -290,11 +251,13 @@ class GetMaxLotsResponse:
     sell_limits: 'SellLimitsView'
     sell_margin_limits: 'SellLimitsView'
 
+
     @dataclass
     class BuyLimitsView:
         buy_money_amount: 'Quotation'
         buy_max_lots: int
         buy_max_market_lots: int
+
 
     @dataclass
     class SellLimitsView:
@@ -320,10 +283,12 @@ class GetOrderPriceResponse:
     service_commission: 'MoneyValue'
     deal_commission: 'MoneyValue'
 
+
     @dataclass
     class ExtraBond:
         aci_value: 'MoneyValue'
         nominal_conversion_rate: 'Quotation'
+
 
     @dataclass
     class ExtraFuture:
@@ -339,6 +304,7 @@ class OrderStateStreamRequest:
 @dataclass
 class OrderStateStreamResponse:
 
+
     @dataclass
     class SubscriptionResponse:
         tracking_id: str
@@ -346,6 +312,7 @@ class OrderStateStreamResponse:
         stream_id: str
         accounts: List[str]
         error: Optional['ErrorDetail'] = None
+
 
     @dataclass
     class OrderState:
@@ -377,6 +344,7 @@ class OrderStateStreamResponse:
         amount: Optional['MoneyValue'] = None
         marker: Optional['MarkerType'] = None
 
+
     class MarkerType(IntEnum):
         MARKER_UNKNOWN = 0
         MARKER_BROKER = 1
@@ -387,6 +355,7 @@ class OrderStateStreamResponse:
         MARKER_SHORT = 6
         MARKER_SPECMM = 7
         MARKER_PO = 8
+
 
     class StatusCauseInfo(IntEnum):
         CAUSE_UNSPECIFIED = 0
