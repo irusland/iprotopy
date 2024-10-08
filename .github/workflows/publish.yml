@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - "v*"
+      - "v*"  # Trigger the workflow on tag pushes (e.g., v1.0.0)
 
 jobs:
   publish:
@@ -20,6 +20,14 @@ jobs:
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
+
+      - name: Extract version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Update version in pyproject.toml
+        run: |
+          poetry version ${{ env.VERSION }}
 
       - name: Install dependencies
         run: poetry install
