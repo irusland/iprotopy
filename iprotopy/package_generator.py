@@ -6,16 +6,16 @@ from pathlib import Path
 from typing import Dict, Set
 
 import astor
-from file_generator import SourceGenerator
-from importer import Importer
-from imports import Import, ImportFrom
 from proto_schema_parser.parser import Parser
-from type_mapper import TypeMapper
 
 from iprotopy.base_service_source_generator import BaseServiceSourceGenerator
 from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.file_generator import SourceGenerator
 from iprotopy.import_types import AstImport
+from iprotopy.importer import Importer
+from iprotopy.imports import Import, ImportFrom
 from iprotopy.protos_generator import ProtosGenerator
+from iprotopy.type_mapper import TypeMapper
 
 logger = logging.getLogger(__name__)
 

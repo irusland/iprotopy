@@ -1,4 +1,4 @@
-from _ast import AnnAssign
+from ast import AnnAssign
 from typing import Iterable
 
 from proto_schema_parser import Field

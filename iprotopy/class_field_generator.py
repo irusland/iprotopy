@@ -1,13 +1,13 @@
 import keyword
-from _ast import AnnAssign, Constant, Load, Name, Store, Subscript, alias
+from ast import AnnAssign, Constant, Load, Name, Store, Subscript, alias
 from typing import Callable
 
-from domestic_importer import DomesticImporter
-from imports import ImportFrom
 from proto_schema_parser import Field, FieldCardinality
-from type_mapper import TypeMapper
 
 from iprotopy.annotation_generator import AnnotationGenerator
+from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.imports import ImportFrom
+from iprotopy.type_mapper import TypeMapper
 
 
 class ClassFieldGenerator:

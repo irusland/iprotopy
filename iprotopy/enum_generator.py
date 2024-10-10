@@ -1,8 +1,9 @@
-from _ast import Assign, ClassDef, Constant, Load, Name, Store, alias
+from ast import Assign, ClassDef, Constant, Load, Name, Store, alias
 
-from domestic_importer import DomesticImporter
-from imports import ImportFrom
 from proto_schema_parser.ast import Comment, EnumValue
+
+from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.imports import ImportFrom
 
 
 class EnumGenerator:

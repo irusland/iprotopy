@@ -1,5 +1,5 @@
 import ast
-from _ast import Assign, Attribute, ClassDef, Constant, Expr, Load, Name, Store
+from ast import Assign, Attribute, ClassDef, Constant, Expr, Load, Name, Store
 from pathlib import Path
 from typing import List
 

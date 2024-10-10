@@ -1,9 +1,8 @@
-from _ast import alias
+from ast import alias
 from typing import Tuple, Union
 
-from imports import ImportFrom
-
 from iprotopy.import_types import AstImport
+from iprotopy.imports import ImportFrom
 
 
 class TypeMapper:

@@ -1,7 +1,7 @@
 import abc
 import ast
 import typing
-from _ast import (
+from ast import (
     Assign,
     Attribute,
     Call,

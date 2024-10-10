@@ -1,9 +1,8 @@
 from pathlib import Path
 from typing import Set
 
-from importer import Importer
-
 from iprotopy.import_types import AstImport
+from iprotopy.importer import Importer
 
 
 class DomesticImporter:

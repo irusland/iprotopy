@@ -1,11 +1,10 @@
 import logging
-from _ast import alias
+from ast import alias
 from pathlib import Path
 from typing import Dict, Set
 
-from imports import ImportFrom
-
 from iprotopy.import_types import AstImport
+from iprotopy.imports import ImportFrom
 
 logger = logging.getLogger(__name__)
 

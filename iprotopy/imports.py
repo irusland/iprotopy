@@ -1,9 +1,9 @@
 import abc
 import ast
 import pickle
-from _ast import Import as AstImport
-from _ast import ImportFrom as AstImportFrom
-from _ast import alias
+from ast import Import as AstImport
+from ast import ImportFrom as AstImportFrom
+from ast import alias
 
 
 class ComparableAstImportMixin(metaclass=abc.ABCMeta):
