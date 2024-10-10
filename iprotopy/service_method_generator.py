@@ -26,7 +26,7 @@ from ast import (
 
 from proto_schema_parser.ast import Method
 
-from constants import SOURCE_PACKAGE_NAME
+from iprotopy.constants import SOURCE_PACKAGE_NAME
 from iprotopy.domestic_importer import DomesticImporter
 from iprotopy.imports import ImportFrom
 
