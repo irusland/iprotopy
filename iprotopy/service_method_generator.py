@@ -29,6 +29,8 @@ from proto_schema_parser.ast import Method
 from iprotopy.constants import SOURCE_PACKAGE_NAME
 from iprotopy.domestic_importer import DomesticImporter
 from iprotopy.imports import ImportFrom
+from iprotopy.package_generator_settings import PackageGeneratorSettings
+from iprotopy.string_case_converter import StringCaseConverter
 
 
 class BaseServiceMethodGenerator(abc.ABC):
@@ -36,8 +38,20 @@ class BaseServiceMethodGenerator(abc.ABC):
     _is_input_stream: bool
     _is_output_stream: bool
 
-    def __init__(self, importer: DomesticImporter):
+    def __init__(
+        self,
+        importer: DomesticImporter,
+        settings: PackageGeneratorSettings,
+        string_case_converter: StringCaseConverter,
+    ):
         self._importer = importer
+        self._settings = settings
+        self._string_case_converter = string_case_converter
+
+    def _get_method_name(self, method: Method) -> str:
+        return self._string_case_converter.convert(
+            method.name, self._settings.service_method_name_case
+        )
 
     @abc.abstractmethod
     def _get_function_body(self, method: Method) -> list[ast.stmt]:
@@ -98,7 +112,7 @@ class BaseServiceMethodGenerator(abc.ABC):
         body = self._get_function_body(method)
         self._add_function_body_imports()
         return FunctionDef(
-            name=method.name,
+            name=self._get_method_name(method),
             args=args,
             body=body,
             decorator_list=[],
@@ -377,15 +391,22 @@ class ServiceMethodGenerator:
         (True, True): ServiceMethodStreamStreamFunctionGenerator,
     }
 
-    def __init__(self, importer: DomesticImporter):
+    def __init__(
+        self,
+        importer: DomesticImporter,
+        settings: PackageGeneratorSettings,
+        string_case_converter: StringCaseConverter,
+    ):
         self._importer = importer
+        self._settings = settings
+        self._string_case_converter = string_case_converter
 
     def process_service_method(self, method: Method) -> FunctionDef:
         is_input_stream = method.input_type.stream
         is_output_stream = method.output_type.stream
 
         method_generator = self._method_generators[(is_input_stream, is_output_stream)](
-            self._importer
+            self._importer, self._settings, self._string_case_converter
         )
 
         return method_generator.create(method)

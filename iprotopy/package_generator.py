@@ -3,7 +3,7 @@ from ast import (
     Module,
 )
 from pathlib import Path
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 
 import astor
 from proto_schema_parser.parser import Parser
@@ -14,6 +14,7 @@ from iprotopy.file_generator import SourceGenerator
 from iprotopy.import_types import AstImport
 from iprotopy.importer import Importer
 from iprotopy.imports import Import, ImportFrom
+from iprotopy.package_generator_settings import PackageGeneratorSettings
 from iprotopy.protos_generator import ProtosGenerator
 from iprotopy.type_mapper import TypeMapper
 
@@ -21,7 +22,10 @@ logger = logging.getLogger(__name__)
 
 
 class PackageGenerator:
-    def __init__(self):
+    def __init__(self, settings: Optional[PackageGeneratorSettings] = None):
+        if settings is None:
+            settings = PackageGeneratorSettings()
+        self._settings = settings
         self._parser = Parser()
         self._type_mapper = TypeMapper()
 
@@ -41,7 +45,13 @@ class PackageGenerator:
             pyfile = proto_file.relative_to(proto_dir).with_suffix('.py')
             logger.debug(pyfile)
             source_generator = SourceGenerator(
-                proto_file, out_dir, pyfile, self._parser, self._type_mapper, importer
+                proto_file,
+                out_dir,
+                pyfile,
+                self._parser,
+                self._type_mapper,
+                importer,
+                self._settings,
             )
             module = source_generator.generate_source()
             modules[proto_file] = module

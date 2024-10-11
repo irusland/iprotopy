@@ -6,13 +6,25 @@ from typing import List
 from proto_schema_parser.ast import Comment, Method, Service
 
 from iprotopy.domestic_importer import DomesticImporter
+from iprotopy.package_generator_settings import PackageGeneratorSettings
 from iprotopy.service_method_generator import ServiceMethodGenerator
+from iprotopy.string_case_converter import StringCaseConverter
 
 
 class ServiceGenerator:
-    def __init__(self, importer: DomesticImporter, pyfile: Path):
+    def __init__(
+        self,
+        importer: DomesticImporter,
+        pyfile: Path,
+        settings: PackageGeneratorSettings,
+    ):
         self._importer = importer
         self._pyfile = pyfile
+        self._settings = settings
+        self._string_case_converter = StringCaseConverter()
+        self._service_method_generator = ServiceMethodGenerator(
+            self._importer, self._settings, self._string_case_converter
+        )
 
     def process_service(self, service: Service) -> ClassDef:
         body = []
@@ -25,8 +37,9 @@ class ServiceGenerator:
             if isinstance(element, Comment):
                 continue
             elif isinstance(element, Method):
-                service_method_generator = ServiceMethodGenerator(self._importer)
-                body.append(service_method_generator.process_service_method(element))
+                body.append(
+                    self._service_method_generator.process_service_method(element)
+                )
                 continue
             else:
                 raise NotImplementedError(f'Unknown element {element}')

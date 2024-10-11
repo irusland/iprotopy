@@ -24,6 +24,7 @@ from iprotopy.domestic_importer import DomesticImporter
 from iprotopy.enum_generator import EnumGenerator
 from iprotopy.importer import Importer
 from iprotopy.message_class_generator import MessageClassGenerator
+from iprotopy.package_generator_settings import PackageGeneratorSettings
 from iprotopy.service_generator import ServiceGenerator
 from iprotopy.type_mapper import TypeMapper
 
@@ -39,6 +40,7 @@ class SourceGenerator:
         parser: Parser,
         type_mapper: TypeMapper,
         global_importer: Importer,
+        settings: PackageGeneratorSettings,
     ):
         self._parser = parser
         self._type_mapper = type_mapper
@@ -47,6 +49,7 @@ class SourceGenerator:
         self._out_dir = out_dir
         self._pyfile = pyfile
         self._body: List[ast.stmt] = []
+        self._settings = settings
 
     def generate_source(self) -> Module:
         logger.debug(f'Generating source for {self._proto_file}')
@@ -70,7 +73,9 @@ class SourceGenerator:
             elif isinstance(element, ProtoImport):
                 continue
             elif isinstance(element, Service):
-                service_generator = ServiceGenerator(self._importer, self._pyfile)
+                service_generator = ServiceGenerator(
+                    self._importer, self._pyfile, self._settings
+                )
                 self._body.append(service_generator.process_service(element))
                 # todo AsyncServiceGenerator
             elif isinstance(element, Comment):
